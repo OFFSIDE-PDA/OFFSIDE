@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Kleague/kLeague.dart';
 
 void main() {
   runApp(const Offside());
@@ -55,17 +56,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _currentIndex = 0;
+  final _pages = [
+    KLeague(),
+  ];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  late List<GlobalKey<NavigatorState>> _navigatorKeyList;
+  int flagCnt = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _navigatorKeyList =
+        List.generate(_pages.length, (index) => GlobalKey<NavigatorState>());
   }
 
   @override
@@ -77,9 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Scaffold(
-          body: const Column(children: [Text("text")]),
+          body: SizedBox(child: KLeague()),
           bottomNavigationBar: BottomNavigationBar(
-            // currentIndex: currentIdx,
+            //currentIndex: currentIdx,
             type: BottomNavigationBarType.fixed,
             // onTap: (index) {
             //   setState(() {
