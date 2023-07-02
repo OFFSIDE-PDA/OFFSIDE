@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:offside/login/login.dart';
+import 'package:offside/login/signup.dart';
 
 void main() {
   runApp(const Offside());
@@ -28,7 +30,7 @@ class Offside extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff0E2057)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -55,17 +57,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _currentIndex = 0;
+  final _pages = [
+    LoginPage(),
+    //SignUpPage(),
+  ];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  late List<GlobalKey<NavigatorState>> _navigatorKeyList;
+  int flagCnt = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _navigatorKeyList =
+        List.generate(_pages.length, (index) => GlobalKey<NavigatorState>());
   }
 
   @override
@@ -77,7 +83,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Scaffold(
-          body: const Column(children: [Text("text")]),
+          body: SizedBox(
+            child: LoginPage(),
+            //SignUpPage(),
+          ),
           bottomNavigationBar: BottomNavigationBar(
             // currentIndex: currentIdx,
             type: BottomNavigationBarType.fixed,
