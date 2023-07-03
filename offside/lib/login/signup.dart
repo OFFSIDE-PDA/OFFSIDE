@@ -68,13 +68,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
                 child: TextFormField(
-                  controller: _name,
+                  controller: _email,
                   validator: (value) =>
-                      (value!.isEmpty) ? "이름을 입력 해 주세요" : null,
+                      (value!.isEmpty) ? "이메일을 입력 해 주세요" : null,
                   style: style,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.face),
-                    labelText: "이름",
+                    prefixIcon: Icon(Icons.email),
+                    labelText: "이메일",
                     filled: true,
                     fillColor: Color(0xffF6F6F6),
                     border: OutlineInputBorder(
@@ -90,11 +90,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: TextFormField(
                   controller: _id,
                   validator: (value) =>
-                      (value!.isEmpty) ? "아이디를 입력 해 주세요" : null,
+                      (value!.isEmpty) ? "닉네임 입력 해 주세요" : null,
                   style: style,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
-                    labelText: "아이디",
+                    labelText: "닉네임",
                     filled: true,
                     fillColor: Color(0xffF6F6F6),
                     border: OutlineInputBorder(
@@ -137,26 +137,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     labelText: "Password 확인",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  controller: _email,
-                  validator: (value) =>
-                      (value!.isEmpty) ? "이메일을 입력 해 주세요" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    labelText: "이메일",
                     filled: true,
                     fillColor: Color(0xffF6F6F6),
                     border: OutlineInputBorder(

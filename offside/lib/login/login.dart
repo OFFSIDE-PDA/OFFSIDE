@@ -65,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                           (value!.isEmpty) ? "이메일을 입력해 주세요" : null, //hint 역할
                       style: style,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.perm_identity),
-                        labelText: "아이디", //hint
+                        prefixIcon: Icon(Icons.email_outlined),
+                        labelText: "이메일", //hint
                         filled: true,
                         fillColor: Color(0xffF6F6F6),
                         border: OutlineInputBorder(
