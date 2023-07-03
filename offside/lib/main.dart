@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:offside/login/login.dart';
+import 'package:offside/login/signup.dart';
 import 'MainPage/main_page.dart';
 import 'Kleague/kLeague.dart';
+
 
 void main() {
   runApp(const Offside());
