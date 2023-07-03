@@ -1,0 +1,1195 @@
+{
+  "match": [
+    {
+      "data": "230624",
+      "time": "16:00",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230624",
+      "time": "18:30",
+      "location": "탄천종합운동장",
+      "team1": "성남 FC",
+      "team2": "부천 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230624",
+      "time": "20:03",
+      "location": "김천종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "천안시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230625",
+      "time": "16:00",
+      "location":"아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230625",
+      "time": "18:30",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230625",
+      "time": "18:30",
+      "location": "목동종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230701",
+      "time": "18:30",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230701",
+      "time": "19:30",
+      "location": "부천종합운동장",
+      "team1": "부천 FC 1995",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230702",
+      "time": "18:30",
+      "location": "안양종합운동장",
+      "team1": "FC 안양",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230702",
+      "time": "19:30",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230703",
+      "time": "19:00",
+      "location": "청주종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230703",
+      "time": "19:00",
+      "location": "광양축구전용구장",
+      "team1": "전남 드래곤즈",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230708",
+      "time": "18:00",
+      "location": "청주종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230708",
+      "time": "18:00",
+      "location": "천안종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230709",
+      "time": "18:30",
+      "location": "탄천종합운동장",
+      "team1": "성남 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230709",
+      "time": "18:30",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230710",
+      "time": "19:00",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230710",
+      "time": "19:30",
+      "location": "김천종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230715",
+      "time": "19:00",
+      "location": "천안종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230715",
+      "time": "19:30",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230715",
+      "time": "19:30",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230715",
+      "time": "20:00",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230716",
+      "time": "19:00",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230716",
+      "time": "20:00",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230718",
+      "time": "19:00",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC 1995",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230718",
+      "time": "19:00",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230718",
+      "time": "19:30",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230719",
+      "time": "19:00",
+      "location": "탄천 종합운동장",
+      "team1": "성남 FC",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230719",
+      "time": "19:00",
+      "location": "광양 전용축구구장",
+      "team1": "전남 드래곤즈",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230719",
+      "time": "19:30",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230723",
+      "time": "19:00",
+      "location": "청주 종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230723",
+      "time": "19:30",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230723",
+      "time": "19:30",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230723",
+      "time": "20:00",
+      "location": "천안 종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230724",
+      "time": "19:00",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230724",
+      "time": "19:30",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230729",
+      "time": "19:00",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230729",
+      "time": "19:30",
+      "location": "탄천 종합운동장",
+      "team1": "성남 FC",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230730",
+      "time": "19:00",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC 1995",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230730",
+      "time": "19:30",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230731",
+      "time": "19:00",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230731",
+      "time": "19:30",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230805",
+      "time": "19:00",
+      "location": "광양 축구전용구장",
+      "team1": "전남 드래곤즈",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230805",
+      "time": "19:30",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230805",
+      "time": "20:00",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230806",
+      "time": "19:00",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230806",
+      "time": "19:30",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230807",
+      "time": "19:30",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230812",
+      "time": "19:00",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230813",
+      "time": "19:00",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230814",
+      "time": "19:00",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230814",
+      "time": "19:30",
+      "location": "천안 종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230815",
+      "time": "19:00",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230815",
+      "time": "19:30",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230819",
+      "time": "19:00",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230819",
+      "time": "19:30",
+      "location": "청주 종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230820",
+      "time": "18:30",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230820",
+      "time": "19:00",
+      "location": "광양 축구전용구장",
+      "team1": "전남 드래곤즈",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230821",
+      "time": "19:00",
+      "location": "탄천 종합운동장",
+      "team1": "성남 FC",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230821",
+      "time": "19:30",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230826",
+      "time": "19:00",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230826",
+      "time": "19:30",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230826",
+      "time": "19:30",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230826",
+      "time": "20:00",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC 1995",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230827",
+      "time": "19:00",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230827",
+      "time": "19:30",
+      "location": "천안 종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230829",
+      "time": "19:00",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230829",
+      "time": "19:30",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230829",
+      "time": "19:30",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230830",
+      "time": "19:00",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230830",
+      "time": "19:30",
+      "location": "탄천 종합운동장",
+      "team1": "성남 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230830",
+      "time": "19:30",
+      "location": "청주 종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230902",
+      "time": "16:00",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230902",
+      "time": "18:30",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230902",
+      "time": "20:00",
+      "location": "천안 종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230903",
+      "time": "16:00",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230903",
+      "time": "18:30",
+      "location": "광양 축구전용구장",
+      "team1": "전남 드래곤즈",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230903",
+      "time": "20:00",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230916",
+      "time": "16:00",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230916",
+      "time": "16:00",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230916",
+      "time": "18:30",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230917",
+      "time": "13:30",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230917",
+      "time": "16:00",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230917",
+      "time": "18:30",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC 1995",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230919",
+      "time": "19:00",
+      "location": "부산 아시아드 주경기장",
+      "team1": "부산 아이파크",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230919",
+      "time": "19:30",
+      "location": "탄천 종합운동장",
+      "team1": "성남 FC",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230919",
+      "time": "19:30",
+      "location": "청주 종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230920",
+      "time": "19:00",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230920",
+      "time": "19:30",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230920",
+      "time": "19:30",
+      "location": "천안 종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230923",
+      "time": "13:30",
+      "location": "탄천 종합운동장",
+      "team1": "성남 FC",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230923",
+      "time": "16:00",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230923",
+      "time": "18:30",
+      "location": "광양 축구전용구장",
+      "team1": "전남 드래곤즈",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230924",
+      "time": "13:30",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230924",
+      "time": "16:00",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230924",
+      "time": "18:30",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC 1995",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230930",
+      "time": "13:30",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230930",
+      "time": "16:00",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "230930",
+      "time": "18:30",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231001",
+      "time": "13:30",
+      "location": "청주 종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231001",
+      "time": "16:00",
+      "location": "천안 종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231001",
+      "time": "18:30",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231007",
+      "time": "13:30",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231007",
+      "time": "13:30",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231007",
+      "time": "16:00",
+      "location": "탄천 종합운동장",
+      "team1": "성남 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231007",
+      "time": "16:00",
+      "location": "광양 축구전용구장",
+      "team1": "전남 드래곤즈",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231007",
+      "time": "18:30",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231007",
+      "time": "18:30",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231021",
+      "time": "13:30",
+      "location": "천안 종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231021",
+      "time": "16:00",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC 1995",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231021",
+      "time": "18:30",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231022",
+      "time": "13:30",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231022",
+      "time": "16:00",
+      "location": "청주 종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231022",
+      "time": "18:30",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231028",
+      "time": "13:30",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231028",
+      "time": "16:00",
+      "location": "아산 이순신종합운동장",
+      "team1": "충남 아산 FC",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231028",
+      "time": "18:30",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231029",
+      "time": "13:30",
+      "location": "광양 축구전용구장",
+      "team1": "전남 드래곤즈",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231029",
+      "time": "16:00",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "부천 FC 1995",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231029",
+      "time": "18:30",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231111",
+      "time": "13:30",
+      "location": "목동 종합운동장",
+      "team1": "서울 이랜드 FC",
+      "team2": "성남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231111",
+      "time": "16:00",
+      "location": "청주 종합운동장",
+      "team1": "충북 청주 FC",
+      "team2": "충남 아산 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231111",
+      "time": "18:30",
+      "location": "창원 축구센터",
+      "team1": "경남 FC",
+      "team2": "김천 상무 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231112",
+      "time": "13:30",
+      "location": "안산 와스타디움",
+      "team1": "안산 그리너스 FC",
+      "team2": "FC 안양",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231112",
+      "time": "16:00",
+      "location": "천안 종합운동장",
+      "team1": "천안 시티 FC",
+      "team2": "김포 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231112",
+      "time": "18:30",
+      "location": "광양 축구전용구장",
+      "team1": "전남 드래곤즈",
+      "team2": "부산 아이파크",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231126",
+      "time": "15:00",
+      "location": "김천 종합운동장",
+      "team1": "김천 상무 FC",
+      "team2": "서울 이랜드 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231126",
+      "time": "15:00",
+      "location": "탄천 종합운동장",
+      "team1": "성남 FC",
+      "team2": "안산 그리너스 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231126",
+      "time": "15:00",
+      "location": "안양 종합운동장",
+      "team1": "FC 안양",
+      "team2": "천안 시티 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231126",
+      "time": "15:00",
+      "location": "부천 종합운동장",
+      "team1": "부천 FC 1995",
+      "team2": "전남 드래곤즈",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231126",
+      "time": "15:00",
+      "location": "김포솔터축구장",
+      "team1": "김포 FC",
+      "team2": "경남 FC",
+      "score1": "0",
+      "score2": "0"
+    },
+    {
+      "data": "231126",
+      "time": "15:00",
+      "location": "부산 아시아드주경기장",
+      "team1": "부산 아이파크",
+      "team2": "충북 청주 FC",
+      "score1": "0",
+      "score2": "0"
+    }
+  ]
+}
+
+
+
