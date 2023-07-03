@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../Kleague/kLeague.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,13 +13,13 @@ class _Root extends State<MainPage> {
   void onPressed() {}
 
   final List<String> entries = <String>['A', 'B', 'C'];
-  int _selectedIdx = 0;
+  int _selectedIdx = 2;
   List _pages = [
-    HomePage(),
-    Container(child: Text("1st")),
+    KLeague(),
     Container(
       child: Text("2nd"),
     ),
+    HomePage(),
     Container(child: Text("3rd")),
     Container(child: Text("4th")),
   ];

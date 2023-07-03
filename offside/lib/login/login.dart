@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:offside/main.dart';
+import '../MainPage/main_page.dart';
 import './signup.dart';
 
 // 로그인 화면
@@ -110,7 +111,11 @@ class _LoginPageState extends State<LoginPage> {
                       //child - 버튼을 생성
                       height: 70,
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {}
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage()));
+                        //if (_formKey.currentState!.validate()) {}
                       },
                       child: Text(
                         "로그인",
