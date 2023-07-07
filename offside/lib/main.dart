@@ -5,12 +5,6 @@ void main() {
   runApp(const Offside());
 }
 
-// final routes = {
-//   '/mainpage': (BuildContext context) => const MainPage(
-//         title: '메인페이지',
-//       )
-// };
-
 class Offside extends StatelessWidget {
   const Offside({super.key});
 
@@ -26,7 +20,6 @@ class Offside extends StatelessWidget {
               seedColor: const Color.fromARGB(255, 255, 255, 255)),
           useMaterial3: true,
         ),
-        // home: const MainPage(title: 'Offside'),
         home: LoginPage());
   }
 }
