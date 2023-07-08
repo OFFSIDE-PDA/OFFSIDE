@@ -66,7 +66,7 @@ class Community extends StatelessWidget {
           ),
           Container(
             height: 450,
-            child: KLeagueOne(),
+            child: CommunityChat(),
           )
         ],
       );
