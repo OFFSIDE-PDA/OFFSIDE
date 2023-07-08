@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../Kleague/kLeague.dart';
+import '../community/Community.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -16,9 +17,7 @@ class _Root extends State<MainPage> {
   int _selectedIdx = 2;
   List _pages = [
     KLeague(),
-    Container(
-      child: Text("2nd"),
-    ),
+    Community(),
     HomePage(),
     Container(child: Text("3rd")),
     Container(child: Text("4th")),
