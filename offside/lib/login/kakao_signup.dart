@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/MainPage/main_page.dart';
 import 'package:offside/user_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 회원가입 화면
-class SignUpPage extends ConsumerStatefulWidget {
+class KaKaoSignUpPage extends ConsumerStatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends ConsumerState<SignUpPage> {
+class _SignUpPageState extends ConsumerState<KaKaoSignUpPage> {
   TextStyle style = TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
-  late TextEditingController _name;
-  late TextEditingController _id;
-  late TextEditingController _password;
-  late TextEditingController _password2;
-  late TextEditingController _email;
   FocusNode searchFocusNode = FocusNode();
   FocusNode textFieldFocusNode = FocusNode();
   late SingleValueDropDownController _cnt;
@@ -27,22 +22,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   @override
   void initState() {
     super.initState();
-    _name = TextEditingController(text: "");
-    _id = TextEditingController(text: "");
-    _password = TextEditingController(text: "");
-    _password2 = TextEditingController(text: "");
-    _email = TextEditingController(text: "");
     _cnt = SingleValueDropDownController();
     _cntMulti = MultiValueDropDownController();
   }
 
   @override
   void dispose() {
-    _name.dispose();
-    _id.dispose();
-    _email.dispose();
-    _password.dispose();
-    _password2.dispose();
     _cnt.dispose();
     _cntMulti.dispose();
     super.dispose();
@@ -67,88 +52,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               SizedBox(height: 30),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  controller: _email,
-                  validator: (value) =>
-                      (value!.isEmpty) ? "이메일을 입력 해 주세요" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    labelText: "이메일",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  controller: _id,
-                  validator: (value) =>
-                      (value!.isEmpty) ? "닉네임 입력 해 주세요" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    labelText: "닉네임",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: _password,
-                  validator: (value) =>
-                      (value!.isEmpty) ? "패스워드를 입력 해 주세요" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: "Password",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: _password2,
-                  validator: (value) =>
-                      (value != _password.text) ? "패스워드가 다릅니다" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: "Password 확인",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
@@ -211,18 +114,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
-                          await user.emailSignUp(
-                              email: _email.value.text,
-                              password: _password.value.text,
-                              nickname: _id.value.text,
-                              team: "FC서울");
+                          await user.updateTeam(team: "FC서울");
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MainPage()),
                               (route) => false);
                         } catch (e) {
-                          print("$e 이메일 회원가입 실패");
+                          print("$e");
                         }
                       }
                     },

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:offside/main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/login/kakao_signup.dart';
 import '../MainPage/main_page.dart';
 import './signup.dart';
+import 'package:offside/user_view_model.dart';
 
 // 로그인 화면
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   //StatefulWidget 로 설정
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   //LoginPage  --> _LoginPageState 로 이동
   TextStyle style = TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
   late TextEditingController _email; //각각 변수들 지정
@@ -35,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userViewModelProvider);
     //Widget 여기서 UI화면 작성
     return Scaffold(
       body: Padding(
@@ -110,12 +113,22 @@ class _LoginPageState extends State<LoginPage> {
                     child: MaterialButton(
                       //child - 버튼을 생성
                       height: 70,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage()));
-                        //if (_formKey.currentState!.validate()) {}
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          try {
+                            await user.emailSignIn(
+                                email: _email.value.text,
+                                password: _password.value.text);
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MainPage()));
+                          } catch (e) {
+                            print(e);
+                            print("로그인 실패");
+                          }
+                        }
                       },
                       child: Text(
                         "로그인",
@@ -134,7 +147,29 @@ class _LoginPageState extends State<LoginPage> {
                     color: Color(0xffFDDC3F),
                     child: MaterialButton(
                       height: 70,
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                          await user.kakaoSignIn();
+                          print(user.user!.team);
+                          if (user.user!.team == null) {
+                            print("이거 왜 안되지");
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => KaKaoSignUpPage()));
+                          } else {
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MainPage()));
+                          }
+                        } catch (e) {
+                          print(e);
+                          print("로그인 실패");
+                        }
+                      },
                       child: Text(
                         "카카오톡으로 간편 로그인",
                         style:
@@ -157,10 +192,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignUpPage()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => SignUpPage()),
+                        // );
                       },
                     ),
                     Text('  |  '),

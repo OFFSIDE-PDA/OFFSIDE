@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../Kleague/kLeague.dart';
+import 'package:offside/data/repository/auth_repository.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -10,7 +11,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _Root extends State<MainPage> {
-  void onPressed() {}
+  void onPressed() {
+    authRepositoryProvider.signOut();
+    Navigator.pop(context);
+  }
 
   final List<String> entries = <String>['A', 'B', 'C'];
   int _selectedIdx = 2;
@@ -23,6 +27,7 @@ class _Root extends State<MainPage> {
     Container(child: Text("3rd")),
     Container(child: Text("4th")),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
