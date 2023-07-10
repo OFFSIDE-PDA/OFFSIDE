@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../Kleague/kLeague.dart';
+import '../MyPage/mypage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -21,7 +22,7 @@ class _Root extends State<MainPage> {
     ),
     HomePage(),
     Container(child: Text("3rd")),
-    Container(child: Text("4th")),
+    MyPage(),
   ];
   @override
   Widget build(BuildContext context) {
