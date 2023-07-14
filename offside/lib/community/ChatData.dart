@@ -1,8 +1,11 @@
-class DataModel {
-  String title;
-  String thumbnail;
-  String viewCount;
+import 'package:flutter/cupertino.dart';
 
-  DataModel(
-      {required this.title, required this.thumbnail, required this.viewCount});
+class ChatMessage {
+  String messageContent;
+  String messageType;
+  String nickname;
+  ChatMessage(
+      {required this.messageContent,
+      required this.messageType,
+      required this.nickname});
 }

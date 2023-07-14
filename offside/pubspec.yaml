@@ -43,6 +43,9 @@ dependencies:
   flutter_svg: ^1.0.1
   url_launcher: ^6.1.11
   cloud_firestore: ^4.8.2
+  chat_bubbles: ^1.4.1
+  cached_network_image: ^3.2.3
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
