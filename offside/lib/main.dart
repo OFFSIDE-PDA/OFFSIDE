@@ -25,6 +25,6 @@ class Offside extends StatelessWidget {
               seedColor: const Color.fromARGB(255, 255, 255, 255)),
           useMaterial3: true,
         ),
-        home: MainPage());
+        home: LoginPage());
   }
 }

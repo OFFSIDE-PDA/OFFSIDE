@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:offside/main.dart';
 import '../MainPage/main_page.dart';
 import './signup.dart';
 

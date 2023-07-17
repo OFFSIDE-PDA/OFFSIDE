@@ -53,38 +53,6 @@ class _Root extends State<MainPage> {
             width: 120,
             height: double.maxFinite,
           ),
-          actions: <Widget>[
-            Column(
-              children: [
-                Row(
-                  children: [
-                    const Text(
-                      "KOREAN ",
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
-                    ),
-                    Container(width: 1, height: 15, color: Colors.grey),
-                    const Text(
-                      " ENGLISH",
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                ElevatedButton(
-                  onPressed: onPressed,
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(33, 58, 135, 1))),
-                  child: const Text(
-                    "Log In",
-                    style: TextStyle(fontSize: 12, color: Colors.white),
-                  ),
-                )
-              ],
-            )
-          ],
           shape: const Border(
             bottom: BorderSide(
               color: Colors.grey,
@@ -164,10 +132,10 @@ class _Root extends State<MainPage> {
                 )),
           ],
           unselectedItemColor: Colors.black,
-          selectedItemColor: const Color.fromRGBO(33, 58, 135, 1),
+          selectedItemColor: const Color.fromRGBO(14, 32, 87, 1),
           unselectedLabelStyle: const TextStyle(color: Colors.black),
           selectedLabelStyle:
-              const TextStyle(color: Color.fromRGBO(33, 58, 135, 1)),
+              const TextStyle(color: Color.fromRGBO(14, 32, 87, 1)),
         ));
   }
 }
@@ -216,7 +184,7 @@ class Home extends State<HomePage> {
                   onPressed: chooseLeague,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: flag == true
-                        ? const Color.fromRGBO(33, 58, 135, 1)
+                        ? const Color.fromRGBO(14, 32, 87, 1)
                         : Colors.white,
                     side: borderSide,
                   ),
@@ -234,7 +202,7 @@ class Home extends State<HomePage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: flag == true
                       ? Colors.white
-                      : const Color.fromRGBO(33, 58, 135, 1),
+                      : const Color.fromRGBO(14, 32, 87, 1),
                   side: const BorderSide(
                     color: Colors.grey,
                     width: 2.0,
@@ -390,7 +358,7 @@ class StadiumTour extends StatelessWidget {
     return Row(
       children: [
         Container(
-          color: const Color.fromRGBO(33, 58, 135, 1),
+          color: const Color.fromRGBO(14, 32, 87, 1),
           width: size.width,
           child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             const Text(
@@ -408,7 +376,7 @@ class StadiumTour extends StatelessWidget {
               decoration: const BoxDecoration(
                   color: Colors.white, shape: BoxShape.circle),
               child: IconButton(
-                  color: const Color.fromRGBO(33, 58, 135, 1),
+                  color: const Color.fromRGBO(14, 32, 87, 1),
                   padding: const EdgeInsets.all(0),
                   icon: const Icon(
                     Icons.chevron_right,
@@ -442,7 +410,7 @@ class HotMatch extends StatelessWidget {
     return Column(
       children: [
         Container(
-            color: const Color.fromRGBO(33, 58, 135, 1),
+            color: const Color.fromRGBO(14, 32, 87, 1),
             width: size.width,
             padding: const EdgeInsets.all(10),
             child: const Text(
@@ -601,10 +569,9 @@ class BottomNavigation extends StatelessWidget {
             )),
       ],
       unselectedItemColor: Colors.black,
-      selectedItemColor: const Color.fromRGBO(33, 58, 135, 1),
+      selectedItemColor: const Color.fromRGBO(14, 32, 87, 1),
       unselectedLabelStyle: const TextStyle(color: Colors.black),
-      selectedLabelStyle:
-          const TextStyle(color: Color.fromRGBO(33, 58, 135, 1)),
+      selectedLabelStyle: const TextStyle(color: Color.fromRGBO(14, 32, 87, 1)),
     );
   }
 }
