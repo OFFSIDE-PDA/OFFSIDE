@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:offside/Schedule/schedule.dart';
 import '../Kleague/kLeague.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../MyPage/mypage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -23,7 +24,8 @@ class _Root extends State<MainPage> {
     ),
     HomePage(),
     Schedule(),
-    Container(child: Text("4th")),
+    Container(child: Text("3rd")),
+    MyPage(),
   ];
   final firestore = FirebaseFirestore.instance;
 
