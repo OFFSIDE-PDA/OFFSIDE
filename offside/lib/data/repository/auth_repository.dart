@@ -39,4 +39,19 @@ class AuthRepository {
       password: password,
     ));
   }
+
+  ///비밀번호 재설정 이메일 보내기
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    await _authDataSource.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> updatePassword({required String newPassword}) async {
+    await _authDataSource.updatePassword(newPassword: newPassword);
+  }
+
+  ///유저 정보 업데이트
+  Future<void> updateUserInfo(
+      {required String email, required String nickname}) async {
+    await _authDataSource.updateUserInfo(email: email, nickname: nickname);
+  }
 }

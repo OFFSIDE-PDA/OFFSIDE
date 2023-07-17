@@ -1,10 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:offside/MainPage/main_page.dart';
 import 'package:offside/firebase_options.dart';
 import 'package:offside/login/login.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

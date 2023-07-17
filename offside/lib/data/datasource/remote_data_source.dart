@@ -125,6 +125,23 @@ class AuthDataSource extends remoteDataSource {
     }
     throw Exception("이메일 로그인 실패");
   }
+
+  ///비밀번호 재설정 이메일 보내기
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
+  ///유저비밀번호 업데이트
+  Future<void> updatePassword({required String newPassword}) async {
+    await FirebaseAuth.instance.currentUser?.updatePassword(newPassword);
+  }
+
+  ///유저 정보 업데이트
+  Future<void> updateUserInfo(
+      {required String email, required String nickname}) async {
+    await FirebaseAuth.instance.currentUser?.updateEmail(email);
+    await FirebaseAuth.instance.currentUser?.updateDisplayName(nickname);
+  }
 }
 
 ///인증정보를 제외한 유저 정보에 관련된 외부데이터소스
