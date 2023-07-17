@@ -108,12 +108,6 @@ class AuthDataSource extends remoteDataSource {
       await credential.user?.updateDisplayName(nickname);
       return credential.user!;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
       print(e);
     }
     throw Exception("이메일 회원가입 실패");
@@ -127,11 +121,7 @@ class AuthDataSource extends remoteDataSource {
           .signInWithEmailAndPassword(email: email, password: password);
       return credential.user!;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      print(e);
     }
     throw Exception("이메일 로그인 실패");
   }

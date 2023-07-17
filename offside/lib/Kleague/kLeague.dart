@@ -78,7 +78,6 @@ class KLeagueOne extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      height: double.infinity,
       alignment: Alignment.topLeft,
       color: Color.fromRGBO(18, 32, 84, 1),
       child: Column(

@@ -20,7 +20,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   FocusNode searchFocusNode = FocusNode();
   FocusNode textFieldFocusNode = FocusNode();
   late SingleValueDropDownController _cnt;
-  late MultiValueDropDownController _cntMulti;
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
 
@@ -33,7 +32,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     _password2 = TextEditingController(text: "");
     _email = TextEditingController(text: "");
     _cnt = SingleValueDropDownController();
-    _cntMulti = MultiValueDropDownController();
   }
 
   @override
@@ -44,7 +42,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     _password.dispose();
     _password2.dispose();
     _cnt.dispose();
-    _cntMulti.dispose();
     super.dispose();
   }
 
@@ -153,52 +150,54 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
                 child: DropDownTextField(
-                  clearOption: false,
-                  textFieldFocusNode: textFieldFocusNode,
-                  searchFocusNode: searchFocusNode,
-                  // searchAutofocus: true,
-                  dropDownItemCount: 25,
-                  searchShowCursor: false,
-                  enableSearch: true,
-                  searchKeyboardType: TextInputType.number,
-                  textFieldDecoration: InputDecoration(
-                      prefixIcon: Icon(Icons.favorite),
-                      labelText: "응원하는 팀",
-                      filled: true,
-                      fillColor: Color(0xffF6F6F6),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      )),
-                  dropDownList: const [
-                    DropDownValueModel(name: '강원 FC', value: "value1"),
-                    DropDownValueModel(name: '경남 FC', value: "value2"),
-                    DropDownValueModel(name: '김천 상무 FC', value: "value3"),
-                    DropDownValueModel(name: '김포 FC', value: "value4"),
-                    DropDownValueModel(name: '광주 FC', value: "value5"),
-                    DropDownValueModel(name: '대구 FC', value: "value6"),
-                    DropDownValueModel(name: '대전 하나 시티즌', value: "value7"),
-                    DropDownValueModel(name: '부산 아이파크', value: "value8"),
-                    DropDownValueModel(name: '부천 FC 1995', value: "value9"),
-                    DropDownValueModel(name: 'FC 서울', value: "value10"),
-                    DropDownValueModel(name: '서울 이랜드 FC', value: "value11"),
-                    DropDownValueModel(name: '성남 FC', value: "value12"),
-                    DropDownValueModel(name: '수원 삼성 블루윙즈', value: "value13"),
-                    DropDownValueModel(name: '수원 FC', value: "value14"),
-                    DropDownValueModel(name: '안산 그리너스 FC', value: "value15"),
-                    DropDownValueModel(name: 'FC 안양', value: "value16"),
-                    DropDownValueModel(name: '울산 현대', value: "value17"),
-                    DropDownValueModel(name: '인천 유나이티드 FC', value: "value18"),
-                    DropDownValueModel(name: '전남 드래곤즈', value: "value19"),
-                    DropDownValueModel(name: '전북 현대 모터스', value: "value20"),
-                    DropDownValueModel(name: '재주 유나이티드 FC', value: "value21"),
-                    DropDownValueModel(name: '천안 시티 FC', value: "value22"),
-                    DropDownValueModel(name: '충남 아산 FC', value: "value23"),
-                    DropDownValueModel(name: '충북 청주 FC', value: "value24"),
-                    DropDownValueModel(name: '포항 스틸러스', value: "value25"),
-                  ],
-                  onChanged: (val) {},
-                ),
+                    validator: (value) =>
+                        (_cnt.dropDownValue == null) ? "응원하는 팀을 선택해주세요" : null,
+                    clearOption: false,
+                    textFieldFocusNode: textFieldFocusNode,
+                    searchFocusNode: searchFocusNode,
+                    // searchAutofocus: true,
+                    dropDownItemCount: 25,
+                    searchShowCursor: false,
+                    enableSearch: true,
+                    searchKeyboardType: TextInputType.number,
+                    textFieldDecoration: InputDecoration(
+                        prefixIcon: Icon(Icons.favorite),
+                        labelText: "응원하는 팀",
+                        filled: true,
+                        fillColor: Color(0xffF6F6F6),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        )),
+                    dropDownList: const [
+                      DropDownValueModel(name: '강원 FC', value: "value1"),
+                      DropDownValueModel(name: '경남 FC', value: "value2"),
+                      DropDownValueModel(name: '김천 상무 FC', value: "value3"),
+                      DropDownValueModel(name: '김포 FC', value: "value4"),
+                      DropDownValueModel(name: '광주 FC', value: "value5"),
+                      DropDownValueModel(name: '대구 FC', value: "value6"),
+                      DropDownValueModel(name: '대전 하나 시티즌', value: "value7"),
+                      DropDownValueModel(name: '부산 아이파크', value: "value8"),
+                      DropDownValueModel(name: '부천 FC 1995', value: "value9"),
+                      DropDownValueModel(name: 'FC 서울', value: "value10"),
+                      DropDownValueModel(name: '서울 이랜드 FC', value: "value11"),
+                      DropDownValueModel(name: '성남 FC', value: "value12"),
+                      DropDownValueModel(name: '수원 삼성 블루윙즈', value: "value13"),
+                      DropDownValueModel(name: '수원 FC', value: "value14"),
+                      DropDownValueModel(name: '안산 그리너스 FC', value: "value15"),
+                      DropDownValueModel(name: 'FC 안양', value: "value16"),
+                      DropDownValueModel(name: '울산 현대', value: "value17"),
+                      DropDownValueModel(name: '인천 유나이티드 FC', value: "value18"),
+                      DropDownValueModel(name: '전남 드래곤즈', value: "value19"),
+                      DropDownValueModel(name: '전북 현대 모터스', value: "value20"),
+                      DropDownValueModel(name: '재주 유나이티드 FC', value: "value21"),
+                      DropDownValueModel(name: '천안 시티 FC', value: "value22"),
+                      DropDownValueModel(name: '충남 아산 FC', value: "value23"),
+                      DropDownValueModel(name: '충북 청주 FC', value: "value24"),
+                      DropDownValueModel(name: '포항 스틸러스', value: "value25"),
+                      DropDownValueModel(name: '없음', value: "value26"),
+                    ],
+                    controller: _cnt),
               ),
               SizedBox(height: 30),
               Padding(
@@ -215,7 +214,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                               email: _email.value.text,
                               password: _password.value.text,
                               nickname: _id.value.text,
-                              team: "FC서울");
+                              team: _cnt.dropDownValue!.name);
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
