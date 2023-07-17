@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:offside/Schedule/schedule.dart';
 import '../Kleague/kLeague.dart';
+import 'package:offside/data/repository/auth_repository.dart';
 import '../community/Community.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../MyPage/mypage.dart';
@@ -14,7 +15,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _Root extends State<MainPage> {
-  void onPressed() {}
+  void onPressed() {
+    authRepositoryProvider.signOut();
+    Navigator.pop(context);
+  }
 
   final List<String> entries = <String>['A', 'B', 'C'];
   int _selectedIdx = 2;
