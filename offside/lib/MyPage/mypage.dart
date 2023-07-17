@@ -2,9 +2,16 @@ import 'dart:math';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../firebase_options.dart';
 import 'profile.dart';
+import 'package:firebase_core/firebase_core.dart';
+// import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -76,6 +83,11 @@ class MyPage extends StatelessWidget {
 class Profile extends StatelessWidget {
   void onPressed() {}
 
+  var teamImg = 'icons/kOne/ulsan.svg';
+  var name = '조민수';
+  var email = "abs@naver.com";
+  var team = '울산 현대 FC';
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -86,7 +98,7 @@ class Profile extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           border: Border.all(
-            width: 1,
+            width: 2,
             color: Color.fromRGBO(18, 32, 84, 1),
           ),
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -98,9 +110,10 @@ class Profile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/bc.jpg'),
-                  radius: 45.0,
+                SvgPicture.asset(
+                  teamImg,
+                  width: 100,
+                  height: 100,
                 ),
                 SizedBox(
                   child: Column(
@@ -108,7 +121,7 @@ class Profile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "조민수",
+                        name,
                         style: TextStyle(
                             fontSize: 15,
                             color: Color.fromRGBO(18, 32, 84, 1),
@@ -116,7 +129,7 @@ class Profile extends StatelessWidget {
                       ),
                       Container(height: 5),
                       Text(
-                        "abc@naver.com",
+                        email,
                         style: TextStyle(color: Colors.grey, fontSize: 13),
                       ),
                       Container(height: 5),
@@ -125,16 +138,9 @@ class Profile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "울산 현대 축구단",
-                            style: TextStyle(fontSize: 13),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          SvgPicture.asset(
-                            'icons/kOne/ulsan.svg',
-                            width: 25,
-                            height: 25,
+                            team,
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.w600),
                           ),
                         ],
                       )
@@ -189,12 +195,12 @@ class Second extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            // padding: const EdgeInsets.all(8),
             width: wSize,
             height: 90,
             decoration: BoxDecoration(
                 border: Border.all(
-                  width: 1,
+                  width: 2,
                   color: Color.fromRGBO(18, 32, 84, 1),
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -203,7 +209,7 @@ class Second extends StatelessWidget {
                 // 내 응원팀 경기일정 보기로 이동
               },
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
@@ -217,12 +223,12 @@ class Second extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(10),
+            // padding: const EdgeInsets.all(8),
             width: wSize,
             height: 90,
             decoration: BoxDecoration(
                 border: Border.all(
-                  width: 1,
+                  width: 2,
                   color: Color.fromRGBO(18, 32, 84, 1),
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -231,7 +237,7 @@ class Second extends StatelessWidget {
                 // 내 여행 일정 페이지로 이동
               },
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
