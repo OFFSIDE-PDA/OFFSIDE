@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:offside/Schedule/schedule.dart';
 import '../Kleague/kLeague.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../MyPage/mypage.dart';
 
 class MainPage extends StatefulWidget {
@@ -21,9 +23,24 @@ class _Root extends State<MainPage> {
       child: Text("2nd"),
     ),
     HomePage(),
+    Schedule(),
     Container(child: Text("3rd")),
     MyPage(),
   ];
+  final firestore = FirebaseFirestore.instance;
+
+  void getData() async {
+    print('start');
+    var result = await firestore.collection('match').doc('kLeague1').get();
+    print(result.data());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
