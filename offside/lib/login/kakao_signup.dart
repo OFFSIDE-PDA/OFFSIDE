@@ -15,7 +15,6 @@ class _SignUpPageState extends ConsumerState<KaKaoSignUpPage> {
   FocusNode searchFocusNode = FocusNode();
   FocusNode textFieldFocusNode = FocusNode();
   late SingleValueDropDownController _cnt;
-  late MultiValueDropDownController _cntMulti;
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
 
@@ -23,13 +22,11 @@ class _SignUpPageState extends ConsumerState<KaKaoSignUpPage> {
   void initState() {
     super.initState();
     _cnt = SingleValueDropDownController();
-    _cntMulti = MultiValueDropDownController();
   }
 
   @override
   void dispose() {
     _cnt.dispose();
-    _cntMulti.dispose();
     super.dispose();
   }
 
@@ -56,6 +53,9 @@ class _SignUpPageState extends ConsumerState<KaKaoSignUpPage> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
                 child: DropDownTextField(
+                  controller: _cnt,
+                  validator: (value) =>
+                      (_cnt.dropDownValue == null) ? "응원하는 팀을 선택해주세요" : null,
                   clearOption: false,
                   textFieldFocusNode: textFieldFocusNode,
                   searchFocusNode: searchFocusNode,
@@ -114,7 +114,7 @@ class _SignUpPageState extends ConsumerState<KaKaoSignUpPage> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
-                          await user.updateTeam(team: "FC서울");
+                          await user.updateTeam(team: _cnt.dropDownValue!.name);
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
