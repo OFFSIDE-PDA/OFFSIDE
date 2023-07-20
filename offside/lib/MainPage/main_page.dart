@@ -24,7 +24,7 @@ class _Root extends State<MainPage> {
   int _selectedIdx = 2;
   List _pages = [
     KLeague(),
-    Community(),
+    CommunityPage(),
     HomePage(),
     Schedule(),
     MyPage(),
