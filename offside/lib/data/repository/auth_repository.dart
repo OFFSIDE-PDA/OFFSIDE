@@ -15,7 +15,7 @@ class AuthRepository {
     await _authDataSource.signOut();
   }
 
-  AppUser? signIn() {
+  AppUser? autoSignIn() {
     print("인증 레파지토리 로그인 호출");
     if (FirebaseAuth.instance.currentUser != null) {
       return AppUser.fromUser(FirebaseAuth.instance.currentUser!);
