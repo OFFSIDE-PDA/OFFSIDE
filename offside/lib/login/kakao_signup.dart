@@ -7,10 +7,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// 회원가입 화면
 class KaKaoSignUpPage extends ConsumerStatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _KaKaoSignUpPageState createState() => _KaKaoSignUpPageState();
 }
 
-class _SignUpPageState extends ConsumerState<KaKaoSignUpPage> {
+class _KaKaoSignUpPageState extends ConsumerState<KaKaoSignUpPage> {
   TextStyle style = TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
   FocusNode searchFocusNode = FocusNode();
   FocusNode textFieldFocusNode = FocusNode();

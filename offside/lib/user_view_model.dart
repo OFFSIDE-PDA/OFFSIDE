@@ -57,8 +57,8 @@ class UserViewModel extends ChangeNotifier {
     });
   }
 
-  Future<void> updateTeam({required String team}) {
-    return userInfoRepositoryProvider
+  Future<void> updateTeam({required String team}) async {
+    return await userInfoRepositoryProvider
         .updateMyTeam(uid: _user!.uid!, team: team)
         .then((result) {
       _user!.team = team;
@@ -81,5 +81,30 @@ class UserViewModel extends ChangeNotifier {
       _user = null;
       notifyListeners();
     });
+  }
+
+  ///비밀번호 재설정 이메일 보내기
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    await authRepositoryProvider.sendPasswordResetEmail(email: email);
+  }
+
+  ///비밀번호 재설정
+  Future<void> updatePassword({required String newPassword}) async {
+    await authRepositoryProvider.updatePassword(newPassword: newPassword);
+  }
+
+  ///유저 정보 업데이트
+  Future<void> updateUserInfo(
+      {required String uid,
+      required String email,
+      required String nickname,
+      required String team}) async {
+    await authRepositoryProvider.updateUserInfo(
+        email: email, nickname: nickname);
+    _user!.email = email;
+    _user!.nickname = nickname;
+    await userInfoRepositoryProvider.updateMyTeam(uid: uid, team: team);
+    _user!.team = team;
+    notifyListeners();
   }
 }

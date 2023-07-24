@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:offside/main.dart';
+import 'package:offside/user_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Edit extends StatefulWidget {
+class Edit extends ConsumerStatefulWidget {
   @override
   _EditState createState() => _EditState();
 }
 
-class _EditState extends State<Edit> {
+class _EditState extends ConsumerState<Edit> {
   TextStyle style = TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
   late TextEditingController _name;
   late TextEditingController _password;
@@ -25,13 +27,17 @@ class _EditState extends State<Edit> {
   @override
   void initState() {
     super.initState();
-    _name = TextEditingController(text: "");
+    final read_user = ref.read(userViewModelProvider);
+    _name = TextEditingController(text: read_user.user!.nickname);
 
     _password = TextEditingController(text: "");
     _new_password = TextEditingController(text: "");
     _confirm_new_password = TextEditingController(text: "");
-    _email = TextEditingController(text: "");
-    _cnt = SingleValueDropDownController();
+    _email = TextEditingController(
+        text: read_user.user?.nickname != null ? read_user.user?.email : "");
+    _cnt = SingleValueDropDownController(
+        data: DropDownValueModel(
+            name: read_user.user!.team!, value: "initvalue"));
   }
 
   @override
@@ -50,6 +56,7 @@ class _EditState extends State<Edit> {
     // TODO: implement build
     var size = MediaQuery.of(context).size;
     void onPressed() {}
+    final user = ref.watch(userViewModelProvider);
     return Scaffold(
         key: _key,
         appBar: AppBar(),
@@ -65,26 +72,28 @@ class _EditState extends State<Edit> {
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               SizedBox(height: 10),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  controller: _email,
-                  validator: (value) =>
-                      (value!.isEmpty) ? "이메일을 입력 해 주세요" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    labelText: "이메일 변경",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
+              user.user!.email != null
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 30),
+                      child: TextFormField(
+                        controller: _email,
+                        validator: (value) =>
+                            (value!.isEmpty) ? "이메일을 입력 해 주세요" : null,
+                        style: style,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.email),
+                          labelText: "이메일 변경",
+                          filled: true,
+                          fillColor: Color(0xffF6F6F6),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
@@ -109,6 +118,7 @@ class _EditState extends State<Edit> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
                 child: DropDownTextField(
+                  controller: _cnt,
                   clearOption: false,
                   textFieldFocusNode: textFieldFocusNode,
                   searchFocusNode: searchFocusNode,
@@ -168,74 +178,59 @@ class _EditState extends State<Edit> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: _password,
-                  validator: (value) =>
-                      (value!.isEmpty) ? "패스워드를 입력 해 주세요" : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: "기존 비밀번호",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: _new_password,
-                  validator: (value) => (value!.isEmpty || value == _password)
-                      ? "패스워드를 확인해 주세요"
-                      : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: "신규 비밀번호",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: _confirm_new_password,
-                  validator: (value) =>
-                      (value != _new_password) ? "패스워드가 올바르지 않습니다." : null,
-                  style: style,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: "신규 비밀번호 확인",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
+              //   child: TextFormField(
+              //     obscureText: true,
+              //     controller: _new_password,
+              //     validator: (value) => (value!.isEmpty || value == _password)
+              //         ? "패스워드를 확인해 주세요"
+              //         : null,
+              //     style: style,
+              //     decoration: InputDecoration(
+              //       prefixIcon: Icon(Icons.lock),
+              //       labelText: "신규 비밀번호",
+              //       filled: true,
+              //       fillColor: Color(0xffF6F6F6),
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(8),
+              //         borderSide: BorderSide.none,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
+              //   child: TextFormField(
+              //     obscureText: true,
+              //     controller: _confirm_new_password,
+              //     validator: (value) =>
+              //         (value != _new_password) ? "패스워드가 올바르지 않습니다." : null,
+              //     style: style,
+              //     decoration: InputDecoration(
+              //       prefixIcon: Icon(Icons.lock),
+              //       labelText: "신규 비밀번호 확인",
+              //       filled: true,
+              //       fillColor: Color(0xffF6F6F6),
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(8),
+              //         borderSide: BorderSide.none,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Container(
                 padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
                 child: ElevatedButton(
-                  onPressed: onPressed,
+                  onPressed: () {
+                    user.updateUserInfo(
+                        uid: user.user!.uid!,
+                        email: _email.value.text,
+                        nickname: _name.value.text,
+                        team: _cnt.dropDownValue!.name);
+                  },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(33, 58, 135, 1))),
