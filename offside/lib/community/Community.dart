@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:async';
 
 import '../user_view_model.dart';
 import 'ChatData.dart';
@@ -19,7 +18,6 @@ class Community extends ConsumerState<CommunityPage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late TextEditingController _text;
   final now = DateTime.now();
-  String month = DateFormat('MM.dd').format(DateTime.now());
   String time = DateFormat('hh:mm').format(DateTime.now());
   final _formKey = GlobalKey<FormState>();
 
@@ -42,149 +40,170 @@ class Community extends ConsumerState<CommunityPage> {
     String? _nickname = user.user!.nickname;
     String? _UID = user.user!.uid;
     var size = MediaQuery.of(context).size;
+    List<List> communityMSG = [];
 
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: 90),
-              decoration: BoxDecoration(
-                  color: Color(bgColor(_team!)), // 여기서 배경 색상
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50))),
-              child: ListView.builder(
-                itemCount: messages.length,
-                shrinkWrap: false,
-                padding: EdgeInsets.only(top: 20, bottom: 65),
-                //physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.only(
-                        left: 14, right: 14, top: 10, bottom: 10),
-                    child: Align(
-                      alignment: (messages[index].messageType == "sender"
-                          ? Alignment.topRight
-                          : Alignment.topLeft),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: (messages[index].messageType == "sender"
-                              ? Color(sendorColor(_team)) // 여기서 내 말풍선 색상
-                              : Color(0xffffffff)),
-                        ),
-                        padding: EdgeInsets.all(16),
-                        child: Text.rich(
-                            textAlign: TextAlign.right,
-                            TextSpan(children: <TextSpan>[
-                              TextSpan(
-                                text: messages[index].messageContent,
-                                style: TextStyle(fontSize: 15),
+    return StreamBuilder<QuerySnapshot>(
+        stream: firestore
+            .collection('community')
+            .where("team", isEqualTo: _team)
+            .orderBy("time")
+            .snapshots(),
+        builder: (context, snapshot) {
+          final messages = snapshot.data?.docs;
+
+          for (var message in messages!) {
+            communityMSG.add([
+              CommunityData(
+                  message['team'],
+                  message['uid'],
+                  message['nickname'],
+                  message['time'],
+                  message['time_pt'],
+                  message['text'])
+            ]);
+          }
+
+          return Scaffold(
+            body: Stack(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 90),
+                    decoration: BoxDecoration(
+                        color: Color(bgColor(_team!)), // 여기서 배경 색상
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50))),
+                    child: ListView.builder(
+                      itemCount: messages.length,
+                      shrinkWrap: false,
+                      padding: EdgeInsets.only(top: 20, bottom: 65),
+                      //physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        //index = messages.length;
+                        return Container(
+                          padding: EdgeInsets.only(
+                              left: 14, right: 14, top: 10, bottom: 10),
+                          child: Align(
+                            alignment: (communityMSG[index][0].D_uid == _UID
+                                ? Alignment.topRight
+                                : Alignment.topLeft),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: (communityMSG[index][0].D_uid == _UID
+                                    ? Color(sendorColor(_team)) // 여기서 내 말풍선 색상
+                                    : Color(0xffffffff)),
                               ),
-                              TextSpan(
-                                text: '\n\n' + messages[index].nickname,
-                                style: TextStyle(fontSize: 10),
-                              ),
-                              TextSpan(
-                                text: '  |  $time',
-                                style: TextStyle(fontSize: 10),
-                              ),
-                            ])),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-                color: Color(0xffffffff),
-                height: 90,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Text(
-                    _team + ' 팬 커뮤니티', // team 이름 + 팬 커뮤니티 출력
-                    style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-              margin: EdgeInsets.only(bottom: 5),
-              height: 60,
-              width: size.width * 0.97,
-              child: Form(
-                key: _formKey,
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: TextField(
-                        controller: _text,
-                        decoration: InputDecoration(
-                            hintText: "팀을 응원하는 메세지를 적어주세요!",
-                            hintStyle: TextStyle(color: Colors.black54),
-                            border: InputBorder.none),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    FloatingActionButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          try {
-                            await firestore.collection('community').add({
-                              'team': _team,
-                              'uid': _UID,
-                              'nickname': _nickname,
-                              'time': now,
-                              'time_pt': time,
-                              'text': _text.text
-                            });
-                          } catch (e) {
-                            print("$e 데이터 저장 실패");
-                          }
-                        }
+                              padding: EdgeInsets.all(16),
+                              child: Text.rich(
+                                  textAlign: TextAlign.right,
+                                  TextSpan(children: <TextSpan>[
+                                    TextSpan(
+                                      text: communityMSG[index][0].D_text,
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    TextSpan(
+                                      text: '\n\n' +
+                                          communityMSG[index][0].D_nickname,
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                    TextSpan(
+                                      text: '  |  ' +
+                                          communityMSG[index][0].D_time_pt,
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                  ])),
+                            ),
+                          ),
+                        );
                       },
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                      backgroundColor: Color(0xff122054),
-                      elevation: 0,
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                      color: Color(0xffffffff),
+                      height: 90,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Text(
+                          _team + ' 팬 커뮤니티', // team 이름 + 팬 커뮤니티 출력
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+                    margin: EdgeInsets.only(bottom: 5),
+                    height: 60,
+                    width: size.width * 0.97,
+                    child: Form(
+                      key: _formKey,
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: _text,
+                              decoration: InputDecoration(
+                                  hintText: "팀을 응원하는 메세지를 적어주세요!",
+                                  hintStyle: TextStyle(color: Colors.black54),
+                                  border: InputBorder.none),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          FloatingActionButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                try {
+                                  await firestore.collection('community').add({
+                                    'team': _team,
+                                    'uid': _UID,
+                                    'nickname': _nickname,
+                                    'time': now,
+                                    'time_pt': time,
+                                    'text': _text.text
+                                  });
+                                } catch (e) {
+                                  print("$e 데이터 저장 실패");
+                                }
+                              }
+                            },
+                            child: Icon(
+                              Icons.send,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                            backgroundColor: Color(0xff122054),
+                            elevation: 0,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }
-
-List<ChatMessage> messages = [
-  ChatMessage(
-      messageContent: "오늘도 화이팅 ❤️", messageType: "receiver", nickname: "강희주"),
-  ChatMessage(messageContent: "가보자고 ~", messageType: "sender", nickname: "정채린"),
-];
 
 int bgColor(String team) {
   switch (team) {

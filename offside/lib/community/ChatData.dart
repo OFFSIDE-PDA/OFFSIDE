@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
-class ChatMessage {
-  String messageContent;
-  String messageType;
-  String nickname;
-  ChatMessage(
-      {required this.messageContent,
-      required this.messageType,
-      required this.nickname});
+class CommunityData {
+  String? D_team;
+  String? D_uid;
+  String? D_nickname;
+  final D_time;
+  String? D_time_pt;
+  String? D_text;
+  CommunityData(this.D_team, this.D_uid, this.D_nickname, this.D_time,
+      this.D_time_pt, this.D_text);
 }
