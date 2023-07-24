@@ -1,33 +1,9 @@
-import 'dart:math';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../firebase_options.dart';
 import 'profile.dart';
-import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "OFFSIDE",
-      routes: {
-        "/": (context) => MyPage(),
-      },
-    );
-  }
-}
+import 'package:offside/user_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/login/login.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({Key? key}) : super(key: key);
@@ -80,7 +56,12 @@ class MyPage extends StatelessWidget {
   }
 }
 
-class Profile extends StatelessWidget {
+class Profile extends ConsumerStatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends ConsumerState {
   void onPressed() {}
 
   var teamImg = 'icons/kOne/ulsan.svg';
@@ -92,7 +73,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     var size = MediaQuery.of(context).size;
-
+    final user = ref.watch(userViewModelProvider);
     return (Container(
       margin: const EdgeInsets.all(30),
       padding: const EdgeInsets.all(10),
@@ -121,24 +102,27 @@ class Profile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
+                        user.user!.nickname!,
                         style: TextStyle(
                             fontSize: 15,
                             color: Color.fromRGBO(18, 32, 84, 1),
                             fontWeight: FontWeight.w700),
                       ),
                       Container(height: 5),
-                      Text(
-                        email,
-                        style: TextStyle(color: Colors.grey, fontSize: 13),
-                      ),
+                      user.user!.email != null
+                          ? Text(
+                              user.user!.email!,
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 13),
+                            )
+                          : SizedBox(),
                       Container(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            team,
+                            user.user!.team!,
                             style: TextStyle(
                                 fontSize: 13, fontWeight: FontWeight.w600),
                           ),
@@ -255,12 +239,11 @@ class Second extends StatelessWidget {
   }
 }
 
-class Under extends StatelessWidget {
+class Under extends ConsumerWidget {
   const Under({super.key});
-  void onPressed() {}
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
     var size = MediaQuery.of(context).size;
     return Column(
@@ -284,7 +267,13 @@ class Under extends StatelessWidget {
           height: 10,
         ),
         ElevatedButton(
-          onPressed: onPressed,
+          onPressed: () {
+            ref.watch(userViewModelProvider).signOut();
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => false);
+          },
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
                   const Color.fromRGBO(33, 58, 135, 1))),

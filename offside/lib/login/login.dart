@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/login/kakao_signup.dart';
+import 'package:offside/login/reset_password.dart';
 import '../MainPage/main_page.dart';
 import './signup.dart';
 import 'package:offside/user_view_model.dart';
@@ -186,23 +187,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     InkWell(
                       //InkWell을 사용 -- onTap이 가능한 이유임.
                       child: Text(
-                        '아이디 찾기',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                      onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => SignUpPage()),
-                        // );
-                      },
-                    ),
-                    Text('  |  '),
-                    InkWell(
-                      //InkWell을 사용 -- onTap이 가능한 이유임.
-                      child: Text(
-                        '비밀번호 찾기',
+                        '비밀번호 재설정',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                         ),
@@ -210,7 +195,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SignUpPage()),
+                          MaterialPageRoute(
+                              builder: (context) => resetPasswordPage()),
                         );
                       },
                     ),

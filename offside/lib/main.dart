@@ -1,12 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:offside/MainPage/main_page.dart';
 import 'package:offside/firebase_options.dart';
 import 'package:offside/login/login.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:offside/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/MainPage/main_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,12 +23,13 @@ void main() async {
   ));
 }
 
-class Offside extends StatelessWidget {
+class Offside extends ConsumerWidget {
   const Offside({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final autoLogin = ref.read(userViewModelProvider).autoSignIn();
     return MaterialApp(
         title: 'Offside',
         initialRoute: '/',
@@ -39,6 +39,6 @@ class Offside extends StatelessWidget {
               seedColor: const Color.fromARGB(255, 255, 255, 255)),
           useMaterial3: true,
         ),
-        home: LoginPage());
+        home: autoLogin == true ? const MainPage() : LoginPage());
   }
 }
