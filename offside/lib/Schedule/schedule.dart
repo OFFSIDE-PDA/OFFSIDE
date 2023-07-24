@@ -227,7 +227,7 @@ class MatchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: size.width,
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+        padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
         margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -442,33 +442,29 @@ Map<String, String> transferName = {
 };
 
 Map<String, dynamic> teamImg = {
-  '강원 FC': SvgPicture.asset('icons/kOne/Gangwon.svg'),
-  '광주 FC': SvgPicture.asset('icons/kOne/GwangJu.svg'),
-  '대구 FC': SvgPicture.asset('icons/kOne/Daegu.svg'),
-  '대전 하나 시티즌': SvgPicture.asset('icons/kOne/Daejeon.svg'),
-  'FC 서울': SvgPicture.asset('icons/kOne/Seoul.svg'),
-  '수원 삼성 블루윙즈': SvgPicture.asset('icons/kOne/suwon.svg'),
-  '수원 FC': SvgPicture.asset('icons/kOne/suwonFC.svg'),
-  '울산 현대': SvgPicture.asset('icons/kOne/ulsan.svg'),
-  '인천 유나이티드': SvgPicture.asset('icons/kOne/incheon.svg'),
-  '전북 현대 모터스': SvgPicture.asset('icons/kOne/jeonbuk.svg'),
-  '제주 유나이티드': SvgPicture.asset('icons/kOne/jeju.svg'),
-  '포항 스틸러스': SvgPicture.asset('icons/kOne/pohang.svg'),
-  '경남 FC': ClipRRect(
-      borderRadius: BorderRadius.circular(50),
-      child: Image.asset('images/kn.png')),
-  '김천 상무 FC': SvgPicture.asset('icons/kTwo/kimcheon.svg'),
-  '김포 FC': SvgPicture.asset('icons/kTwo/kimpo.svg'),
-  '부산 아이파크': SvgPicture.asset('icons/kTwo/busan.svg'),
-  '부천 FC 1995': ClipRRect(
-      borderRadius: BorderRadius.circular(50),
-      child: Image.asset('images/bc.jpg')),
-  '서울 이랜드 FC': SvgPicture.asset('icons/kTwo/seoulE.svg'),
-  '성남 FC': SvgPicture.asset('icons/kTwo/seongnam.svg'),
-  '안산 그리너스 FC': SvgPicture.asset('icons/kTwo/ansan.svg'),
-  'FC 안양': SvgPicture.asset('icons/kTwo/anyang.svg'),
-  '전남 드래곤즈': SvgPicture.asset('icons/kTwo/jeonnam.svg'),
-  '충남 아산 FC': SvgPicture.asset('icons/kTwo/asan.svg'),
-  '충북 청주 FC': SvgPicture.asset('icons/kTwo/chungju.svg'),
-  '천안 시티 FC': SvgPicture.asset('icons/kTwo/cheonan.svg')
+  '강원 FC': Image.asset('images/K1_png/Gangwon.png'),
+  '광주 FC': Image.asset('images/K1_png/GwangJu.png'),
+  '대구 FC': Image.asset('images/K1_png/Daegu.png'),
+  '대전 하나 시티즌': Image.asset('images/K1_png/Daejeon.png'),
+  'FC 서울': Image.asset('images/K1_png/Seoul.png'),
+  '수원 삼성 블루윙즈': Image.asset('images/K1_png/suwon.png'),
+  '수원 FC': Image.asset('images/K1_png/suwonFC.png'),
+  '울산 현대': Image.asset('images/K1_png/ulsan.png'),
+  '인천 유나이티드': Image.asset('images/K1_png/incheon.png'),
+  '전북 현대 모터스': Image.asset('images/K1_png/jeonbuk.png'),
+  '제주 유나이티드': Image.asset('images/K1_png/jeju.png'),
+  '포항 스틸러스': Image.asset('images/K1_png/pohang.png'),
+  '경남 FC': Image.asset('images/K2_png/kn.png'),
+  '김천 상무 FC': Image.asset('images/K2_png/kimcheon.png'),
+  '김포 FC': Image.asset('images/K2_png/kimpo.png'),
+  '부산 아이파크': Image.asset('images/K2_png/busan.png'),
+  '부천 FC 1995': Image.asset('images/K2_png/bc.jpg'),
+  '서울 이랜드 FC': Image.asset('images/K2_png/seoulE.png'),
+  '성남 FC': Image.asset('images/K2_png/seongnam.png'),
+  '안산 그리너스 FC': Image.asset('images/K2_png/ansan.png'),
+  'FC 안양': Image.asset('images/K2_png/anyang.png'),
+  '전남 드래곤즈': Image.asset('images/K2_png/jeonnam.png'),
+  '충남 아산 FC': Image.asset('images/K2_png/asan.png'),
+  '충북 청주 FC': Image.asset('images/K2_png/chungju.png'),
+  '천안 시티 FC': Image.asset('images/K2_png/cheonan.png')
 };
