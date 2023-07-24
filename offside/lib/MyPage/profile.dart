@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:offside/main.dart';
 import 'package:offside/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

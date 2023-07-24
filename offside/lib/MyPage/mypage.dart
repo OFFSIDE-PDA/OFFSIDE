@@ -74,7 +74,6 @@ class _ProfileState extends ConsumerState {
     // TODO: implement build
     var size = MediaQuery.of(context).size;
     final user = ref.watch(userViewModelProvider);
-
     return (Container(
       margin: const EdgeInsets.all(30),
       padding: const EdgeInsets.all(10),
@@ -269,7 +268,7 @@ class Under extends ConsumerWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            ref.watch(userViewModelProvider);
+            ref.watch(userViewModelProvider).signOut();
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LoginPage()),

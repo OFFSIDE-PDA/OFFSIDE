@@ -37,6 +37,7 @@ class UserViewModel extends ChangeNotifier {
         .emailSignUp(email: email, password: password, nickname: nickname)
         .then((result) {
       _user = result;
+      _user!.nickname = nickname;
       userInfoRepositoryProvider.updateMyTeam(uid: _user!.uid!, team: team);
       _user!.team = team;
       notifyListeners();
@@ -66,13 +67,17 @@ class UserViewModel extends ChangeNotifier {
     });
   }
 
-  Future<void> signIn() async {
-    final tempUser = authRepositoryProvider.signIn();
+  bool autoSignIn() {
+    final tempUser = authRepositoryProvider.autoSignIn();
     if (tempUser != null) {
       _user = tempUser;
-      _user!.team =
-          await userInfoRepositoryProvider.getMyTeam(uid: _user!.uid!);
-      notifyListeners();
+      userInfoRepositoryProvider.getMyTeam(uid: _user!.uid!).then((value) {
+        _user!.team = value;
+        notifyListeners();
+      });
+      return true;
+    } else {
+      return false;
     }
   }
 
