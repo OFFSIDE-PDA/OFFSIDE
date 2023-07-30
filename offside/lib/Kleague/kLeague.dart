@@ -266,12 +266,12 @@ Widget team(int id, BuildContext context, name) {
     child: Column(
       children: [
         InkWell(
-          onTap: () {
+          onTap: () async {
             // launchUrl(
             //   Uri.parse(sites[id - 1]),
             // );
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => TeamInfo()));
+            await Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TeamInfo(team: id)));
             // Get.to(const TeamInfo());
           },
           child: Container(
