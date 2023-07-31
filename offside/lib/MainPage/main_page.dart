@@ -48,7 +48,13 @@ class _Root extends State<MainPage> {
             ),
           ),
         ),
-        body: _pages[_selectedIdx],
+        body: Navigator(
+          onGenerateRoute: (routeSettings) {
+            return MaterialPageRoute(
+              builder: (context) => _pages[_selectedIdx],
+            );
+          },
+        ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIdx,
           type: BottomNavigationBarType.fixed,

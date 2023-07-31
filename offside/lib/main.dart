@@ -4,6 +4,7 @@ import 'package:offside/data/datasource/tour_data_source.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/tour_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
+import 'package:get/get.dart';
 import 'package:offside/firebase_options.dart';
 import 'package:offside/login/login.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
