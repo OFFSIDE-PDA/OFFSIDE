@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:offside/data/view/user_view_model.dart';
 import 'profile.dart';
-import 'package:offside/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/login/login.dart';
 
