@@ -184,48 +184,43 @@ class MatchBox extends StatelessWidget {
             style: const TextStyle(fontSize: 15),
           ),
           const SizedBox(height: 5),
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: info.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Row(
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    '${info[0].time}',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  SizedBox(
+                      width: size.width * 0.08,
+                      height: size.width * 0.08,
+                      child: teamImg[info[0].team1]),
+                  Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          '${info[index].time}',
-                          style: const TextStyle(fontSize: 12),
+                          transferName[info[0].team1]!,
+                          style: const TextStyle(fontSize: 13),
+                          textAlign: TextAlign.center,
                         ),
-                        SizedBox(
-                            width: size.width * 0.08,
-                            height: size.width * 0.08,
-                            child: teamImg[info[index].team1]),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                transferName[info[index].team1]!,
-                                style: const TextStyle(fontSize: 13),
-                                textAlign: TextAlign.center,
-                              ),
-                              const Text(
-                                ' vs ',
-                                style: TextStyle(fontSize: 13),
-                              ),
-                              Text(
-                                transferName[info[index].team2]!,
-                                style: const TextStyle(fontSize: 13),
-                                textAlign: TextAlign.center,
-                              ),
-                            ]),
-                        SizedBox(
-                            width: size.width * 0.08,
-                            height: size.width * 0.08,
-                            child: teamImg[info[index].team2]),
-                      ],
-                    ));
-              }),
+                        const Text(
+                          ' vs ',
+                          style: TextStyle(fontSize: 13),
+                        ),
+                        Text(
+                          transferName[info[0].team2]!,
+                          style: const TextStyle(fontSize: 13),
+                          textAlign: TextAlign.center,
+                        ),
+                      ]),
+                  SizedBox(
+                      width: size.width * 0.08,
+                      height: size.width * 0.08,
+                      child: teamImg[info[0].team2]),
+                ],
+              )),
         ]));
   }
 }
