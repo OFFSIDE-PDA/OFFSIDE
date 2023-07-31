@@ -162,6 +162,19 @@ class MatchViewModel extends ChangeNotifier {
     return tmp.toSet().toList();
   }
 
+  getFilteredTeams(int league, String selectedTeam) {
+    var team = [];
+    for (var matches in _allMatchViewModel?['all']?[league - 1]) {
+      for (var match in matches) {
+        if (match.getTeam1() == selectedTeam ||
+            match.getTeam2() == selectedTeam) {
+          team.add(match);
+        }
+      }
+    }
+    return team;
+  }
+
   getToday() {
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('yyMMdd');
