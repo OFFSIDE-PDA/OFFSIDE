@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:offside/firebase_options.dart';
 import 'package:offside/login/login.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
