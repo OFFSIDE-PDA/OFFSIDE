@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/MainPage/main_page.dart';
-import 'package:offside/user_view_model.dart';
+import 'package:offside/data/view/user_view_model.dart';
 
 /// 회원가입 화면
 class resetPasswordPage extends ConsumerStatefulWidget {
