@@ -167,3 +167,33 @@ class UserInfoDataSource {
     return data["team"];
   }
 }
+
+class ChatDataSource {
+  ///채팅 데이터 저장
+  Future<void> addChat(
+      {required String team,
+      required String text,
+      required String uid,
+      required String writer}) async {
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(team)
+        .collection("chat")
+        .add({
+      "text": text,
+      "time": DateTime.now(),
+      "uid": uid,
+      "writer": writer
+    });
+  }
+
+  Stream<QuerySnapshot<Object?>>? getChatStream({required String team}) {
+    return FirebaseFirestore.instance
+        .collection('teams')
+        .doc(team)
+        .collection("chat")
+        .orderBy("time")
+        .limit(1000)
+        .snapshots();
+  }
+}
