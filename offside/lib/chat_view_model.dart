@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:offside/data/repository/chat_repository.dart';
 
+//채팅 리스트 스트림
 final chatListProvider =
     StreamProvider.autoDispose.family<Queue<Chat>, String>((ref, team) async* {
   final chatstream = chatRepositoryProvider.getChatStream(team: team)!;
