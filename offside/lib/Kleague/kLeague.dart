@@ -340,7 +340,7 @@ Widget teamIcon(int id) {
     case 17:
       return ClipRRect(
           borderRadius: BorderRadius.circular(50),
-          child: Image.asset('images/bc.jpg'));
+          child: Image.asset('images/K2_png/bc.jpg'));
     case 18:
       return SvgPicture.asset('icons/kTwo/seoulE.svg');
     case 19:
