@@ -26,17 +26,18 @@ class TourViewModel extends ChangeNotifier {
     _tourViewModel = tourData;
   }
 
-  getTour() {
-    return _tourViewModel;
+  getTourInfo(String teamName) {
+    return _tourViewModel?[teamName];
   }
 }
 
 List<dynamic> tourModelData(tour) {
   var data = [];
+
   tour.then((values) {
     for (var value in values) {
       data.add(TourModel(
-          value['addr'],
+          value['addr1'],
           value['contentid'],
           getType[value['contenttypeid']],
           value['firstimage'],

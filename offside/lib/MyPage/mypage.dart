@@ -26,9 +26,9 @@ class MyPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 55,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
                 child: Text(
                   "마이페이지",
@@ -55,11 +55,7 @@ class MyPage extends StatelessWidget {
               alignment: Alignment.center,
               child: (Third()),
             ),
-            Expanded(
-              // height: botH,
-
-              child: Container(alignment: Alignment.center, child: (Under())),
-            )
+            Container(alignment: Alignment.center, child: (Under()))
           ]),
     ));
   }
