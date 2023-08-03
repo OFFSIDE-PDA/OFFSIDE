@@ -98,7 +98,7 @@ class KLeagueOne extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
+          Container(
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
               child: Column(
@@ -181,7 +181,7 @@ class KLeagueTwo extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
+        Container(
           child: Padding(
             padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
             child: Column(
