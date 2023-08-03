@@ -325,12 +325,12 @@ class FilteredBox extends StatelessWidget {
                   SizedBox(
                       width: size.width * 0.08,
                       height: size.width * 0.08,
-                      child: teamImg[info.team1]),
+                      child: teamTransfer[info.team1]['img']),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          transferName[info.team1]!,
+                          teamTransfer[info.team1]['name']!,
                           style: const TextStyle(fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
@@ -344,7 +344,7 @@ class FilteredBox extends StatelessWidget {
                                 style: TextStyle(fontSize: 13),
                               ),
                         Text(
-                          transferName[info.team2]!,
+                          teamTransfer[info.team2]['name'],
                           style: const TextStyle(fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
@@ -352,7 +352,7 @@ class FilteredBox extends StatelessWidget {
                   SizedBox(
                       width: size.width * 0.08,
                       height: size.width * 0.08,
-                      child: teamImg[info.team2]),
+                      child: teamTransfer[info.team2]['img']),
                   InkWell(
                     onTap: () {},
                     child: Container(

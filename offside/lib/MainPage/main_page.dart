@@ -39,18 +39,6 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
         List.generate(_pages.length, (index) => GlobalKey<NavigatorState>());
   }
 
-  late final TabController controller;
-
-  late List<GlobalKey<NavigatorState>> _navigatorKeyList;
-
-  @override
-  void initState() {
-    controller = TabController(length: 5, vsync: this, initialIndex: 2);
-    super.initState();
-    _navigatorKeyList =
-        List.generate(_pages.length, (index) => GlobalKey<NavigatorState>());
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -162,4 +150,3 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
     );
   }
 }
-
