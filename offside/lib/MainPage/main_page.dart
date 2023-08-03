@@ -20,7 +20,6 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
   }
 
   int _selectedIdx = 2;
-
   final List _pages = [
     const KLeague(),
     const Community(),
@@ -28,6 +27,17 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
     Match(),
     const MyPage(),
   ];
+  late final TabController controller;
+
+  late List<GlobalKey<NavigatorState>> _navigatorKeyList;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(length: 5, vsync: this, initialIndex: 2);
+    _navigatorKeyList =
+        List.generate(_pages.length, (index) => GlobalKey<NavigatorState>());
+  }
 
   late final TabController controller;
 
@@ -77,13 +87,6 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
               },
             );
           }).toList(),
-          // child: Navigator(
-          //   key: _navigatorKeyList[_selectedIdx],
-          //   onGenerateRoute: (_) {
-          //     return MaterialPageRoute(
-          //         builder: (context) => _pages[_selectedIdx]);
-          //   },
-          // ),
         ),
         bottomNavigationBar: TabBar(
           controller: controller,
@@ -159,3 +162,4 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
     );
   }
 }
+
