@@ -12,19 +12,15 @@ class TourViewModel extends ChangeNotifier {
     var data = await tourDataRepositoryProvider.getTourData();
     Map<String, dynamic> tourData = {};
     data.forEach((key, value) {
-      var tour = value['tour'];
-      // var culture = value['culture'];
-      // var hotel = value['hotel'];
-      // var food = value['food'];
+      var tour = tourModelData(value['tour']);
+      var culture = tourModelData(value['culture']);
+      var hotel = tourModelData(value['hotel']);
+      var food = tourModelData(value['food']);
       tourData[key] = {
-        'tour': TourModel(tour['addr'], tour['contentid'], '관광지',
-            tour['firstimage'], tour['title']),
-        // 'culture': TourModel(culture['addr'], culture['contentid'], '문화시설',
-        //     culture['firstimage'], culture['title']),
-        // 'hotel': TourModel(hotel['addr'], hotel['contentid'], '숙박',
-        //     hotel['firstimage'], hotel['title']),
-        // 'food': TourModel(food['addr'], food['contentid'], '음식점',
-        //     food['firstimage'], food['title'])
+        'tour': tour,
+        'culture': culture,
+        'hotel': hotel,
+        'food': food
       };
     });
     _tourViewModel = tourData;
@@ -33,6 +29,21 @@ class TourViewModel extends ChangeNotifier {
   getTour() {
     return _tourViewModel;
   }
-
-  Map<int, String> getType = {12: '관광지', 14: '문화시설', 32: '숙박', 39: '음식점'};
 }
+
+List<dynamic> tourModelData(tour) {
+  var data = [];
+  tour.then((values) {
+    for (var value in values) {
+      data.add(TourModel(
+          value['addr'],
+          value['contentid'],
+          getType[value['contenttypeid']],
+          value['firstimage'],
+          value['title']));
+    }
+  });
+  return data;
+}
+
+Map<int, String> getType = {12: '관광지', 14: '문화시설', 32: '숙박', 39: '음식점'};
