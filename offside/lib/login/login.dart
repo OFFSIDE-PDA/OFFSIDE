@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/login/kakao_signup.dart';
 import 'package:offside/login/reset_password.dart';
 import '../MainPage/main_page.dart';
+import '../data/view/user_view_model.dart';
 import './signup.dart';
-import 'package:offside/user_view_model.dart';
 
 // 로그인 화면
 class LoginPage extends ConsumerStatefulWidget {
@@ -114,22 +114,28 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: MaterialButton(
                       //child - 버튼을 생성
                       height: 70,
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          try {
-                            await user.emailSignIn(
-                                email: _email.value.text,
-                                password: _password.value.text);
-                            Navigator.pop(context);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MainPage()));
-                          } catch (e) {
-                            print(e);
-                            print("로그인 실패");
-                          }
-                        }
+                      // onPressed: () async {
+                      //   if (_formKey.currentState!.validate()) {
+                      //     try {
+                      //       await user.emailSignIn(
+                      //           email: _email.value.text,
+                      //           password: _password.value.text);
+                      //       Navigator.pop(context);
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => MainPage()));
+                      //     } catch (e) {
+                      //       print(e);
+                      //       print("로그인 실패");
+                      //     }
+                      //   }
+                      // },
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage()));
                       },
                       child: Text(
                         "로그인",
