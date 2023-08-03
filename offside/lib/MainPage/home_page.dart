@@ -1,12 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/Kleague/TeamInfo.dart';
 import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/match_view_model.dart';
-import 'package:offside/data/view/tour_view_model.dart';
 
 class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePage createState() => _HomePage();
 }
@@ -40,6 +41,7 @@ class _HomePage extends ConsumerState<HomePage> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     const borderSide = BorderSide(
@@ -53,8 +55,6 @@ class _HomePage extends ConsumerState<HomePage> {
       width: 10,
     );
     final matchData = ref.read(matchViewModelProvider);
-    final tourData = ref.read(tourViewModelProvider);
-    print(tourData.getTour());
 
     return SingleChildScrollView(
       child: Column(children: [
@@ -154,10 +154,13 @@ class StadiumTour extends StatelessWidget {
                 crossAxisSpacing: 20, //수직 Padding
               ),
               itemBuilder: (BuildContext context, int index) {
-                //item 의 반목문 항목 형성
                 return FloatingActionButton(
-                  onPressed: () {
-                    print('team click $index');
+                  heroTag: index,
+                  onPressed: () async {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TeamInfo(team: info[index])));
                   },
                   elevation: 10,
                   highlightElevation: 20,
@@ -175,9 +178,9 @@ class StadiumTour extends StatelessWidget {
                       CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.transparent,
-                        child: teamImg[info[index]],
+                        child: teamTransfer[info[index]]['img'],
                       ),
-                      Text(transferName[info[index]]!)
+                      Text(teamTransfer[info[index]]['name'])
                     ],
                   ),
                 );
@@ -199,7 +202,7 @@ class RandomMatch extends StatelessWidget {
   });
 
   final Size size;
-  final info;
+  final List<dynamic> info;
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +231,8 @@ class RandomMatch extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: 30, height: 30, child: teamImg[info[0]]),
+              SizedBox(
+                  width: 30, height: 30, child: teamTransfer[info[0]]['img']),
               sizedBox,
               Text(info[0], style: textStyle),
               sizedBox,
@@ -236,7 +240,8 @@ class RandomMatch extends StatelessWidget {
               sizedBox,
               Text(info[1], style: textStyle),
               sizedBox,
-              SizedBox(width: 30, height: 30, child: teamImg[info[1]])
+              SizedBox(
+                  width: 30, height: 30, child: teamTransfer[info[1]]['img'])
             ],
           ),
         ),
@@ -289,7 +294,7 @@ class MatchCarousel extends StatelessWidget {
     required this.page,
   });
   final Size size;
-  final info;
+  final List<dynamic> info;
   final Function page;
   @override
   Widget build(BuildContext context) {
@@ -315,9 +320,9 @@ class MatchBox extends StatelessWidget {
   });
 
   final Size size;
-  final match;
+  final List<dynamic> match;
 
-  getDate(data) {
+  String getDate(data) {
     return "${data[0]}${data[1]}.${data[2]}${data[3]}.${data[4]}${data[5]}";
   }
 
@@ -368,12 +373,12 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: teamImg[match[index].team1]),
+                            child: teamTransfer[match[index].team1]['img']),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                transferName[match[index].team1]!,
+                                teamTransfer[match[index].team1]['name'],
                                 style: const TextStyle(fontSize: 13),
                                 textAlign: TextAlign.center,
                               ),
@@ -382,7 +387,7 @@ class MatchBox extends StatelessWidget {
                                 style: TextStyle(fontSize: 13),
                               ),
                               Text(
-                                transferName[match[index].team2]!,
+                                teamTransfer[match[index].team2]['name'],
                                 style: const TextStyle(fontSize: 13),
                                 textAlign: TextAlign.center,
                               ),
@@ -390,7 +395,7 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: teamImg[match[index].team2]),
+                            child: teamTransfer[match[index].team2]['img']),
                         InkWell(
                           onTap: () {},
                           child: Container(

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:offside/MainPage/main_page.dart';
 import 'package:offside/data/datasource/tour_data_source.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/tour_view_model.dart';
@@ -34,7 +35,7 @@ class Offside extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final autoLogin = ref.read(userViewModelProvider).autoSignIn();
     final matchData = ref.read(matchViewModelProvider).getAllMatches();
-    final tmp = ref.read(tourViewModelProvider).getTourData();
+    final tourData = ref.read(tourViewModelProvider).getTourData();
 
     return MaterialApp(
         title: 'Offside',
@@ -45,7 +46,6 @@ class Offside extends ConsumerWidget {
               seedColor: const Color.fromARGB(255, 255, 255, 255)),
           useMaterial3: true,
         ),
-        // home: autoLogin == true ? const MainPage() : LoginPage());
-        home: LoginPage());
+        home: autoLogin == true ? const MainPage() : LoginPage());
   }
 }

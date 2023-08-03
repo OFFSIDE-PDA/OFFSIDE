@@ -95,11 +95,11 @@ class _Match extends ConsumerState<Match> {
                                 });
                               },
                               items: selectedLeague == 'K리그1'
-                                  ? team1.map((e) {
+                                  ? teamK1.map((e) {
                                       return DropdownMenuItem(
                                           value: e, child: Text(e));
                                     }).toList()
-                                  : team2.map((e) {
+                                  : teamK2.map((e) {
                                       return DropdownMenuItem(
                                           value: e, child: Text(e));
                                     }).toList()),
@@ -206,12 +206,13 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: teamImg[info[index].team1]),
+                            child: teamTransfer[info[index].team1]['img']),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                transferName[info[index].team1]!,
+                                // transferName[info[index].team1]!,
+                                teamTransfer[info[index].team1]['name'],
                                 style: const TextStyle(fontSize: 13),
                                 textAlign: TextAlign.center,
                               ),
@@ -220,7 +221,7 @@ class MatchBox extends StatelessWidget {
                                 style: TextStyle(fontSize: 13),
                               ),
                               Text(
-                                transferName[info[index].team2]!,
+                                teamTransfer[info[index].team2]['name'],
                                 style: const TextStyle(fontSize: 13),
                                 textAlign: TextAlign.center,
                               ),
@@ -228,7 +229,7 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: teamImg[info[index].team2]),
+                            child: teamTransfer[info[index].team2]['img']),
                         InkWell(
                           onTap: () {},
                           child: Container(
@@ -249,10 +250,6 @@ class MatchBox extends StatelessWidget {
               }),
         ]));
   }
-}
-
-getDate(data) {
-  return "${data[0]}${data[1]}.${data[2]}${data[3]}.${data[4]}${data[5]}";
 }
 
 class DefaultWidget extends StatelessWidget {
@@ -317,4 +314,8 @@ class DefaultWidget extends StatelessWidget {
       )
     ]);
   }
+}
+
+getDate(data) {
+  return "${data[0]}${data[1]}.${data[2]}${data[3]}.${data[4]}${data[5]}";
 }

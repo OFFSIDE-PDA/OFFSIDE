@@ -21,13 +21,12 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
 
   int _selectedIdx = 2;
 
-
   final List _pages = [
-    KLeague(),
-    Community(),
-    HomePage(),
+    const KLeague(),
+    const Community(),
+    const HomePage(),
     Match(),
-    MyPage(),
+    const MyPage(),
   ];
 
   late final TabController controller;
@@ -157,92 +156,6 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
           ],
         ),
       ),
-    );
-  }
-}
-
-
-class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      // currentIndex: currentIdx,
-      type: BottomNavigationBarType.fixed,
-      // onTap: (index) {
-      //   setState(() {
-      //     currentIdx = index;
-      //   });
-      // },
-      items: [
-        BottomNavigationBarItem(
-            icon: Image.asset(
-              'images/navigationbar/kLeague.png',
-              width: 25,
-              height: 25,
-            ),
-            label: 'K리그',
-            activeIcon: Image.asset(
-              'images/navigationbar/kLeague.png',
-              width: 25,
-              height: 25,
-            )),
-        BottomNavigationBarItem(
-            icon: Image.asset(
-              'images/navigationbar/team_community.png',
-              width: 25,
-              height: 25,
-            ),
-            label: '팀 커뮤니티',
-            activeIcon: Image.asset(
-              'images/navigationbar/team_community.png',
-              width: 25,
-              height: 25,
-            )),
-        BottomNavigationBarItem(
-            icon: Image.asset(
-              'images/navigationbar/home.png',
-              width: 25,
-              height: 25,
-            ),
-            label: '홈',
-            activeIcon: Image.asset(
-              'images/navigationbar/home.png',
-              width: 25,
-              height: 25,
-            )),
-        BottomNavigationBarItem(
-            icon: Image.asset(
-              'images/navigationbar/match_schedule.png',
-              width: 25,
-              height: 25,
-            ),
-            label: '경기 일정',
-            activeIcon: Image.asset(
-              'images/navigationbar/match_schedule.png',
-              width: 25,
-              height: 25,
-            )),
-        BottomNavigationBarItem(
-            icon: Image.asset(
-              'images/navigationbar/mypage.png',
-              width: 25,
-              height: 25,
-            ),
-            label: '마이페이지',
-            activeIcon: Image.asset(
-              'images/navigationbar/mypage.png',
-              width: 25,
-              height: 25,
-            )),
-      ],
-      unselectedItemColor: Colors.black,
-      selectedItemColor: const Color.fromRGBO(14, 32, 87, 1),
-      unselectedLabelStyle: const TextStyle(color: Colors.black),
-      selectedLabelStyle: const TextStyle(color: Color.fromRGBO(14, 32, 87, 1)),
     );
   }
 }

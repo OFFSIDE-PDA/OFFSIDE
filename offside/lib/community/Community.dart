@@ -41,56 +41,54 @@ class Community extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: 90),
-              decoration: BoxDecoration(
-                  color: Color(bgColor(17)), // 여기서 배경 색상
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50))),
-              child: ListView.builder(
-                itemCount: messages.length,
-                shrinkWrap: false,
-                padding: EdgeInsets.only(top: 20, bottom: 65),
-                //physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.only(
-                        left: 14, right: 14, top: 10, bottom: 10),
-                    child: Align(
-                      alignment: (messages[index].messageType == "sender"
-                          ? Alignment.topRight
-                          : Alignment.topLeft),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: (messages[index].messageType == "sender"
-                              ? Color(sendorColor(17)) // 여기서 내 말풍선 색상
-                              : Color(0xffffffff)),
-                        ),
-                        padding: EdgeInsets.all(16),
-                        child: Text.rich(
-                            textAlign: TextAlign.right,
-                            TextSpan(children: <TextSpan>[
-                              TextSpan(
-                                text: messages[index].messageContent,
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              TextSpan(
-                                text: '\n\n' + messages[index].nickname,
-                                style: TextStyle(fontSize: 10),
-                              ),
-                              TextSpan(
-                                text: '  |  $time',
-                                style: TextStyle(fontSize: 10),
-                              ),
-                            ])),
+          Container(
+            margin: EdgeInsets.only(top: 90),
+            decoration: BoxDecoration(
+                color: Color(bgColor(17)), // 여기서 배경 색상
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50))),
+            child: ListView.builder(
+              itemCount: messages.length,
+              shrinkWrap: false,
+              padding: EdgeInsets.only(top: 20, bottom: 65),
+              //physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Container(
+                  padding:
+                      EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                  child: Align(
+                    alignment: (messages[index].messageType == "sender"
+                        ? Alignment.topRight
+                        : Alignment.topLeft),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: (messages[index].messageType == "sender"
+                            ? Color(sendorColor(17)) // 여기서 내 말풍선 색상
+                            : Color(0xffffffff)),
                       ),
+                      padding: EdgeInsets.all(16),
+                      child: Text.rich(
+                          textAlign: TextAlign.right,
+                          TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: messages[index].messageContent,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            TextSpan(
+                              text: '\n\n' + messages[index].nickname,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            TextSpan(
+                              text: '  |  $time',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ])),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
           Align(
@@ -122,13 +120,11 @@ class Community extends StatelessWidget {
                   SizedBox(
                     width: 15,
                   ),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: "팀을 응원하는 메세지를 적어주세요!",
-                          hintStyle: TextStyle(color: Colors.black54),
-                          border: InputBorder.none),
-                    ),
+                  TextField(
+                    decoration: InputDecoration(
+                        hintText: "팀을 응원하는 메세지를 적어주세요!",
+                        hintStyle: TextStyle(color: Colors.black54),
+                        border: InputBorder.none),
                   ),
                   SizedBox(
                     width: 15,
