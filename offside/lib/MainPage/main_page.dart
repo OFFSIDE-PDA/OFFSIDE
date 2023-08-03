@@ -13,13 +13,14 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _Root();
 }
 
-class _Root extends State<MainPage> {
+class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
   void onPressed() {
     authRepositoryProvider.signOut();
     Navigator.pop(context);
   }
 
   int _selectedIdx = 2;
+
 
   final List _pages = [
     KLeague(),
@@ -29,9 +30,27 @@ class _Root extends State<MainPage> {
     MyPage(),
   ];
 
+  late final TabController controller;
+
+  late List<GlobalKey<NavigatorState>> _navigatorKeyList;
+
+  @override
+  void initState() {
+    controller = TabController(length: 5, vsync: this, initialIndex: 2);
+    super.initState();
+    _navigatorKeyList =
+        List.generate(_pages.length, (index) => GlobalKey<NavigatorState>());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        return !(await _navigatorKeyList[_selectedIdx]
+            .currentState!
+            .maybePop());
+      },
+      child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           leadingWidth: 0,
@@ -48,91 +67,100 @@ class _Root extends State<MainPage> {
             ),
           ),
         ),
-        body: Navigator(
-          onGenerateRoute: (routeSettings) {
-            return MaterialPageRoute(
-              builder: (context) => _pages[_selectedIdx],
+        body: IndexedStack(
+          index: _selectedIdx,
+          children: _pages.map((page) {
+            int idx = _pages.indexOf(page);
+            return Navigator(
+              key: _navigatorKeyList[idx],
+              onGenerateRoute: (_) {
+                return MaterialPageRoute(builder: (context) => page);
+              },
             );
-          },
+          }).toList(),
+          // child: Navigator(
+          //   key: _navigatorKeyList[_selectedIdx],
+          //   onGenerateRoute: (_) {
+          //     return MaterialPageRoute(
+          //         builder: (context) => _pages[_selectedIdx]);
+          //   },
+          // ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIdx,
-          type: BottomNavigationBarType.fixed,
+        bottomNavigationBar: TabBar(
+          controller: controller,
+          indicatorColor: const Color.fromRGBO(14, 32, 87, 1),
+          labelColor: const Color.fromRGBO(14, 32, 87, 1),
+          unselectedLabelColor: Colors.grey,
+          labelStyle: const TextStyle(fontSize: 10),
+          labelPadding: EdgeInsets.zero,
           onTap: (index) {
             setState(() {
               _selectedIdx = index;
             });
           },
-          items: [
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  'images/navigationbar/kLeague.png',
-                  width: 25,
-                  height: 25,
-                ),
-                label: 'K리그',
-                activeIcon: Image.asset(
-                  'images/navigationbar/kLeague.png',
-                  width: 25,
-                  height: 25,
-                )),
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  'images/navigationbar/team_community.png',
-                  width: 25,
-                  height: 25,
-                ),
-                label: '팀 커뮤니티',
-                activeIcon: Image.asset(
-                  'images/navigationbar/team_community.png',
-                  width: 25,
-                  height: 25,
-                )),
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  'images/navigationbar/home.png',
-                  width: 25,
-                  height: 25,
-                ),
-                label: '홈',
-                activeIcon: Image.asset(
-                  'images/navigationbar/home.png',
-                  width: 25,
-                  height: 25,
-                )),
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  'images/navigationbar/match_schedule.png',
-                  width: 25,
-                  height: 25,
-                ),
-                label: '경기 일정',
-                activeIcon: Image.asset(
-                  'images/navigationbar/match_schedule.png',
-                  width: 25,
-                  height: 25,
-                )),
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  'images/navigationbar/mypage.png',
-                  width: 25,
-                  height: 25,
-                ),
-                label: '마이페이지',
-                activeIcon: Image.asset(
-                  'images/navigationbar/mypage.png',
-                  width: 25,
-                  height: 25,
-                )),
+          tabs: [
+            Tab(
+              text: 'K리그',
+              icon: Image.asset(
+                'images/navigationbar/kLeague.png',
+                width: 25,
+                height: 25,
+                color: controller.index == 0
+                    ? const Color.fromRGBO(14, 32, 87, 1)
+                    : Colors.grey,
+              ),
+            ),
+            Tab(
+              text: '커뮤니티',
+              icon: Image.asset(
+                'images/navigationbar/team_community.png',
+                width: 25,
+                height: 25,
+                color: controller.index == 1
+                    ? const Color.fromRGBO(14, 32, 87, 1)
+                    : Colors.grey,
+              ),
+            ),
+            Tab(
+              text: '홈',
+              icon: Image.asset(
+                'images/navigationbar/home.png',
+                width: 25,
+                height: 25,
+                color: controller.index == 2
+                    ? const Color.fromRGBO(14, 32, 87, 1)
+                    : Colors.grey,
+              ),
+            ),
+            Tab(
+              text: '경기일정',
+              icon: Image.asset(
+                'images/navigationbar/match_schedule.png',
+                width: 25,
+                height: 25,
+                color: controller.index == 3
+                    ? const Color.fromRGBO(14, 32, 87, 1)
+                    : Colors.grey,
+              ),
+            ),
+            Tab(
+              text: '마이페이지',
+              icon: Image.asset(
+                'images/navigationbar/mypage.png',
+                width: 25,
+                height: 25,
+                color: controller.index == 4
+                    ? const Color.fromRGBO(14, 32, 87, 1)
+                    : Colors.grey,
+              ),
+            ),
           ],
-          unselectedItemColor: Colors.black,
-          selectedItemColor: const Color.fromRGBO(14, 32, 87, 1),
-          unselectedLabelStyle: const TextStyle(color: Colors.black),
-          selectedLabelStyle:
-              const TextStyle(color: Color.fromRGBO(14, 32, 87, 1)),
-        ));
+        ),
+      ),
+    );
   }
 }
+
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({
