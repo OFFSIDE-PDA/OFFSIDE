@@ -56,7 +56,6 @@ class MyTeam extends ConsumerStatefulWidget {
 
 class _MyTeamState extends ConsumerState {
   var team = '울산 현대 FC';
-  String date = DateFormat('MM월 dd일 hh:mm').format(DateTime.now());
 
   late Future<List<List>> kLeagueOne;
   late Future<List<List>> kLeagueTwo;
@@ -70,9 +69,9 @@ class _MyTeamState extends ConsumerState {
 
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    int num = 0;
     var user = ref.watch(userViewModelProvider);
-    team = user.user!.team!;
+    String team = user.user!.team!;
+    int win = 0, lose = 0, draw = 0;
 
     const borderSide = BorderSide(
       color: Color.fromARGB(255, 67, 67, 67),
@@ -86,58 +85,66 @@ class _MyTeamState extends ConsumerState {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(
-                width: size.width * 0.08,
-                height: size.width * 0.08,
-                child: teamImg[team]),
-            Text(
-              team,
-              style: textStyle,
+          Padding(
+            padding: const EdgeInsets.all(30),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      width: size.width * 0.15,
+                      height: size.width * 0.15,
+                      child: teamImg[team]),
+                  SizedBox(
+                    width: size.width * 0.02,
+                  ),
+                  Text(
+                    team,
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+          ),
+          Container(
+            width: size.width,
+            margin: const EdgeInsets.fromLTRB(10, 0, 20, 10),
+            child: Text(
+              '$win' + 'W ' + '$lose' + 'L ' + '$draw' + 'D',
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontSize: 15),
             ),
-          ]),
+          ),
           FutureBuilder<List<List>>(
             future: team1.contains(team) ? kLeagueOne : kLeagueTwo,
             builder: ((context, snapshot) {
               if (snapshot.hasData) {
                 List<List> matches = snapshot.data!;
-                if (matches[num][0].team1 == 'team' ||
-                    matches[num][0].team2 == 'team') {
-                  num++;
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(child: teamImg[team]),
-                            Text(
-                              team,
-                              style: textStyle,
-                            ),
-                            SizedBox(
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
                               height: size.height,
                               child: ListView.builder(
                                   scrollDirection: Axis.vertical,
                                   itemCount: matches.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    print(matches[index]);
-                                    return MatchBox(
-                                        size: size, info: matches[index]);
-                                  }),
-                            )
-                            // MatchBox(size: size)
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                } else {
-                  num++;
-                }
+                                    return ResultBox(
+                                        size: size,
+                                        info: matches[index],
+                                        team: team);
+                                  }))
+                          // MatchBox(size: size)
+                        ],
+                      ),
+                    )
+                  ],
+                );
               } else if (snapshot.hasError) {
                 return const Text('error');
               }
@@ -150,34 +157,24 @@ class _MyTeamState extends ConsumerState {
   }
 }
 
-class MatchBox extends StatelessWidget {
-  const MatchBox({
-    super.key,
-    required this.size,
-    required this.info,
-  });
+class ResultBox extends StatelessWidget {
+  const ResultBox(
+      {super.key, required this.size, required this.info, required this.team});
 
   final Size size;
   final List info;
+  final String team;
 
   @override
   Widget build(BuildContext context) {
     return Container(
         width: size.width,
-        padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-        margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(5, 5), // changes position of shadow
-            ),
-          ],
-        ),
+            color: Color(resultColor(info)),
+            border: Border(
+              bottom: BorderSide(width: 1, color: Colors.grey),
+            )),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Text(
             '[${getDate(info.first.data)}]',
@@ -189,10 +186,8 @@ class MatchBox extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    '${info[0].time}',
-                    style: const TextStyle(fontSize: 12),
-                  ),
+                  Text('${info[0].score1}',
+                      style: const TextStyle(fontSize: 15)),
                   SizedBox(
                       width: size.width * 0.08,
                       height: size.width * 0.08,
@@ -202,16 +197,16 @@ class MatchBox extends StatelessWidget {
                       children: [
                         Text(
                           transferName[info[0].team1]!,
-                          style: const TextStyle(fontSize: 13),
+                          style: const TextStyle(fontSize: 15),
                           textAlign: TextAlign.center,
                         ),
                         const Text(
                           ' vs ',
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 15),
                         ),
                         Text(
                           transferName[info[0].team2]!,
-                          style: const TextStyle(fontSize: 13),
+                          style: const TextStyle(fontSize: 15),
                           textAlign: TextAlign.center,
                         ),
                       ]),
@@ -219,6 +214,8 @@ class MatchBox extends StatelessWidget {
                       width: size.width * 0.08,
                       height: size.width * 0.08,
                       child: teamImg[info[0].team2]),
+                  Text('${info[0].score2}',
+                      style: const TextStyle(fontSize: 15)),
                 ],
               )),
         ]));
@@ -250,7 +247,7 @@ class DefaultWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '경기 일정',
+              '로딩중',
               style: textStyle,
             ),
           ],
@@ -258,6 +255,21 @@ class DefaultWidget extends StatelessWidget {
         // MatchBox(size: size)
       )
     ]);
+  }
+}
+
+int resultColor(List info) {
+  String today = DateFormat('yyMMdd').format(DateTime.now());
+  if (int.parse(info[0].data) <= int.parse(today)) {
+    if (int.parse(info[0].score1) > int.parse(info[0].score2)) {
+      return 0xffddefff;
+    } else if (int.parse(info[0].score1) < int.parse(info[0].score2)) {
+      return 0xffffeeeb;
+    } else {
+      return 0xfffff6d7;
+    }
+  } else {
+    return 0xffffffff;
   }
 }
 
