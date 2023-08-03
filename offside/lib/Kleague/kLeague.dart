@@ -1,25 +1,27 @@
 import 'dart:math';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'TeamInfo.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+// void main() {
+//   runApp(const MyApp());
+// }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "OFFSIDE",
-      routes: {
-        "/": (context) => KLeague(),
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: "OFFSIDE",
+//       routes: {
+//         "/": (context) => KLeague(),
+//       },
+//     );
+//   }
+// }
 
 class KLeague extends StatelessWidget {
   const KLeague({Key? key}) : super(key: key);
@@ -264,10 +266,13 @@ Widget team(int id, BuildContext context, name) {
     child: Column(
       children: [
         InkWell(
-          onTap: () {
-            launchUrl(
-              Uri.parse(sites[id - 1]),
-            );
+          onTap: () async {
+            // launchUrl(
+            //   Uri.parse(sites[id - 1]),
+            // );
+            await Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TeamInfo(team: id)));
+            // Get.to(const TeamInfo());
           },
           child: Container(
             padding: EdgeInsets.all(4),
