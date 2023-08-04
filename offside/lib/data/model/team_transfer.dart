@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 List<String> teamK1 = <String>[
   "강원 FC",
   "광주 FC",
@@ -33,7 +31,7 @@ List<String> teamK2 = <String>[
 Map<String, dynamic> teamTransfer = {
   '강원 FC': {
     'name': '강원',
-    'img': Image.asset('images/K1_png/Gangwon.png'),
+    'img': 'images/K1_png/Gangwon.png',
     'site': "https://www.gangwon-fc.com/",
     'year': 2008,
     'city': "강원도 강릉시",
@@ -42,7 +40,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '광주 FC': {
     'name': '광주',
-    'img': Image.asset('images/K1_png/GwangJu.png'),
+    'img': 'images/K1_png/GwangJu.png',
     'site': "https://www.gwangjufc.com/",
     'year': 2010,
     'city': "광주광역시",
@@ -51,7 +49,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '대구 FC': {
     'name': '대구',
-    'img': Image.asset('images/K1_png/Daegu.png'),
+    'img': 'images/K1_png/Daegu.png',
     'site': "https://daegufc.co.kr/main/",
     'year': 2002,
     'city': "대구광역시",
@@ -60,7 +58,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '대전 하나 시티즌': {
     'name': '대전',
-    'img': Image.asset('images/K1_png/Daejeon.png'),
+    'img': 'images/K1_png/Daejeon.png',
     'site': "https://www.dhcfc.kr/",
     'year': 1997,
     'city': "대전광역시",
@@ -69,7 +67,7 @@ Map<String, dynamic> teamTransfer = {
   },
   'FC 서울': {
     'name': '서울',
-    'img': Image.asset('images/K1_png/Seoul.png'),
+    'img': 'images/K1_png/Seoul.png',
     'site': "https://m.fcseoul.com/",
     'year': 1983,
     'city': "서울특별시",
@@ -78,7 +76,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '수원 삼성 블루윙즈': {
     'name': '수원',
-    'img': Image.asset('images/K1_png/suwon.png'),
+    'img': 'images/K1_png/suwon.png',
     'site': "http://www.bluewings.kr/",
     'year': 1995,
     'city': "경기도 수원특례시",
@@ -87,7 +85,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '수원 FC': {
     'name': '수원FC',
-    'img': Image.asset('images/K1_png/suwonFC.png'),
+    'img': 'images/K1_png/suwonFC.png',
     'site': "https://www.suwonfc.com/",
     'year': 2003,
     'city': "경기도 수원특례시",
@@ -96,7 +94,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '울산 현대': {
     'name': '울산',
-    'img': Image.asset('images/K1_png/ulsan.png'),
+    'img': 'images/K1_png/ulsan.png',
     'site': "https://www.uhfc.tv/",
     'year': 1983,
     'city': "울산광역시",
@@ -105,7 +103,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '인천 유나이티드': {
     'name': '인천',
-    'img': Image.asset('images/K1_png/incheon.png'),
+    'img': 'images/K1_png/incheon.png',
     'site': "https://www.incheonutd.com/main/index.php",
     'year': 2003,
     'city': "인천광역시",
@@ -114,7 +112,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '전북 현대 모터스': {
     'name': '전북',
-    'img': Image.asset('images/K1_png/jeonbuk.png'),
+    'img': 'images/K1_png/jeonbuk.png',
     'site': "https://hyundai-motorsfc.com/",
     'year': 1994,
     'city': "전라북도 전주시",
@@ -123,7 +121,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '제주 유나이티드': {
     'name': '제주',
-    'img': Image.asset('images/K1_png/jeju.png'),
+    'img': 'images/K1_png/jeju.png',
     'site': "https://www.jeju-utd.com/",
     'year': 1982,
     'city': "제주특별자치도",
@@ -132,7 +130,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '포항 스틸러스': {
     'name': '포항',
-    'img': Image.asset('images/K1_png/pohang.png'),
+    'img': 'images/K1_png/pohang.png',
     'site': "https://www.steelers.co.kr/",
     'year': 1973,
     'city': "경상북도 포항시",
@@ -141,7 +139,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '경남 FC': {
     'name': '경남',
-    'img': Image.asset('images/K2_png/kn.png'),
+    'img': 'images/K2_png/kn.png',
     'site': "https://www.gyeongnamfc.com/",
     'year': 2006,
     'city': "경상남도 창원시",
@@ -150,7 +148,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '김천 상무 FC': {
     'name': '김천',
-    'img': Image.asset('images/K2_png/kimcheon.png'),
+    'img': 'images/K2_png/kimcheon.png',
     'site': "https://www.gimcheonfc.com/index.php",
     'year': 1984,
     'city': "경상북도 김천시",
@@ -159,7 +157,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '김포 FC': {
     'name': '김포',
-    'img': Image.asset('images/K2_png/kimpo.png'),
+    'img': 'images/K2_png/kimpo.png',
     'site': "https://www.gimpofc.co.kr/",
     'year': 2013,
     'city': "경기도 김포시",
@@ -168,7 +166,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '부산 아이파크': {
     'name': '부산',
-    'img': Image.asset('images/K2_png/busan.png'),
+    'img': 'images/K2_png/busan.png',
     'site': "https://www.busanipark.com/",
     'year': 1979,
     'city': "부산광역시",
@@ -177,7 +175,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '부천 FC 1995': {
     'name': '부천',
-    'img': Image.asset('images/K2_png/bc.jpg'),
+    'img': 'images/K2_png/bc.jpg',
     'site': "http://bfc1995.com/site/main/index112",
     'year': 2007,
     'city': "경기도 부천시",
@@ -186,7 +184,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '서울 이랜드 FC': {
     'name': '서울E',
-    'img': Image.asset('images/K2_png/seoulE.png'),
+    'img': 'images/K2_png/seoulE.png',
     'site': "https://www.seoulelandfc.com/",
     'year': 2014,
     'city': "서울특별시",
@@ -195,7 +193,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '성남 FC': {
     'name': '성남',
-    'img': Image.asset('images/K2_png/seongnam.png'),
+    'img': 'images/K2_png/seongnam.png',
     'site': "https://shopsfc.com/",
     'year': 1989,
     'city': "경기도 성남시",
@@ -204,7 +202,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '안산 그리너스 FC': {
     'name': '안산',
-    'img': Image.asset('images/K2_png/ansan.png'),
+    'img': 'images/K2_png/ansan.png',
     'site': "https://www.greenersfc.com/",
     'year': 2017,
     'city': "경기도 안산시",
@@ -213,7 +211,7 @@ Map<String, dynamic> teamTransfer = {
   },
   'FC 안양': {
     'name': '안양',
-    'img': Image.asset('images/K2_png/anyang.png'),
+    'img': 'images/K2_png/anyang.png',
     'site': "https://www.fc-anyang.com/",
     'year': 2013,
     'city': "경기도 안양시",
@@ -222,7 +220,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '전남 드래곤즈': {
     'name': '전남',
-    'img': Image.asset('images/K2_png/jeonnam.png'),
+    'img': 'images/K2_png/jeonnam.png',
     'site': "https://www.dragons.co.kr/",
     'year': 1994,
     'city': "전라남도 광양시",
@@ -231,7 +229,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '충남 아산 FC': {
     'name': '아산',
-    'img': Image.asset('images/K2_png/asan.png'),
+    'img': 'images/K2_png/asan.png',
     'site': "https://www.asanfc.com/index.php",
     'year': 1996,
     'city': "충청남도 아산시",
@@ -240,7 +238,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '충북 청주 FC': {
     'name': '청주',
-    'img': Image.asset('images/K2_png/chungju.png'),
+    'img': 'images/K2_png/chungju.png',
     'site': "http://chfc.kr/",
     'year': 2002,
     'city': "충청북도 청주시",
@@ -249,7 +247,7 @@ Map<String, dynamic> teamTransfer = {
   },
   '천안 시티 FC': {
     'name': '천안',
-    'img': Image.asset('images/K2_png/cheonan.png'),
+    'img': 'images/K2_png/cheonan.png',
     'site': "https://cheonancityfc.kr/",
     'year': 2008,
     'city': "충청남도 천안시",

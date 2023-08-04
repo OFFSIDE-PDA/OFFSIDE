@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,15 +10,6 @@ class MyPage extends StatelessWidget {
   const MyPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var contextHeight = size.height;
-    var remainHeight = contextHeight - 171;
-
-    // var topH = remainHeight * (1 / 3) + 30;
-    // var midH = remainHeight * (1 / 6) + 30;
-    // var thrH = remainHeight * (1 / 6) + 30;
-    // var botH = remainHeight * (1 / 6);
-
     return (Container(
       width: double.infinity,
       height: double.infinity,
@@ -44,25 +35,27 @@ class MyPage extends StatelessWidget {
             Container(
               // height: topH,
               alignment: Alignment.center,
-              child: (Profile()),
+              child: (const Profile()),
             ),
             Container(
               // height: midH,
               alignment: Alignment.center,
-              child: (Second()),
+              child: (const Second()),
             ),
             Container(
               // height: thrH,
               alignment: Alignment.center,
               child: (Third()),
             ),
-            Container(alignment: Alignment.center, child: (Under()))
+            Container(alignment: Alignment.center, child: (const Under()))
           ]),
     ));
   }
 }
 
 class Profile extends ConsumerStatefulWidget {
+  const Profile({super.key});
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -77,8 +70,6 @@ class _ProfileState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    var size = MediaQuery.of(context).size;
     final user = ref.watch(userViewModelProvider);
     return (Container(
       margin: const EdgeInsets.all(30),
@@ -86,9 +77,9 @@ class _ProfileState extends ConsumerState {
       decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            color: Color.fromRGBO(18, 32, 84, 1),
+            color: const Color.fromRGBO(18, 32, 84, 1),
           ),
-          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          borderRadius: const BorderRadius.all(Radius.circular(10.0))),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,8 +88,8 @@ class _ProfileState extends ConsumerState {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  teamImg,
+                Image.asset(
+                  teamTransfer[user.user!.team]['img'],
                   width: 100,
                   height: 100,
                 ),
@@ -109,7 +100,7 @@ class _ProfileState extends ConsumerState {
                     children: [
                       Text(
                         user.user!.nickname!,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 15,
                             color: Color.fromRGBO(18, 32, 84, 1),
                             fontWeight: FontWeight.w700),
@@ -118,10 +109,10 @@ class _ProfileState extends ConsumerState {
                       user.user!.email != null
                           ? Text(
                               user.user!.email!,
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 13),
+                              style: const TextStyle(
+                                  color: Colors.grey, fontSize: 13),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       Container(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -129,7 +120,7 @@ class _ProfileState extends ConsumerState {
                         children: [
                           Text(
                             user.user!.team!,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 13, fontWeight: FontWeight.w600),
                           ),
                         ],
@@ -145,7 +136,7 @@ class _ProfileState extends ConsumerState {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.edit,
                     size: 20.0,
                   ),
@@ -158,7 +149,7 @@ class _ProfileState extends ConsumerState {
                           MaterialPageRoute(builder: (context) => Edit()));
                       // 회원정보 수정 페이지로 이동
                     },
-                    child: Text(
+                    child: const Text(
                       "회원 정보 수정하기",
                       style: TextStyle(
                           decoration: TextDecoration.underline,
@@ -174,11 +165,12 @@ class _ProfileState extends ConsumerState {
 }
 
 class Second extends StatelessWidget {
+  const Second({super.key});
+
   void onPressed() {}
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     var size = MediaQuery.of(context).size;
     var wSize = size.width * (2 / 6) + 20;
     return (Container(
@@ -194,18 +186,18 @@ class Second extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border.all(
                   width: 2,
-                  color: Color.fromRGBO(18, 32, 84, 1),
+                  color: const Color.fromRGBO(18, 32, 84, 1),
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                borderRadius: const BorderRadius.all(Radius.circular(10.0))),
             child: InkWell(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (body) => MyTeam()),
+                  MaterialPageRoute(builder: (body) => const MyTeam()),
                 );
                 // 내 응원팀 경기일정 보기로 이동
               },
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -226,14 +218,14 @@ class Second extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border.all(
                   width: 2,
-                  color: Color.fromRGBO(18, 32, 84, 1),
+                  color: const Color.fromRGBO(18, 32, 84, 1),
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                borderRadius: const BorderRadius.all(Radius.circular(10.0))),
             child: InkWell(
               onTap: () {
                 // 내 여행 일정 페이지로 이동
               },
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -276,7 +268,7 @@ class Third extends StatelessWidget {
             onTap: () {
               // 내 응원팀 경기일정 보기로 이동
             },
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -297,47 +289,43 @@ class Under extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO: implement build
-    var size = MediaQuery.of(context).size;
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "KOREAN ",
-                style: TextStyle(fontSize: 13, color: Colors.grey),
-              ),
-              Container(width: 1, height: 15, color: Colors.grey),
-              const Text(
-                " ENGLISH",
-                style: TextStyle(fontSize: 13, color: Colors.grey),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              ref.watch(userViewModelProvider).signOut();
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                  (route) => false);
-            },
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    const Color.fromRGBO(33, 58, 135, 1))),
-            child: const Text(
-              "LOGOUT",
-              style: TextStyle(fontSize: 12, color: Colors.white),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "KOREAN ",
+              style: TextStyle(fontSize: 13, color: Colors.grey),
             ),
-          )
-        ],
-      ),
+            Container(width: 1, height: 15, color: Colors.grey),
+            const Text(
+              " ENGLISH",
+              style: TextStyle(fontSize: 13, color: Colors.grey),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            ref.watch(userViewModelProvider).signOut();
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => false);
+          },
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                  const Color.fromRGBO(33, 58, 135, 1))),
+          child: const Text(
+            "LOGOUT",
+            style: TextStyle(fontSize: 12, color: Colors.white),
+          ),
+        )
+      ],
     );
   }
 }

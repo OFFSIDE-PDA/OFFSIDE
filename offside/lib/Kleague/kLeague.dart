@@ -95,7 +95,6 @@ class KLeagueOne extends StatelessWidget {
                   ],
                 )
               ],
-
             ),
           ),
         ],
@@ -202,7 +201,7 @@ Widget team(int id, BuildContext context, name) {
                     ? const Color.fromRGBO(18, 32, 84, 1)
                     : Colors.white,
                 borderRadius: BorderRadius.circular(100)),
-            child: teamTransfer[getName(name)]['img'],
+            child: Image.asset(teamTransfer[getName(name)]['img']),
           ),
         ),
         SizedBox(

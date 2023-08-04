@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/data/model/match_model.dart';
+import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/repository/match_repository.dart';
 import 'package:intl/intl.dart';
 
@@ -160,6 +161,67 @@ class MatchViewModel extends ChangeNotifier {
       tmp.add(element[0]);
     }
     return tmp.toSet().toList();
+  }
+
+  getMyTeam(String team) {
+    var myTeam = [];
+    int win = 0;
+    int draw = 0;
+    int lose = 0;
+    int teamIdx = teamTransfer.keys.toList().indexOf(team);
+    int league = teamIdx <= 11 ? 0 : 1;
+    _allMatchViewModel?['all']?[league]?.forEach((value) {
+      for (var e in value) {
+        if (e.team1 == team) {
+          if (int.parse(e.score1) > int.parse(e.score2)) {
+            myTeam.add([
+              MatchModel(e.data, e.score2, e.team1, e.team2, e.location, e.time,
+                  e.score1),
+              1
+            ]);
+            win += 1;
+          } else if (int.parse(e.score1) < int.parse(e.score2)) {
+            myTeam.add([
+              MatchModel(e.data, e.score2, e.team1, e.team2, e.location, e.time,
+                  e.score1),
+              2
+            ]);
+            lose += 1;
+          } else {
+            myTeam.add([
+              MatchModel(e.data, e.score2, e.team1, e.team2, e.location, e.time,
+                  e.score1),
+              3
+            ]);
+            draw += 1;
+          }
+        } else if (e.team2 == team) {
+          if (int.parse(e.score1) < int.parse(e.score2)) {
+            myTeam.add([
+              MatchModel(e.data, e.score2, e.team1, e.team2, e.location, e.time,
+                  e.score1),
+              1
+            ]);
+            win += 1;
+          } else if (int.parse(e.score1) > int.parse(e.score2)) {
+            myTeam.add([
+              MatchModel(e.data, e.score2, e.team1, e.team2, e.location, e.time,
+                  e.score1),
+              2
+            ]);
+            lose += 1;
+          } else {
+            myTeam.add([
+              MatchModel(e.data, e.score2, e.team1, e.team2, e.location, e.time,
+                  e.score1),
+              3
+            ]);
+            draw += 1;
+          }
+        }
+      }
+    });
+    return {'team': myTeam, 'win': win, 'draw': draw, 'lose': lose};
   }
 
   getFilteredTeams(int league, String selectedTeam) {

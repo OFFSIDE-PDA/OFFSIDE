@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/MyPage/myteam.dart';
 import 'package:offside/data/model/match_model.dart';
 import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:intl/intl.dart';
 
 class Match extends ConsumerStatefulWidget {
+  const Match({super.key});
+
   @override
   _Match createState() => _Match();
 }
@@ -15,7 +18,6 @@ class _Match extends ConsumerState<Match> {
   List<String> league = ["K리그1", "K리그2"];
   String selectedLeague = 'K리그1';
   String selectedTeam = '강원 FC';
-  bool myTeam = false;
   bool filtering = false;
 
   @override
@@ -116,9 +118,10 @@ class _Match extends ConsumerState<Match> {
                     ),
                     InkWell(
                       onTap: () {
-                        setState(() {
-                          myTeam = !myTeam;
-                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (body) => const MyTeam()),
+                        );
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -222,7 +225,8 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: teamTransfer[info[index].team1]['img']),
+                            child: Image.asset(
+                                teamTransfer[info[index].team1]['img'])),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -250,7 +254,8 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: teamTransfer[info[index].team2]['img']),
+                            child: Image.asset(
+                                teamTransfer[info[index].team2]['img'])),
                         InkWell(
                           onTap: () {},
                           child: Container(
@@ -325,12 +330,12 @@ class FilteredBox extends StatelessWidget {
                   SizedBox(
                       width: size.width * 0.08,
                       height: size.width * 0.08,
-                      child: teamImg[info.team1]),
+                      child: Image.asset(teamTransfer[info.team1]['img'])),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          transferName[info.team1]!,
+                          teamTransfer[info.team1]['name'],
                           style: const TextStyle(fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
@@ -344,7 +349,7 @@ class FilteredBox extends StatelessWidget {
                                 style: TextStyle(fontSize: 13),
                               ),
                         Text(
-                          transferName[info.team2]!,
+                          teamTransfer[info.team2]['name'],
                           style: const TextStyle(fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
@@ -352,7 +357,7 @@ class FilteredBox extends StatelessWidget {
                   SizedBox(
                       width: size.width * 0.08,
                       height: size.width * 0.08,
-                      child: teamImg[info.team2]),
+                      child: Image.asset(teamTransfer[info.team2]['img'])),
                   InkWell(
                     onTap: () {},
                     child: Container(
@@ -375,16 +380,12 @@ class FilteredBox extends StatelessWidget {
 
 class DefaultWidget extends StatelessWidget {
   const DefaultWidget({super.key});
-
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     const borderSide = BorderSide(
       color: Color.fromARGB(255, 67, 67, 67),
       width: 1.0,
     );
-    const iconStyle =
-        Icon(Icons.expand_more, color: Color.fromARGB(255, 67, 67, 67));
     const textStyle =
         TextStyle(fontSize: 12, color: Color.fromARGB(255, 67, 67, 67));
     var elevatedStyle = ElevatedButton.styleFrom(

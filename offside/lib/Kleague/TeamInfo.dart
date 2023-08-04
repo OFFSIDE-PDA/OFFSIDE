@@ -69,7 +69,7 @@ Widget nameAndPage(String name, BuildContext context) {
                 margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
                 width: size.width * 0.13,
                 height: size.width * 0.13,
-                child: teamTransfer[name]['img']),
+                child: Image.asset(teamTransfer[name]['img'])),
             Text(
               name,
               style: TextStyle(
