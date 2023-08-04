@@ -4,6 +4,7 @@ import 'package:offside/data/view/user_view_model.dart';
 import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/login/login.dart';
+import 'myteam.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({Key? key}) : super(key: key);
@@ -198,6 +199,10 @@ class Second extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             child: InkWell(
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (body) => MyTeam()),
+                );
                 // 내 응원팀 경기일정 보기로 이동
               },
               child: Column(
