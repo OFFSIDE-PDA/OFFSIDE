@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/login/kakao_signup.dart';
 import 'package:offside/login/reset_password.dart';
 import '../MainPage/main_page.dart';
+import '../data/view/user_view_model.dart';
 import './signup.dart';
-import 'package:offside/user_view_model.dart';
 
 // 로그인 화면
 class LoginPage extends ConsumerStatefulWidget {
@@ -124,7 +124,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const MainPage()));
+                                    builder: (context) => MainPage()));
                           } catch (e) {
                             print(e);
                             print("로그인 실패");
