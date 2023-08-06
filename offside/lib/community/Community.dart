@@ -1,276 +1,307 @@
-import 'dart:developer';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import '../Kleague/kLeague.dart';
-import 'package:chat_bubbles/chat_bubbles.dart';
+import 'package:offside/chat_view_model.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../user_view_model.dart';
+import 'package:offside/data/model/message.dart';
 
-import 'ChatData.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class CommunityPage extends ConsumerStatefulWidget {
+  const CommunityPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "OFFSIDE",
-      routes: {"/": (context) => Community()},
-    );
+  Community createState() => Community();
+}
+
+class Community extends ConsumerState<CommunityPage>
+    with WidgetsBindingObserver {
+  TextStyle style = const TextStyle(fontFamily: 'NanumSquare');
+  late TextEditingController _text;
+  final _formKey = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
+  bool showToBottom = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _text = TextEditingController(text: "");
   }
-}
 
-class Community extends StatelessWidget {
-  const Community({Key? key}) : super(key: key);
+  @override
+  void dispose() {
+    _text.dispose();
+    print("채팅 디포즈");
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextStyle style = TextStyle(fontFamily: 'NanumSquare');
+    final user = ref.read(userViewModelProvider);
+    AsyncValue<Queue<Chat>> chatmodel = ref.watch(chatListProvider("team1"));
+    final chatView = ref.read(chatViewModelProvider);
+    String team = user.user!.team!;
+    String nickname = user.user!.nickname!;
+    String uid = user.user!.uid!;
+
     var size = MediaQuery.of(context).size;
-    final now = DateTime.now();
-    String month = DateFormat('MM.dd').format(DateTime.now());
-    String time = DateFormat('hh:mm').format(DateTime.now());
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 90),
-            decoration: BoxDecoration(
-                color: Color(bgColor(17)), // 여기서 배경 색상
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50))),
-            child: ListView.builder(
-              itemCount: messages.length,
-              shrinkWrap: false,
-              padding: EdgeInsets.only(top: 20, bottom: 65),
-              //physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Container(
-                  padding:
-                      EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-                  child: Align(
-                    alignment: (messages[index].messageType == "sender"
-                        ? Alignment.topRight
-                        : Alignment.topLeft),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: (messages[index].messageType == "sender"
-                            ? Color(sendorColor(17)) // 여기서 내 말풍선 색상
-                            : Color(0xffffffff)),
+    String lastWriter = "";
+
+    void toBottom() {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      setState(() {
+        showToBottom = false;
+      });
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //메시지를 새로 쓴 사람이 나라면 무조건 스크롤 맨 밑으로
+      if (lastWriter == nickname) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      } else {
+        if (_scrollController.position.pixels <=
+                _scrollController.position.maxScrollExtent.toInt() &&
+            _scrollController.position.pixels >=
+                _scrollController.position.maxScrollExtent - size.height) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        } else {
+          setState(() {
+            showToBottom = true;
+          });
+        }
+      }
+    });
+    return chatmodel.when(
+        loading: () => const CircularProgressIndicator(),
+        error: (err, stack) => Text('Error: $err'),
+        data: (communityMSG) {
+          lastWriter = communityMSG.last.writer!;
+          return Scaffold(
+            body: Stack(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 90),
+                    decoration: BoxDecoration(
+                        color: Color(bgColor(team)), // 여기서 배경 색상
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50)),
+                        image: const DecorationImage(
+                            image: AssetImage('assets/images/kLeague.png'))),
+                    child: Scrollbar(
+                      controller: _scrollController, // 스크롤 컨트롤러
+                      thickness: 4.0, // 스크롤 너비
+                      radius: const Radius.circular(8.0), // 스크롤 라운딩
+                      child: ListView.builder(
+                        controller: _scrollController, // 스크롤 컨트롤러
+                        itemCount: communityMSG.length,
+                        shrinkWrap: false,
+                        padding: const EdgeInsets.only(top: 20, bottom: 65),
+                        //physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          //index = messages.length;
+                          return Container(
+                            padding: const EdgeInsets.only(
+                                left: 14, right: 14, top: 10, bottom: 10),
+                            child: Align(
+                              alignment:
+                                  (communityMSG.elementAt(index).uid == uid
+                                      ? Alignment.topRight
+                                      : Alignment.topLeft),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: (communityMSG.elementAt(index).uid ==
+                                          uid
+                                      ? Color(sendorColor(team)) // 여기서 내 말풍선 색상
+                                      : const Color(0xffffffff)),
+                                ),
+                                padding: const EdgeInsets.all(16),
+                                child: Text.rich(
+                                    textAlign: TextAlign.right,
+                                    TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                        text:
+                                            communityMSG.elementAt(index).text,
+                                        style: const TextStyle(fontSize: 15),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '\n\n${communityMSG.elementAt(index).writer}',
+                                        style: const TextStyle(fontSize: 10),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '  |  ${DateFormat('yy-MM-dd hh:mm').format(communityMSG.elementAt(index).time!.toDate())}',
+                                        style: const TextStyle(fontSize: 10),
+                                      ),
+                                    ])),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      padding: EdgeInsets.all(16),
-                      child: Text.rich(
-                          textAlign: TextAlign.right,
-                          TextSpan(children: <TextSpan>[
-                            TextSpan(
-                              text: messages[index].messageContent,
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            TextSpan(
-                              text: '\n\n' + messages[index].nickname,
-                              style: TextStyle(fontSize: 10),
-                            ),
-                            TextSpan(
-                              text: '  |  $time',
-                              style: TextStyle(fontSize: 10),
-                            ),
-                          ])),
                     ),
                   ),
-                );
-              },
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                      color: const Color(0xffffffff),
+                      height: 90,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Text(
+                          '$team 팬 커뮤니티', // team 이름 + 팬 커뮤니티 출력
+                          style: const TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      showToBottom
+                          ? ElevatedButton(
+                              onPressed: toBottom,
+                              style: const ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(Colors.white),
+                                  minimumSize:
+                                      MaterialStatePropertyAll(Size(100, 40))),
+                              child: Icon(
+                                Icons.arrow_downward,
+                                color: Color(bgColor(team)),
+                                size: 15,
+                              ))
+                          : const SizedBox.shrink(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.only(
+                            left: 10, bottom: 10, top: 10),
+                        margin: const EdgeInsets.only(bottom: 5),
+                        height: 50,
+                        width: size.width * 0.97,
+                        child: Form(
+                          key: _formKey,
+                          child: Row(
+                            children: <Widget>[
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: TextField(
+                                  controller: _text,
+                                  decoration: const InputDecoration(
+                                      hintText: "팀을 응원하는 메세지를 적어주세요!",
+                                      hintStyle:
+                                          TextStyle(color: Colors.black54),
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              FloatingActionButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    try {
+                                      await chatView.addChat(
+                                          team: team,
+                                          text: _text.text,
+                                          uid: uid,
+                                          writer: nickname);
+                                    } catch (e) {
+                                      print("$e 데이터 저장 실패");
+                                    }
+                                  }
+                                },
+                                backgroundColor: const Color(0xff122054),
+                                elevation: 0,
+                                child: const Icon(
+                                  Icons.send,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-                color: Color(0xffffffff),
-                height: 90,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Text(
-                    '울산 현대 축구단 팬 커뮤니티', // team 이름 + 팬 커뮤니티 출력
-                    style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-              margin: EdgeInsets.only(bottom: 5),
-              height: 60,
-              width: size.width * 0.97,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 15,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        hintText: "팀을 응원하는 메세지를 적어주세요!",
-                        hintStyle: TextStyle(color: Colors.black54),
-                        border: InputBorder.none),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  FloatingActionButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    backgroundColor: Color(0xff122054),
-                    elevation: 0,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }
 
-List<ChatMessage> messages = [
-  ChatMessage(
-      messageContent: "오늘도 화이팅 ❤️", messageType: "receiver", nickname: "강희주"),
-  ChatMessage(messageContent: "가보자고 ~", messageType: "sender", nickname: "정채린"),
-];
-
-Widget teamIcon(int id) {
-  switch (id) {
-    case 1:
-      return SvgPicture.asset('icons/kOne/Gangwon.svg');
-    case 2:
-      return SvgPicture.asset('icons/kOne/GwangJu.svg');
-    case 3:
-      return SvgPicture.asset('icons/kOne/Daegu.svg');
-    case 4:
-      return SvgPicture.asset('icons/kOne/Daejeon.svg');
-    case 5:
-      return SvgPicture.asset('icons/kOne/Seoul.svg');
-    case 6:
-      return SvgPicture.asset('icons/kOne/suwon.svg');
-    case 7:
-      return SvgPicture.asset('icons/kOne/suwonFC.svg');
-    case 8:
-      return SvgPicture.asset('icons/kOne/ulsan.svg');
-    case 9:
-      return SvgPicture.asset('icons/kOne/incheon.svg');
-    case 10:
-      return SvgPicture.asset('icons/kOne/jeonbuk.svg');
-    case 11:
-      return SvgPicture.asset('icons/kOne/jeju.svg');
-    case 12:
-      return SvgPicture.asset('icons/kOne/pohang.svg');
-    case 13:
-      return ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          child: Image.asset('images/kn.png'));
-    case 14:
-      return SvgPicture.asset('icons/kTwo/kimcheon.svg');
-    case 15:
-      return SvgPicture.asset('icons/kTwo/kimpo.svg');
-    case 16:
-      return SvgPicture.asset('icons/kTwo/busan.svg');
-    case 17:
-      return ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          child: Image.asset('images/bc.jpg'));
-    case 18:
-      return SvgPicture.asset('icons/kTwo/seoulE.svg');
-    case 19:
-      return SvgPicture.asset('icons/kTwo/seongnam.svg');
-    case 20:
-      return SvgPicture.asset('icons/kTwo/ansan.svg');
-    case 21:
-      return SvgPicture.asset('icons/kTwo/anyang.svg');
-    case 22:
-      return SvgPicture.asset('icons/kTwo/jeonnam.svg');
-    case 23:
-      return SvgPicture.asset('icons/kTwo/asan.svg');
-    case 24:
-      return SvgPicture.asset('icons/kTwo/chungju.svg');
-    case 25:
-      return SvgPicture.asset('icons/kTwo/cheonan.svg');
-
-    default:
-      return SvgPicture.asset('icons/kTwo/cheonan.svg');
-  }
-}
-
-int bgColor(int id) {
-  switch (id) {
-    case 1: // 강원
+int bgColor(String team) {
+  switch (team) {
+    case '강원 FC': // 강원
       return 0xff27954;
-    case 2: // 경남
+    case '경남 FC': // 경남
       return 0xffd93829;
-    case 3: // 광주
+    case '광주 FC': // 광주
       return 0xffbf303c;
-    case 4: // 김천
+    case '김천 상무 FC': // 김천
       return 0xff122a40;
-    case 5: // 김포
+    case '김포 FC': // 김포
       return 0xff28d40;
-    case 6: // 대구
+    case '대구 FC': // 대구
       return 0xff3f83bf;
-    case 7: // 대전
+    case '대전 하나 시티즌': // 대전
       return 0xff1e3859;
-    case 8: // 부산
+    case '부산 아이파크': // 부산
       return 0xff9f2616;
-    case 9: // 부천
+    case '부천 FC 1995': // 부천
       return 0xff0d0d0d;
-    case 10: // 서울
+    case 'FC 서울': // 서울
       return 0xff0d0d0d;
-    case 11: // 서울E
+    case '서울 이랜드 FC': // 서울E
       return 0xff56688c;
-    case 12: // 성남
+    case '성남 FC': // 성남
       return 0xff262324;
-    case 13: // 수원
+    case '수원 삼성 블루윙즈': // 수원
       return 0xff265da6;
-    case 14: // 수원FC
+    case '수원 FC': // 수원FC
       return 0xff183459;
-    case 15: // 안산
+    case '안산 그리너스 FC': // 안산
       return 0xff3f8c76;
-    case 16: // 안양
+    case 'FC 안양': // 안양
       return 0xff3d2473;
-    case 17: // 울산
+    case '울산 현대': // 울산
       return 0xff006BB6;
-    case 18: // 인천
+    case '인천 유나이티드': // 인천
       return 0xff2e6ea6;
-    case 19: // 전남
+    case '전남 드래곤즈': // 전남
       return 0xff736522;
-    case 20: // 전북
+    case '전북 현대 모터스': // 전북
       return 0xff327343;
-    case 21: // 제주
+    case '제주 유나이티드': // 제주
       return 0xffa62d37;
-    case 22: // 천안
+    case '천안 시티 FC': // 천안
       return 0xff73b2d9;
-    case 23: // 충남아산
+    case '충남 아산 FC': // 충남아산
       return 0xff1c418c;
-    case 24: // 청주
+    case '충북 청주 FC': // 청주
       return 0xff1d2659;
-    case 25: // 포항
+    case '포항 스틸러스': // 포항
       return 0xff0d0d0d;
 
     default:
@@ -278,57 +309,57 @@ int bgColor(int id) {
   }
 }
 
-int sendorColor(int id) {
-  switch (id) {
-    case 1: // 강원
+int sendorColor(String team) {
+  switch (team) {
+    case '강원 FC': // 강원
       return 0xfff2b544;
-    case 2: //경남
+    case '경남 FC': //경남
       return 0xffdbab3a;
-    case 3: // 광주
+    case '광주 FC': // 광주
       return 0xffd9a9a9;
-    case 4: // 김천
+    case '김천 상무 FC': // 김천
       return 0xffa69472;
-    case 5: // 김포
+    case '김포 FC': // 김포
       return 0xffbfaa6b;
-    case 6: // 대구
+    case '대구 FC': // 대구
       return 0xffaed8f2;
-    case 7: // 대전
+    case '대전 하나 시티즌': // 대전
       return 0xffbfad50;
-    case 8: // 부산
+    case '부산 아이파크': // 부산
       return 0xffd9ca9c;
-    case 9: // 부천
+    case '부천 FC 1995': // 부천
       return 0xffbf8484;
-    case 10: // 서울
+    case 'FC 서울': // 서울
       return 0xffd97e7e;
-    case 11: // 서울E
+    case '서울 이랜드 FC': // 서울E
       return 0xffd9caad;
-    case 12: // 성남
+    case '성남 FC': // 성남
       return 0xff737373;
-    case 13: // 수원
+    case '수원 삼성 블루윙즈': // 수원
       return 0xfff2c9c9;
-    case 14: // 수원FC
+    case '수원 FC': // 수원FC
       return 0xffd9b471;
-    case 15: // 안산
+    case '안산 그리너스 FC': // 안산
       return 0xffbfad50;
-    case 16: // 안양
+    case 'FC 안양': // 안양
       return 0xffa99fbf;
-    case 17: // 울산
+    case '울산 현대': // 울산
       return 0xffffc518;
-    case 18: // 인천
+    case '인천 유나이티드': // 인천
       return 0xffd9c24e;
-    case 19: // 전남
+    case '전남 드래곤즈': // 전남
       return 0xfff2c84b;
-    case 20: // 전북
+    case '전북 현대 모터스': // 전북
       return 0xffd2cb47;
-    case 21: // 제주
+    case '제주 유나이티드': // 제주
       return 0xffdc9466;
-    case 22: // 천안
+    case '천안 시티 FC': // 천안
       return 0xffd6e8f5;
-    case 23: // 충남아산
+    case '충남 아산 FC': // 충남아산
       return 0xfff2ca50;
-    case 24: // 청주
+    case '충북 청주 FC': // 청주
       return 0xfff09c99;
-    case 25: // 포항
+    case '포항 스틸러스': // 포항
       return 0xffd95a4e;
 
     default:
