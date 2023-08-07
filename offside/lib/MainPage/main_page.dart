@@ -22,7 +22,7 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
   int _selectedIdx = 2;
   final List _pages = [
     const KLeague(),
-    const Community(),
+    const CommunityPage(),
     const HomePage(),
     Match(),
     const MyPage(),

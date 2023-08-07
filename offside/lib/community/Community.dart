@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:offside/chat_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../user_view_model.dart';
+import 'package:offside/data/view/user_view_model.dart';
 import 'package:offside/data/model/message.dart';
 
 class CommunityPage extends ConsumerStatefulWidget {
@@ -39,11 +39,12 @@ class Community extends ConsumerState<CommunityPage>
   @override
   Widget build(BuildContext context) {
     final user = ref.read(userViewModelProvider);
-    AsyncValue<Queue<Chat>> chatmodel = ref.watch(chatListProvider("team1"));
+
     final chatView = ref.read(chatViewModelProvider);
     String team = user.user!.team!;
     String nickname = user.user!.nickname!;
     String uid = user.user!.uid!;
+    AsyncValue<Queue<Chat>> chatmodel = ref.watch(chatListProvider(team));
 
     var size = MediaQuery.of(context).size;
     String lastWriter = "";
@@ -248,6 +249,63 @@ class Community extends ConsumerState<CommunityPage>
             ),
           );
         });
+  }
+}
+
+String num2team(int team) {
+  switch (team) {
+    case 1:
+      return '강원 FC'; // 강원
+    case 2:
+      return '경남 FC'; // 경남
+    case 3:
+      return '광주 FC'; // 광주
+    case 4:
+      return '김천 상무 FC'; // 김천
+    case 5:
+      return '김포 FC'; // 김포
+    case 6:
+      return '대구 FC'; // 대구
+    case 7:
+      return '대전 하나 시티즌'; // 대전
+    case 8:
+      return '부산 아이파크'; // 부산
+    case 9:
+      return '부천 FC 1995'; // 부천
+    case 10:
+      return 'FC 서울'; // 서울
+    case 11:
+      return '서울 이랜드 FC'; // 서울E
+    case 12:
+      return '성남 FC'; // 성남
+    case 13:
+      return '수원 삼성 블루윙즈'; // 수원
+    case 14:
+      return '수원 FC'; // 수원FC
+    case 15:
+      return '안산 그리너스 FC'; // 안산
+    case 16:
+      return 'FC 안양'; // 안양
+    case 17:
+      return '울산 현대'; // 울산
+    case 18:
+      return '인천 유나이티드'; // 인천
+    case 19:
+      return '전남 드래곤즈'; // 전남
+    case 20:
+      return '전북 현대 모터스'; // 전북
+    case 21:
+      return '제주 유나이티드'; // 제주
+    case 22:
+      return '천안 시티 FC'; // 천안
+    case 23:
+      return '충남 아산 FC'; // 충남아산
+    case 24:
+      return '충북 청주 FC'; // 청주
+    case 25:
+      return '포항 스틸러스'; // 포항
+    default:
+      return "팀없음";
   }
 }
 
