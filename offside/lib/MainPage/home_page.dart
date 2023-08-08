@@ -178,7 +178,7 @@ class StadiumTour extends StatelessWidget {
                       CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.transparent,
-                        child: teamTransfer[info[index]]['img'],
+                        child: Image.asset(teamTransfer[info[index]]['img']),
                       ),
                       Text(teamTransfer[info[index]]['name'])
                     ],
@@ -232,7 +232,9 @@ class RandomMatch extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                  width: 30, height: 30, child: teamTransfer[info[0]]['img']),
+                  width: 30,
+                  height: 30,
+                  child: Image.asset(teamTransfer[info[0]]['img'])),
               sizedBox,
               Text(info[0], style: textStyle),
               sizedBox,
@@ -241,7 +243,9 @@ class RandomMatch extends StatelessWidget {
               Text(info[1], style: textStyle),
               sizedBox,
               SizedBox(
-                  width: 30, height: 30, child: teamTransfer[info[1]]['img'])
+                  width: 30,
+                  height: 30,
+                  child: Image.asset(teamTransfer[info[1]]['img']))
             ],
           ),
         ),
@@ -373,7 +377,8 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: teamTransfer[match[index].team1]['img']),
+                            child: Image.asset(
+                                teamTransfer[match[index].team1]['img'])),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -395,7 +400,8 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: teamTransfer[match[index].team2]['img']),
+                            child: Image.asset(
+                                teamTransfer[match[index].team2]['img'])),
                         InkWell(
                           onTap: () {},
                           child: Container(

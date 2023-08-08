@@ -14,6 +14,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
+  late final TabController controller;
+  late List<GlobalKey<NavigatorState>> _navigatorKeyList;
+
   void onPressed() {
     authRepositoryProvider.signOut();
     Navigator.pop(context);
@@ -27,9 +30,6 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
     Match(),
     const MyPage(),
   ];
-  late final TabController controller;
-
-  late List<GlobalKey<NavigatorState>> _navigatorKeyList;
 
   @override
   void initState() {
