@@ -5,6 +5,7 @@ import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/login/login.dart';
 import 'myteam.dart';
+import '../community/Community.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({Key? key}) : super(key: key);
@@ -193,7 +194,7 @@ class Second extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (body) => const MyTeam()),
+                  MaterialPageRoute(builder: (context) => MyTeam()),
                 );
                 // 내 응원팀 경기일정 보기로 이동
               },
@@ -266,7 +267,10 @@ class Third extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           child: InkWell(
             onTap: () {
-              // 내 응원팀 경기일정 보기로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CommunityPage()),
+              ); // 내 응원팀 커뮤니티로 이동
             },
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

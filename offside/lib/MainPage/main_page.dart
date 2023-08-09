@@ -101,9 +101,9 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
               ),
             ),
             Tab(
-              text: '커뮤니티',
+              text: '여행 일정',
               icon: Image.asset(
-                'images/navigationbar/team_community.png',
+                'images/navigationbar/tour_schedule.png',
                 width: 25,
                 height: 25,
                 color: controller.index == 1
