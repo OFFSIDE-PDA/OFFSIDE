@@ -1,6 +1,5 @@
 import 'package:offside/data/model/team_transfer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'TeamInfo.dart';
 
 class KLeague extends StatelessWidget {
