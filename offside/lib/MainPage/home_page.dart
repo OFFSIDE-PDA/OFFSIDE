@@ -12,7 +12,7 @@ class HomePage extends ConsumerStatefulWidget {
   _HomePage createState() => _HomePage();
 }
 
-class _HomePage extends ConsumerState<HomePage> {
+class _HomePage extends ConsumerState {
   int league = 1;
   final List<String> k1 = <String>['k1-1', 'k1-2', 'k1-3', 'k1-4', 'k1-5'];
   final List<String> k2 = <String>['k2-1', 'k2-2', 'k2-3', 'k2-4', 'k2-5'];
@@ -42,8 +42,18 @@ class _HomePage extends ConsumerState<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var matchData = ref.watch(matchViewModelProvider);
+    var weekMatch = matchData.getWeekMatches(league);
+    var randomMatch = matchData.getRandomMatch();
+    var homeTeams = matchData.getHomeTeams();
+    var isNull = matchData.isNull();
     const borderSide = BorderSide(
       color: Colors.grey,
       width: 2.0,
@@ -54,65 +64,69 @@ class _HomePage extends ConsumerState<HomePage> {
     const wSizedBox = SizedBox(
       width: 10,
     );
-    final matchData = ref.read(matchViewModelProvider);
 
     return SingleChildScrollView(
-      child: Column(children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Row(
-            children: [
-              const Text(
-                "경기 일정",
-                style: TextStyle(fontFamily: 'NanumSquare'),
-              ),
-              wSizedBox,
-              ElevatedButton(
-                  onPressed: chooseLeague,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: league == 1
-                        ? const Color.fromRGBO(14, 32, 87, 1)
-                        : Colors.white,
-                    side: borderSide,
-                  ),
-                  child: Text(
-                    "K리그1",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: league == 1 ? Colors.white : Colors.grey,
-                        fontFamily: 'NanumSquare'),
-                  )),
-              wSizedBox,
-              ElevatedButton(
+        child: Column(children: [
+      Container(
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+        child: Row(
+          children: [
+            const Text(
+              "경기 일정",
+              style: TextStyle(fontFamily: 'NanumSquare'),
+            ),
+            wSizedBox,
+            ElevatedButton(
                 onPressed: chooseLeague,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: league == 1
-                      ? Colors.white
-                      : const Color.fromRGBO(14, 32, 87, 1),
-                  side: const BorderSide(
-                    color: Colors.grey,
-                    width: 2.0,
-                  ), // Background color
+                      ? const Color.fromRGBO(14, 32, 87, 1)
+                      : Colors.white,
+                  side: borderSide,
                 ),
                 child: Text(
-                  "K리그2",
+                  "K리그1",
                   style: TextStyle(
                       fontSize: 12,
-                      color: league == 1 ? Colors.grey : Colors.white,
+                      color: league == 1 ? Colors.white : Colors.grey,
                       fontFamily: 'NanumSquare'),
-                ),
-              )
-            ],
-          ),
+                )),
+            wSizedBox,
+            ElevatedButton(
+              onPressed: chooseLeague,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: league == 1
+                    ? Colors.white
+                    : const Color.fromRGBO(14, 32, 87, 1),
+                side: const BorderSide(
+                  color: Colors.grey,
+                  width: 2.0,
+                ), // Background color
+              ),
+              child: Text(
+                "K리그2",
+                style: TextStyle(
+                    fontSize: 12,
+                    color: league == 1 ? Colors.grey : Colors.white,
+                    fontFamily: 'NanumSquare'),
+              ),
+            )
+          ],
         ),
-        MatchCarousel(
-            size: size,
-            info: matchData.getWeekMatches(league),
-            page: getPageNum),
-        RandomMatch(size: size, info: matchData.getRandomMatch()),
-        StadiumTour(hSizedBox: hSizedBox, info: matchData.getHomeTeams())
-      ]),
-    );
+      ),
+      isNull == true
+          ? Column(
+              children: [
+                MatchCarousel(size: size, info: weekMatch, page: getPageNum),
+                RandomMatch(size: size, info: randomMatch),
+                StadiumTour(hSizedBox: hSizedBox, info: homeTeams)
+              ],
+            )
+          : Container(
+              alignment: const Alignment(0.0, 0.0),
+              height: size.height - 100,
+              child: const CircularProgressIndicator())
+    ]));
   }
 }
 

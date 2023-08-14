@@ -13,7 +13,7 @@ class MatchViewModel extends ChangeNotifier {
   Map<String, List<dynamic>>? get matchViewModel => _allMatchViewModel;
 
   void getAllMatches() async {
-    var data = await matchDataRepositoryProvider.getAllMatches();
+    final data = await matchDataRepositoryProvider.getAllMatches();
     List<List> kLeague1 = [];
     List<List> kLeague2 = [];
     var lastDay = "";
@@ -143,12 +143,20 @@ class MatchViewModel extends ChangeNotifier {
     return _allMatchViewModel?[type]?[league - 1].length;
   }
 
-  getMatchIndex(String type, int league, int index) {
-    return _allMatchViewModel?[type]?[league - 1][index];
+  getMatchIndex(String type, int league) {
+    return _allMatchViewModel?[type]?[league - 1];
   }
 
   getHomeTeams() {
     return _allMatchViewModel?['home'];
+  }
+
+  isNull() {
+    if (_allMatchViewModel == null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   getRandomMatch() {

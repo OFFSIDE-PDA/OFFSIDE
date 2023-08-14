@@ -14,7 +14,7 @@ class Match extends ConsumerStatefulWidget {
   _Match createState() => _Match();
 }
 
-class _Match extends ConsumerState<Match> {
+class _Match extends ConsumerState {
   List<String> league = ["K리그1", "K리그2"];
   String selectedLeague = 'K리그1';
   String selectedTeam = '강원 FC';
@@ -25,6 +25,7 @@ class _Match extends ConsumerState<Match> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     const borderSide = BorderSide(
@@ -39,10 +40,13 @@ class _Match extends ConsumerState<Match> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         backgroundColor: Colors.white,
         side: borderSide);
-    final matchData = ref.read(matchViewModelProvider);
-    final filteredTeam = matchData.getFilteredTeams(
+    var matchData = ref.watch(matchViewModelProvider);
+    var filteredTeam = matchData.getFilteredTeams(
         selectedLeague == 'K리그1' ? 1 : 2, getName(selectedTeam));
-
+    var leagueLen =
+        matchData.getLeagueLength('all', selectedLeague == 'K리그1' ? 1 : 2);
+    var matchIdx =
+        matchData.getMatchIndex('all', selectedLeague == 'K리그1' ? 1 : 2);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -149,13 +153,9 @@ class _Match extends ConsumerState<Match> {
                           })
                       : ListView.builder(
                           scrollDirection: Axis.vertical,
-                          itemCount: matchData.getLeagueLength(
-                              'all', selectedLeague == 'K리그1' ? 1 : 2),
+                          itemCount: leagueLen,
                           itemBuilder: (BuildContext context, int index) {
-                            return MatchBox(
-                                size: size,
-                                info: matchData.getMatchIndex('all',
-                                    selectedLeague == 'K리그1' ? 1 : 2, index));
+                            return MatchBox(size: size, info: matchIdx[index]);
                           }),
                 )
                 // MatchBox(size: size)
