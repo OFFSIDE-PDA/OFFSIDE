@@ -8,6 +8,7 @@ final tourViewModelProvider =
 
 class TourViewModel extends ChangeNotifier {
   Map<String, dynamic>? _tourViewModel;
+
   void getTourData() async {
     var data = await tourDataRepositoryProvider.getTourData();
     Map<String, dynamic> tourData = {};
@@ -23,28 +24,29 @@ class TourViewModel extends ChangeNotifier {
         'food': food
       };
     });
+
     _tourViewModel = tourData;
+    notifyListeners();
   }
 
   getTourInfo(String teamName) {
     return _tourViewModel?[teamName];
   }
-}
 
-List<dynamic> tourModelData(tour) {
-  var data = [];
-
-  tour.then((values) {
-    for (var value in values) {
-      data.add(TourModel(
-          value['addr1'],
-          value['contentid'],
-          getType[value['contenttypeid']],
-          value['firstimage'],
-          value['title']));
-    }
-  });
-  return data;
+  List<dynamic> tourModelData(tour) {
+    var data = [];
+    tour.then((values) {
+      for (var value in values) {
+        data.add(TourModel(
+            value['addr1'],
+            value['contentid'],
+            getType[value['contenttypeid']],
+            value['firstimage'],
+            value['title']));
+      }
+    });
+    return data;
+  }
 }
 
 Map<int, String> getType = {12: '관광지', 14: '문화시설', 32: '숙박', 39: '음식점'};
