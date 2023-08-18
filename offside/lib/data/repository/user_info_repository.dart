@@ -6,13 +6,13 @@ import 'package:offside/data/datasource/remote_data_source.dart';
 final userInfoRepositoryProvider = UserInfoRepository();
 
 class UserInfoRepository {
-  late final UserInfoDataSource _userInfoDataSource = UserInfoDataSource();
+  final UserInfoDataSource _userInfoDataSource = UserInfoDataSource();
 
-  Future<String> getMyTeam({required String uid}) async {
+  Future<int> getMyTeam({required String uid}) async {
     return await _userInfoDataSource.getMyTeam(uid: uid);
   }
 
-  Future<bool> updateMyTeam({required String uid, required String team}) async {
+  Future<bool> updateMyTeam({required String uid, required int team}) async {
     return await _userInfoDataSource.updateMyTeam(uid: uid, team: team);
   }
 }

@@ -3,10 +3,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MatchDataSource {
   final firestore = FirebaseFirestore.instance;
 
-  Future<List> getAllMatches() async {
-    final firestore = FirebaseFirestore.instance;
-    var k1Result = await firestore.collection('match').doc('kLeague1').get();
-    var k2Result = await firestore.collection('match').doc('kLeague2').get();
-    return [k1Result.data()?['match'], k2Result.data()?['match']];
+  ///`league`의 `year`년도 전체 경기를 조회
+  Future<List<Map<String, dynamic>>> getLeagueMatches(
+      int league, int year) async {
+    List<Map<String, dynamic>> returnResult = [];
+    QuerySnapshot<Map<String, dynamic>> result = await firestore
+        .collection('match')
+        .doc(year.toString())
+        .collection("league$league")
+        .orderBy("datetime")
+        .get();
+
+    for (QueryDocumentSnapshot docSnapshot in result.docs) {
+      returnResult.add(docSnapshot.data() as Map<String, dynamic>);
+    }
+
+    return returnResult;
   }
 }

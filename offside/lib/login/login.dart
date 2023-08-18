@@ -15,7 +15,7 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> {
   //LoginPage  --> _LoginPageState 로 이동
-  TextStyle style = TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
+  TextStyle style = const TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
   late TextEditingController _email; //각각 변수들 지정
   late TextEditingController _password;
 
@@ -52,14 +52,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               //ListView - children으로 여러개 padding설정
               shrinkWrap: true,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 30),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
                   child: Text('로그인',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 15.0, horizontal: 30),
@@ -70,10 +69,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           (value!.isEmpty) ? "이메일을 입력해 주세요" : null, //hint 역할
                       style: style,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email_outlined),
+                        prefixIcon: const Icon(Icons.email_outlined),
                         labelText: "이메일", //hint
                         filled: true,
-                        fillColor: Color(0xffF6F6F6),
+                        fillColor: const Color(0xffF6F6F6),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -93,16 +92,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           : null, //아무것도 누르지 않은 경우 이 글자 뜸.
                       style: style,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.lock_outline),
+                          prefixIcon: const Icon(Icons.lock_outline),
                           labelText: "비밀번호",
                           filled: true,
-                          fillColor: Color(0xffF6F6F6),
+                          fillColor: const Color(0xffF6F6F6),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide.none,
                           ))),
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Padding(
                   //세번째 padding
                   padding: const EdgeInsets.symmetric(
@@ -110,7 +109,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: Material(
                     elevation: 5.0, //그림자효과
                     borderRadius: BorderRadius.circular(5.0), //둥근효과
-                    color: Color(0xff0E2057),
+                    color: const Color(0xff0E2057),
                     child: MaterialButton(
                       //child - 버튼을 생성
                       height: 70,
@@ -124,14 +123,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage()));
+                                    builder: (context) => const MainPage()));
                           } catch (e) {
                             print(e);
                             print("로그인 실패");
                           }
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "로그인",
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
@@ -145,7 +144,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: Material(
                     elevation: 5.0,
                     borderRadius: BorderRadius.circular(5.0),
-                    color: Color(0xffFDDC3F),
+                    color: const Color(0xffFDDC3F),
                     child: MaterialButton(
                       height: 70,
                       onPressed: () async {
@@ -164,14 +163,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage()));
+                                    builder: (context) => const MainPage()));
                           }
                         } catch (e) {
                           print(e);
                           print("로그인 실패");
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "카카오톡으로 간편 로그인",
                         style:
                             TextStyle(color: Color(0xff3A2929), fontSize: 18),
@@ -179,14 +178,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   //Center <- Listview
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
                       //InkWell을 사용 -- onTap이 가능한 이유임.
-                      child: Text(
+                      child: const Text(
                         '비밀번호 재설정',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
@@ -200,10 +199,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         );
                       },
                     ),
-                    Text('  |  '),
+                    const Text('  |  '),
                     InkWell(
                       //InkWell을 사용 -- onTap이 가능한 이유임.
-                      child: Text(
+                      child: const Text(
                         '회원가입',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
@@ -218,7 +217,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),

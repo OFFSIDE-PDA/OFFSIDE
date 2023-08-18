@@ -1,22 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/data/model/team_transfer.dart';
+import 'package:offside/data/model/team_info.dart' as TeamInfoModel;
 import 'package:offside/data/view/tour_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
-class TeamInfo extends ConsumerStatefulWidget {
-  const TeamInfo({
+class TeamInfoPage extends ConsumerStatefulWidget {
+  const TeamInfoPage({
     Key? key,
     required this.team,
   }) : super(key: key);
 
-  final String team;
+  final TeamInfoModel.TeamInfo team;
 
   @override
   createState() => _TeamInfo();
 }
 
-class _TeamInfo extends ConsumerState<TeamInfo> {
+class _TeamInfo extends ConsumerState<TeamInfoPage> {
   @override
   void initState() {
     super.initState();
@@ -25,6 +26,7 @@ class _TeamInfo extends ConsumerState<TeamInfo> {
   @override
   Widget build(BuildContext context) {
     final tourData = ref.read(tourViewModelProvider);
+    print(widget.team);
     return ListView(children: [
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -37,8 +39,7 @@ class _TeamInfo extends ConsumerState<TeamInfo> {
               nameAndPage(widget.team, context),
               teamInfo(widget.team, context),
               teamPic(widget.team, context),
-              Recommended(
-                  name: widget.team, info: tourData.getTourInfo(widget.team))
+              Recommended(info: tourData.getTourInfo(widget.team.fullName!))
             ]),
           )
         ],
@@ -55,7 +56,7 @@ class AdaptiveTextSize {
   }
 }
 
-Widget nameAndPage(String name, BuildContext context) {
+Widget nameAndPage(dynamic team, BuildContext context) {
   var size = MediaQuery.of(context).size;
   return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,9 +70,9 @@ Widget nameAndPage(String name, BuildContext context) {
                 margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
                 width: size.width * 0.13,
                 height: size.width * 0.13,
-                child: Image.asset(teamTransfer[name]['img'])),
+                child: Image.network(team.logoImg)),
             Text(
-              name,
+              team.name,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: const Color.fromRGBO(18, 32, 84, 1),
@@ -84,7 +85,7 @@ Widget nameAndPage(String name, BuildContext context) {
         TextButton(
           onPressed: () {
             launchUrl(
-              Uri.parse(teamTransfer[name]['site']),
+              Uri.parse(team.site),
             );
           },
           style: ButtonStyle(
@@ -105,8 +106,9 @@ Widget nameAndPage(String name, BuildContext context) {
       ]);
 }
 
-Widget teamInfo(String name, BuildContext context) {
+Widget teamInfo(dynamic team, BuildContext context) {
   var size = MediaQuery.of(context).size;
+
   return (Container(
     margin: EdgeInsets.fromLTRB(15, size.height * 0.02, 15, size.height * 0.02),
     child: Column(
@@ -125,7 +127,7 @@ Widget teamInfo(String name, BuildContext context) {
                   fontWeight: FontWeight.bold),
             ),
             Text(
-              "${teamTransfer[name]['year']}년",
+              "${team.founded.toDate().year}년",
               style: TextStyle(
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 12),
@@ -148,7 +150,7 @@ Widget teamInfo(String name, BuildContext context) {
                   fontWeight: FontWeight.bold),
             ),
             Text(
-              teamTransfer[name]['city'],
+              team.city,
               style: TextStyle(
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 12),
@@ -171,7 +173,7 @@ Widget teamInfo(String name, BuildContext context) {
                   fontWeight: FontWeight.bold),
             ),
             Text(
-              teamTransfer[name]['stadium'],
+              team.stadium,
               style: TextStyle(
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 12),
@@ -184,12 +186,12 @@ Widget teamInfo(String name, BuildContext context) {
   ));
 }
 
-Widget teamPic(String name, BuildContext context) {
+Widget teamPic(dynamic team, BuildContext context) {
   var size = MediaQuery.of(context).size;
   return ClipRRect(
     borderRadius: BorderRadius.circular(15.0),
-    child: Image.asset(
-      teamTransfer[name]['stadium_img'],
+    child: Image.network(
+      team.stadiumImg,
       fit: BoxFit.fill,
       width: size.width * 0.9,
       height: size.height * 0.25,
@@ -200,11 +202,8 @@ Widget teamPic(String name, BuildContext context) {
 class Recommended extends StatefulWidget {
   const Recommended({
     Key? key,
-    required this.name,
     required this.info,
   }) : super(key: key);
-
-  final String name; // 선택한 팀 정보
   final Map<String, dynamic> info;
   @override
   State<Recommended> createState() => _Recommended();
@@ -353,14 +352,14 @@ class _Recommended extends State<Recommended> {
               ],
             ),
           ),
-          here(widget.name, widget.info[category])
+          here(widget.info[category])
         ],
       )),
     );
   }
 }
 
-Widget here(String name, var info) {
+Widget here(var info) {
   return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,

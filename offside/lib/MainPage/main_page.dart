@@ -3,7 +3,7 @@ import 'package:offside/MainPage/home_page.dart';
 import 'package:offside/Match/match.dart';
 import '../Kleague/kLeague.dart';
 import 'package:offside/data/repository/auth_repository.dart';
-import '../community/Community.dart';
+import '../community/community.dart';
 import '../MyPage/mypage.dart';
 
 class MainPage extends StatefulWidget {
@@ -27,7 +27,7 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
     const KLeague(),
     const CommunityPage(),
     const HomePage(),
-    Match(),
+    const Match(),
     const MyPage(),
   ];
 

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AppUser {
   AppUser({this.uid, this.nickname, this.imageUrl, this.email, this.team});
 
-  factory AppUser.fromJson(Map<String, String> json) {
+  factory AppUser.fromJson(Map<String, dynamic> json) {
     return AppUser(
         uid: json['uid'],
         nickname: json['nickname'],
@@ -24,5 +24,5 @@ class AppUser {
   String? nickname;
   String? imageUrl;
   String? email;
-  String? team;
+  int? team;
 }

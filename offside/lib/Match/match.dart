@@ -3,9 +3,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/MyPage/myteam.dart';
 import 'package:offside/data/model/match_model.dart';
-import 'package:offside/data/model/team_transfer.dart';
+import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:intl/intl.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
 
 class Match extends ConsumerStatefulWidget {
   const Match({super.key});
@@ -40,6 +41,9 @@ class _Match extends ConsumerState<Match> {
         backgroundColor: Colors.white,
         side: borderSide);
     final matchData = ref.read(matchViewModelProvider);
+    final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
+    final k1 = teamInfoList.where((element) => element.league == 1).toList();
+    final k2 = teamInfoList.where((element) => element.league == 2).toList();
     final filteredTeam = matchData.getFilteredTeams(
         selectedLeague == 'K리그1' ? 1 : 2, getName(selectedTeam));
 
@@ -74,8 +78,8 @@ class _Match extends ConsumerState<Match> {
                               setState(() {
                                 selectedLeague = value.toString();
                                 selectedLeague == 'K리그1'
-                                    ? selectedTeam = '강원 FC'
-                                    : selectedTeam = '경남 FC';
+                                    ? selectedTeam = k1[0].fullName
+                                    : selectedTeam = k2[0].fullName;
                                 filtering = false;
                               });
                             },
@@ -105,13 +109,15 @@ class _Match extends ConsumerState<Match> {
                                 });
                               },
                               items: selectedLeague == 'K리그1'
-                                  ? teamK1.map((e) {
+                                  ? k1.map((e) {
                                       return DropdownMenuItem(
-                                          value: e, child: Text(e));
+                                          value: e.fullName,
+                                          child: Text(e.fullName));
                                     }).toList()
-                                  : teamK2.map((e) {
+                                  : k2.map((e) {
                                       return DropdownMenuItem(
-                                          value: e, child: Text(e));
+                                          value: e.fullName,
+                                          child: Text(e.fullName));
                                     }).toList()),
                         )
                       ],
@@ -145,7 +151,9 @@ class _Match extends ConsumerState<Match> {
                           itemCount: filteredTeam.length,
                           itemBuilder: (BuildContext context, int index) {
                             return FilteredBox(
-                                size: size, info: filteredTeam[index]);
+                                teamInfoList: teamInfoList,
+                                size: size,
+                                info: filteredTeam[index]);
                           })
                       : ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -153,6 +161,7 @@ class _Match extends ConsumerState<Match> {
                               'all', selectedLeague == 'K리그1' ? 1 : 2),
                           itemBuilder: (BuildContext context, int index) {
                             return MatchBox(
+                                teamInfoList: teamInfoList,
                                 size: size,
                                 info: matchData.getMatchIndex('all',
                                     selectedLeague == 'K리그1' ? 1 : 2, index));
@@ -171,10 +180,12 @@ class _Match extends ConsumerState<Match> {
 class MatchBox extends StatelessWidget {
   const MatchBox({
     super.key,
+    required this.teamInfoList,
     required this.size,
     required this.info,
   });
 
+  final List<TeamInfo> teamInfoList;
   final Size size;
   final List info;
 
@@ -225,14 +236,14 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: Image.asset(
-                                teamTransfer[info[index].team1]['img'])),
+                            child: Image.network(
+                                teamInfoList[info[index].team1].logoImg)),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
                                 // transferName[info[index].team1]!,
-                                teamTransfer[info[index].team1]['name'],
+                                teamInfoList[info[index].team1].name,
                                 style: const TextStyle(fontSize: 13),
                                 textAlign: TextAlign.center,
                               ),
@@ -246,7 +257,7 @@ class MatchBox extends StatelessWidget {
                                       style: TextStyle(fontSize: 13),
                                     ),
                               Text(
-                                teamTransfer[info[index].team2]['name'],
+                                teamInfoList[info[index].team2].name,
                                 style: const TextStyle(fontSize: 13),
                                 textAlign: TextAlign.center,
                               ),
@@ -254,8 +265,8 @@ class MatchBox extends StatelessWidget {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child: Image.asset(
-                                teamTransfer[info[index].team2]['img'])),
+                            child: Image.network(
+                                teamInfoList[info[index].team2].logoImg)),
                         InkWell(
                           onTap: () {},
                           child: Container(
@@ -281,9 +292,11 @@ class MatchBox extends StatelessWidget {
 class FilteredBox extends StatelessWidget {
   const FilteredBox({
     super.key,
+    required this.teamInfoList,
     required this.size,
     required this.info,
   });
+  final List<TeamInfo> teamInfoList;
   final Size size;
   final MatchModel info;
 
@@ -330,12 +343,12 @@ class FilteredBox extends StatelessWidget {
                   SizedBox(
                       width: size.width * 0.08,
                       height: size.width * 0.08,
-                      child: Image.asset(teamTransfer[info.team1]['img'])),
+                      child: Image.network(teamInfoList[info.team1!].logoImg)),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          teamTransfer[info.team1]['name'],
+                          teamInfoList[info.team1!].name,
                           style: const TextStyle(fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
@@ -349,7 +362,7 @@ class FilteredBox extends StatelessWidget {
                                 style: TextStyle(fontSize: 13),
                               ),
                         Text(
-                          teamTransfer[info.team2]['name'],
+                          teamInfoList[info.team2!].name,
                           style: const TextStyle(fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
@@ -357,7 +370,7 @@ class FilteredBox extends StatelessWidget {
                   SizedBox(
                       width: size.width * 0.08,
                       height: size.width * 0.08,
-                      child: Image.asset(teamTransfer[info.team2]['img'])),
+                      child: Image.asset(teamInfoList[info.team2!].logoImg)),
                   InkWell(
                     onTap: () {},
                     child: Container(

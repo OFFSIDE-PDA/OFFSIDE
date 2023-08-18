@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as Kakao;
 import 'package:http/http.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -24,7 +25,6 @@ class AuthDataSource extends remoteDataSource {
     }
     try {
       //이미 존재하는 연결된 카카오 계정이 있는지 확인
-      Kakao.User user = await Kakao.UserApi.instance.me();
     } catch (e) {
       //연결된 카카오 계정이 없다면 카카오 로그인
       if (e is Kakao.KakaoClientException) {
@@ -147,7 +147,7 @@ class AuthDataSource extends remoteDataSource {
 ///인증정보를 제외한 유저 정보에 관련된 외부데이터소스
 class UserInfoDataSource {
   ///응원팀 생성 및 업데이트
-  Future<bool> updateMyTeam({required String uid, required String team}) async {
+  Future<bool> updateMyTeam({required String uid, required int team}) async {
     try {
       final db = FirebaseFirestore.instance;
       await db.collection("users").doc(uid).set({"team": team});
@@ -159,7 +159,7 @@ class UserInfoDataSource {
   }
 
   ///응원팀 조회
-  Future<String> getMyTeam({required String uid}) async {
+  Future<int> getMyTeam({required String uid}) async {
     final db = FirebaseFirestore.instance;
     DocumentSnapshot teamDoc = await db.collection("users").doc(uid).get();
     Map data = teamDoc.data() as Map<String, dynamic>;
@@ -171,13 +171,13 @@ class UserInfoDataSource {
 class ChatDataSource {
   ///채팅 데이터 저장
   Future<void> addChat(
-      {required String team,
+      {required int team,
       required String text,
       required String uid,
       required String writer}) async {
     FirebaseFirestore.instance
         .collection('teams')
-        .doc(team)
+        .doc(team.toString())
         .collection("chat")
         .add({
       "text": text,
@@ -187,13 +187,43 @@ class ChatDataSource {
     });
   }
 
-  Stream<QuerySnapshot<Object?>>? getChatStream({required String team}) {
+  ///`team`의 채팅스트림 획득
+  Stream<QuerySnapshot<Object?>>? getChatStream({required int team}) {
     return FirebaseFirestore.instance
         .collection('teams')
-        .doc(team)
+        .doc(team.toString())
         .collection("chat")
         .orderBy("time")
         .limit(1000)
         .snapshots();
+  }
+}
+
+class TeamInfoDataSource {
+  ///k리그1, 2의 모든 팀 기본정보 조회
+  Future<List<Map<String, dynamic>>> getTeamInfo() async {
+    final db = FirebaseFirestore.instance;
+    List<Map<String, dynamic>> returnResult = [];
+
+    QuerySnapshot teamDoc = await db.collection("teams").orderBy("idx").get();
+    for (QueryDocumentSnapshot docSnapshot in teamDoc.docs) {
+      returnResult.add(docSnapshot.data() as Map<String, dynamic>);
+    }
+
+    return returnResult;
+  }
+
+  ///`team`의 로고이미지 url 조회
+  Future<String> getTeamImg(String team) async {
+    final storageRef = FirebaseStorage.instance.ref();
+
+    return storageRef.child("team_logo/$team.png").getDownloadURL();
+  }
+
+  ///`team`의 주경기장 이미지 url 조회
+  Future<String> getStadiumImg(String team) async {
+    final storageRef = FirebaseStorage.instance.ref();
+
+    return storageRef.child("team_stadium/$team.jpg").getDownloadURL();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,6 +28,7 @@ class _EditState extends ConsumerState<Edit> {
   void initState() {
     super.initState();
     final read_user = ref.read(userViewModelProvider);
+    List teamInfo = ref.read(teamInfoViewModelProvider).teamInfoList;
     _name = TextEditingController(text: read_user.user!.nickname);
 
     _password = TextEditingController(text: "");
@@ -36,7 +38,8 @@ class _EditState extends ConsumerState<Edit> {
         text: read_user.user?.nickname != null ? read_user.user?.email : "");
     _cnt = SingleValueDropDownController(
         data: DropDownValueModel(
-            name: read_user.user!.team!, value: "initvalue"));
+            name: teamInfo[read_user.user!.team!].fullName,
+            value: read_user.user!.team!));
   }
 
   @override
@@ -56,6 +59,12 @@ class _EditState extends ConsumerState<Edit> {
     var size = MediaQuery.of(context).size;
     void onPressed() {}
     final user = ref.watch(userViewModelProvider);
+    List teamInfoList = ref.read(teamInfoViewModelProvider).teamInfoList;
+    List<DropDownValueModel> dropDownValueList = [];
+    for (var i = 1; i < teamInfoList.length; i++) {
+      dropDownValueList
+          .add(DropDownValueModel(name: teamInfoList[i].fullName, value: i));
+    }
     return Scaffold(
         key: _key,
         appBar: AppBar(),
@@ -135,33 +144,34 @@ class _EditState extends ConsumerState<Edit> {
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
                       )),
-                  dropDownList: const [
-                    DropDownValueModel(name: '강원 FC', value: "value1"),
-                    DropDownValueModel(name: '경남 FC', value: "value2"),
-                    DropDownValueModel(name: '김천 상무 FC', value: "value3"),
-                    DropDownValueModel(name: '김포 FC', value: "value4"),
-                    DropDownValueModel(name: '광주 FC', value: "value5"),
-                    DropDownValueModel(name: '대구 FC', value: "value6"),
-                    DropDownValueModel(name: '대전 하나 시티즌', value: "value7"),
-                    DropDownValueModel(name: '부산 아이파크', value: "value8"),
-                    DropDownValueModel(name: '부천 FC 1995', value: "value9"),
-                    DropDownValueModel(name: 'FC 서울', value: "value10"),
-                    DropDownValueModel(name: '서울 이랜드 FC', value: "value11"),
-                    DropDownValueModel(name: '성남 FC', value: "value12"),
-                    DropDownValueModel(name: '수원 삼성 블루윙즈', value: "value13"),
-                    DropDownValueModel(name: '수원 FC', value: "value14"),
-                    DropDownValueModel(name: '안산 그리너스 FC', value: "value15"),
-                    DropDownValueModel(name: 'FC 안양', value: "value16"),
-                    DropDownValueModel(name: '울산 현대', value: "value17"),
-                    DropDownValueModel(name: '인천 유나이티드 FC', value: "value18"),
-                    DropDownValueModel(name: '전남 드래곤즈', value: "value19"),
-                    DropDownValueModel(name: '전북 현대 모터스', value: "value20"),
-                    DropDownValueModel(name: '재주 유나이티드 FC', value: "value21"),
-                    DropDownValueModel(name: '천안 시티 FC', value: "value22"),
-                    DropDownValueModel(name: '충남 아산 FC', value: "value23"),
-                    DropDownValueModel(name: '충북 청주 FC', value: "value24"),
-                    DropDownValueModel(name: '포항 스틸러스', value: "value25"),
-                  ],
+                  dropDownList: dropDownValueList,
+                  //const [
+                  //   DropDownValueModel(name: '강원 FC', value: "value1"),
+                  //   DropDownValueModel(name: '경남 FC', value: "value2"),
+                  //   DropDownValueModel(name: '김천 상무 FC', value: "value3"),
+                  //   DropDownValueModel(name: '김포 FC', value: "value4"),
+                  //   DropDownValueModel(name: '광주 FC', value: "value5"),
+                  //   DropDownValueModel(name: '대구 FC', value: "value6"),
+                  //   DropDownValueModel(name: '대전 하나 시티즌', value: "value7"),
+                  //   DropDownValueModel(name: '부산 아이파크', value: "value8"),
+                  //   DropDownValueModel(name: '부천 FC 1995', value: "value9"),
+                  //   DropDownValueModel(name: 'FC 서울', value: "value10"),
+                  //   DropDownValueModel(name: '서울 이랜드 FC', value: "value11"),
+                  //   DropDownValueModel(name: '성남 FC', value: "value12"),
+                  //   DropDownValueModel(name: '수원 삼성 블루윙즈', value: "value13"),
+                  //   DropDownValueModel(name: '수원 FC', value: "value14"),
+                  //   DropDownValueModel(name: '안산 그리너스 FC', value: "value15"),
+                  //   DropDownValueModel(name: 'FC 안양', value: "value16"),
+                  //   DropDownValueModel(name: '울산 현대', value: "value17"),
+                  //   DropDownValueModel(name: '인천 유나이티드 FC', value: "value18"),
+                  //   DropDownValueModel(name: '전남 드래곤즈', value: "value19"),
+                  //   DropDownValueModel(name: '전북 현대 모터스', value: "value20"),
+                  //   DropDownValueModel(name: '재주 유나이티드 FC', value: "value21"),
+                  //   DropDownValueModel(name: '천안 시티 FC', value: "value22"),
+                  //   DropDownValueModel(name: '충남 아산 FC', value: "value23"),
+                  //   DropDownValueModel(name: '충북 청주 FC', value: "value24"),
+                  //   DropDownValueModel(name: '포항 스틸러스', value: "value25"),
+                  // ],
                   onChanged: (val) {},
                 ),
               ),
@@ -228,7 +238,7 @@ class _EditState extends ConsumerState<Edit> {
                         uid: user.user!.uid!,
                         email: _email.value.text,
                         nickname: _name.value.text,
-                        team: _cnt.dropDownValue!.name);
+                        team: _cnt.dropDownValue!.value);
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(

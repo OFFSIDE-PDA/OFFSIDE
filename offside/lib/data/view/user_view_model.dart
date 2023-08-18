@@ -32,7 +32,7 @@ class UserViewModel extends ChangeNotifier {
       {required String email,
       required String password,
       required String nickname,
-      required String team}) {
+      required int team}) {
     return authRepositoryProvider
         .emailSignUp(email: email, password: password, nickname: nickname)
         .then((result) {
@@ -58,7 +58,7 @@ class UserViewModel extends ChangeNotifier {
     });
   }
 
-  Future<void> updateTeam({required String team}) async {
+  Future<void> updateTeam({required int team}) async {
     return await userInfoRepositoryProvider
         .updateMyTeam(uid: _user!.uid!, team: team)
         .then((result) {
@@ -103,7 +103,7 @@ class UserViewModel extends ChangeNotifier {
       {required String uid,
       required String email,
       required String nickname,
-      required String team}) async {
+      required int team}) async {
     await authRepositoryProvider.updateUserInfo(
         email: email, nickname: nickname);
     _user!.email = email;

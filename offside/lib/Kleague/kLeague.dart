@@ -1,7 +1,8 @@
-import 'package:offside/data/model/team_transfer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'TeamInfo.dart';
+import 'package:offside/data/model/team_info.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
+import 'package:offside/KLeague/TeamInfo.dart';
 
 class KLeague extends StatelessWidget {
   const KLeague({Key? key}) : super(key: key);
@@ -37,10 +38,13 @@ class Top extends StatelessWidget {
   }
 }
 
-class KLeagueOne extends StatelessWidget {
+class KLeagueOne extends ConsumerWidget {
   const KLeagueOne({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
+    final k1 = teamInfoList.where((element) => element.league == 1).toList();
+
     return Container(
       width: double.infinity,
       alignment: Alignment.topLeft,
@@ -70,28 +74,28 @@ class KLeagueOne extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    team(1, context, teamK1[0]),
-                    team(2, context, teamK1[1]),
-                    team(3, context, teamK1[2]),
-                    team(4, context, teamK1[3])
+                    team(1, context, k1[0]),
+                    team(2, context, k1[1]),
+                    team(3, context, k1[2]),
+                    team(4, context, k1[3])
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    team(5, context, teamK1[4]),
-                    team(6, context, teamK1[5]),
-                    team(7, context, teamK1[6]),
-                    team(8, context, teamK1[7])
+                    team(5, context, k1[4]),
+                    team(6, context, k1[5]),
+                    team(7, context, k1[6]),
+                    team(8, context, k1[7])
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    team(9, context, teamK1[8]),
-                    team(10, context, teamK1[9]),
-                    team(11, context, teamK1[10]),
-                    team(12, context, teamK1[11])
+                    team(9, context, k1[8]),
+                    team(10, context, k1[9]),
+                    team(11, context, k1[10]),
+                    team(12, context, k1[11])
                   ],
                 )
               ],
@@ -103,10 +107,12 @@ class KLeagueOne extends StatelessWidget {
   }
 }
 
-class KLeagueTwo extends StatelessWidget {
+class KLeagueTwo extends ConsumerWidget {
   const KLeagueTwo({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
+    final k2 = teamInfoList.where((element) => element.league == 2).toList();
     return Container(
       width: double.infinity,
       height: 570,
@@ -135,34 +141,34 @@ class KLeagueTwo extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  team(13, context, teamK2[0]),
-                  team(14, context, teamK2[1]),
-                  team(15, context, teamK2[2]),
-                  team(16, context, teamK2[3])
+                  team(13, context, k2[0]),
+                  team(14, context, k2[1]),
+                  team(15, context, k2[2]),
+                  team(16, context, k2[3])
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  team(17, context, teamK2[4]),
-                  team(18, context, teamK2[5]),
-                  team(19, context, teamK2[6]),
-                  team(20, context, teamK2[7])
+                  team(17, context, k2[4]),
+                  team(18, context, k2[5]),
+                  team(19, context, k2[6]),
+                  team(20, context, k2[7])
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  team(21, context, teamK2[8]),
-                  team(22, context, teamK2[9]),
-                  team(23, context, teamK2[10]),
-                  team(24, context, teamK2[11])
+                  team(21, context, k2[8]),
+                  team(22, context, k2[9]),
+                  team(23, context, k2[10]),
+                  team(24, context, k2[11])
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  team(25, context, teamK2[12]),
+                  team(25, context, k2[12]),
                 ],
               )
             ],
@@ -173,12 +179,8 @@ class KLeagueTwo extends StatelessWidget {
   }
 }
 
-Widget team(int id, BuildContext context, name) {
+Widget team(int id, BuildContext context, TeamInfo team) {
   var size = MediaQuery.of(context).size;
-
-  String getName(String selectedTeam) {
-    return selectedTeam.replaceAll('\n', ' ');
-  }
 
   return SizedBox(
     height: 120,
@@ -189,7 +191,7 @@ Widget team(int id, BuildContext context, name) {
             await Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TeamInfo(team: getName(name))));
+                    builder: (context) => TeamInfoPage(team: team)));
           },
           child: Container(
             padding: const EdgeInsets.all(4),
@@ -201,13 +203,13 @@ Widget team(int id, BuildContext context, name) {
                     ? const Color.fromRGBO(18, 32, 84, 1)
                     : Colors.white,
                 borderRadius: BorderRadius.circular(100)),
-            child: Image.asset(teamTransfer[getName(name)]['img']),
+            child: Image.network(team.logoImg),
           ),
         ),
         SizedBox(
           width: 80,
           child: Text(
-            name,
+            team.name,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.w500,
