@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/Kleague/TeamInfo.dart';
+import 'package:offside/Match/match.dart';
 import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/match_view_model.dart';
 
@@ -220,129 +221,110 @@ class RandomMatch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textStyle = TextStyle(
-        fontSize: 18,
-        color: Color.fromARGB(255, 67, 67, 67),
+    var textStyle = TextStyle(
+        fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 16),
+        color: const Color.fromARGB(255, 67, 67, 67),
         fontFamily: 'NanumSquare',
         fontWeight: FontWeight.w600);
     const sizedBox = SizedBox(
       width: 10,
     );
-    return Column(
-      children: [
+    return Column(children: [
+      Container(
+          color: const Color.fromRGBO(14, 32, 87, 1),
+          width: size.width,
+          padding: const EdgeInsets.all(10),
+          child: const Text(
+            '이 MATCH 어때?',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          )),
+      Container(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+                width: 30,
+                height: 30,
+                child: Image.asset(teamTransfer[info[0]]['img'])),
+            sizedBox,
+            Text(info[0], style: textStyle),
+            sizedBox,
+            Text("VS", style: textStyle),
+            sizedBox,
+            Text(info[1], style: textStyle),
+            sizedBox,
+            SizedBox(
+                width: 30,
+                height: 30,
+                child: Image.asset(teamTransfer[info[1]]['img']))
+          ],
+        ),
+      ),
+      Row(children: [
         Container(
             color: const Color.fromRGBO(14, 32, 87, 1),
             width: size.width,
-            padding: const EdgeInsets.all(10),
-            child: const Text(
-              '이 MATCH 어때?',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            )),
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Image.asset(teamTransfer[info[0]]['img'])),
-              sizedBox,
-              Text(info[0], style: textStyle),
-              sizedBox,
-              const Text("VS", style: textStyle),
-              sizedBox,
-              Text(info[1], style: textStyle),
-              sizedBox,
-              SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Image.asset(teamTransfer[info[1]]['img']))
-            ],
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              color: const Color.fromRGBO(14, 32, 87, 1),
-              width: size.width,
-              child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                const Text(
-                  "경기장 주변 관광 일정 보러가기",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'NanumSquare'),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  width: 25,
-                  height: 25,
-                  decoration: const BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                  child: IconButton(
-                      color: const Color.fromRGBO(14, 32, 87, 1),
-                      padding: const EdgeInsets.all(0),
-                      icon: const Icon(
-                        Icons.chevron_right,
-                      ),
-                      onPressed: () {
-                        // do something
-                      }),
-                ),
-              ]),
-            ),
-          ],
-        )
-      ],
-    );
+            child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              const Text(
+                "경기장 주변 관광 일정 보러가기",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'NanumSquare'),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Container(
+                margin: const EdgeInsets.all(10),
+                width: 25,
+                height: 25,
+                decoration: const BoxDecoration(
+                    color: Colors.white, shape: BoxShape.circle),
+                child: IconButton(
+                    color: const Color.fromRGBO(14, 32, 87, 1),
+                    padding: const EdgeInsets.all(0),
+                    icon: const Icon(
+                      Icons.chevron_right,
+                    ),
+                    onPressed: () {
+                      // do something
+                    }),
+              )
+            ]))
+      ])
+    ]);
   }
 }
 
 class MatchCarousel extends StatelessWidget {
-  const MatchCarousel({
-    super.key,
-    required this.size,
-    required this.info,
-    required this.page,
-  });
+  const MatchCarousel(
+      {super.key, required this.size, required this.info, required this.page});
   final Size size;
   final List<dynamic> info;
   final Function page;
   @override
   Widget build(BuildContext context) {
     return CarouselSlider.builder(
-      itemCount: info.length,
-      itemBuilder: ((BuildContext context, int index, int realIndex) {
-        return MatchBox(size: size, match: info[index]);
-      }),
-      options: CarouselOptions(
-          height: 280.0,
-          onPageChanged: (index, reason) {
-            page(index);
-          }),
-    );
+        itemCount: info.length,
+        itemBuilder: ((BuildContext context, int index, int realIndex) {
+          return MatchBox(size: size, match: info[index]);
+        }),
+        options: CarouselOptions(
+            height: 280.0,
+            onPageChanged: (index, reason) {
+              page(index);
+            }));
   }
 }
 
 class MatchBox extends StatelessWidget {
-  const MatchBox({
-    super.key,
-    required this.size,
-    required this.match,
-  });
+  const MatchBox({super.key, required this.size, required this.match});
 
   final Size size;
   final List<dynamic> match;
-
-  String getDate(data) {
-    return "${data[0]}${data[1]}.${data[2]}${data[3]}.${data[4]}${data[5]}";
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -351,29 +333,36 @@ class MatchBox extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(8, 20, 8, 20),
         margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(5, 5), // changes position of shadow
-            ),
-          ],
-        ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(5, 5), // changes position of shadow
+              )
+            ]),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Text(
-            '[${getDate(match.first.data)}]',
-            style: const TextStyle(fontSize: 15),
-          ),
+          Text('[${getDate(match.first.data)}]',
+              style: TextStyle(
+                  fontSize: const AdaptiveTextSize()
+                      .getadaptiveTextSize(context, 15))),
           const SizedBox(height: 5),
-          const Row(
+          Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('H', style: TextStyle(fontSize: 13, color: Colors.blue)),
-                Text('A', style: TextStyle(fontSize: 13, color: Colors.red)),
+                Text('H',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 13),
+                        color: Colors.blue)),
+                Text('A',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 13),
+                        color: Colors.red))
               ]),
           ListView.builder(
               shrinkWrap: true,
@@ -384,10 +373,10 @@ class MatchBox extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '${match[index].time}',
-                          style: const TextStyle(fontSize: 12),
-                        ),
+                        Text('${match[index].time}',
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 12))),
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
@@ -396,20 +385,22 @@ class MatchBox extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
+                              Text(teamTransfer[match[index].team1]['name'],
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 13)),
+                                  textAlign: TextAlign.center),
                               Text(
-                                teamTransfer[match[index].team1]['name'],
-                                style: const TextStyle(fontSize: 13),
-                                textAlign: TextAlign.center,
-                              ),
-                              const Text(
                                 ' vs ',
-                                style: TextStyle(fontSize: 13),
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 13)),
                               ),
-                              Text(
-                                teamTransfer[match[index].team2]['name'],
-                                style: const TextStyle(fontSize: 13),
-                                textAlign: TextAlign.center,
-                              ),
+                              Text(teamTransfer[match[index].team2]['name'],
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 13)),
+                                  textAlign: TextAlign.center),
                             ]),
                         SizedBox(
                             width: size.width * 0.08,

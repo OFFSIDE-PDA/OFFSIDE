@@ -91,7 +91,6 @@ class _TourSchedule extends ConsumerState {
                     icon: iconStyle,
                     value: selectedDate,
                     onChanged: (String? value) {
-                      // This is called when the user selects an item.
                       setState(() {
                         selectedDate = value!;
                       });
@@ -165,64 +164,61 @@ class _TourSchedule extends ConsumerState {
                       Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                  width: size.width * 0.08,
-                                  height: size.width * 0.08,
-                                  child: Image.asset(
-                                      teamTransfer[matches[selectedIdx].team1]
-                                          ['img'])),
-                              const SizedBox(width: 20),
-                              Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      teamTransfer[matches[selectedIdx].team1]
-                                          ['name'],
-                                      style: TextStyle(
-                                        fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 15),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                    width: size.width * 0.08,
+                                    height: size.width * 0.08,
+                                    child: Image.asset(
+                                        teamTransfer[matches[selectedIdx].team1]
+                                            ['img'])),
+                                const SizedBox(width: 20),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        teamTransfer[matches[selectedIdx].team1]
+                                            ['name'],
+                                        style: TextStyle(
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 15),
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      ' vs ',
-                                      style: TextStyle(
-                                        fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 15),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        ' vs ',
+                                        style: TextStyle(
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 15),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      teamTransfer[matches[selectedIdx].team2]
-                                          ['name'],
-                                      style: TextStyle(
-                                        fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 15),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        teamTransfer[matches[selectedIdx].team2]
+                                            ['name'],
+                                        style: TextStyle(
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 15),
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ]),
-                              const SizedBox(width: 20),
-                              SizedBox(
-                                  width: size.width * 0.08,
-                                  height: size.width * 0.08,
-                                  child: Image.asset(
-                                      teamTransfer[matches[selectedIdx].team2]
-                                          ['img'])),
-                            ],
-                          )),
+                                      const SizedBox(width: 20),
+                                      SizedBox(
+                                          width: size.width * 0.08,
+                                          height: size.width * 0.08,
+                                          child: Image.asset(teamTransfer[
+                                                  matches[selectedIdx].team2]
+                                              ['img']))
+                                    ])
+                              ])),
                       const SizedBox(height: 5),
-                      Text(
-                        teamTransfer[matches[selectedIdx].team1]['stadium'],
-                        style: TextStyle(
-                          fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 15),
-                        ),
-                      )
+                      Text(teamTransfer[matches[selectedIdx].team1]['stadium'],
+                          style: TextStyle(
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 15),
+                          ))
                     ])),
             const SizedBox(height: 30),
             Text(
@@ -240,7 +236,8 @@ class _TourSchedule extends ConsumerState {
                     MaterialPageRoute(
                         builder: (context) => TourPlan(
                             home: matches[selectedIdx].team1,
-                            away: matches[selectedIdx].team2)),
+                            away: matches[selectedIdx].team2,
+                            date: matches[selectedIdx].data)),
                   );
                 },
                 style: ElevatedButton.styleFrom(

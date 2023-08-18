@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/Kleague/TeamInfo.dart';
 import 'package:offside/MyPage/myteam.dart';
 import 'package:offside/data/model/match_model.dart';
 import 'package:offside/data/model/team_transfer.dart';
@@ -31,8 +32,9 @@ class _Match extends ConsumerState {
         BorderSide(color: Color.fromARGB(255, 67, 67, 67), width: 1.0);
     const iconStyle =
         Icon(Icons.expand_more, color: Color.fromARGB(255, 67, 67, 67));
-    const textStyle =
-        TextStyle(fontSize: 12, color: Color.fromARGB(255, 67, 67, 67));
+    var textStyle = TextStyle(
+        fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+        color: const Color.fromARGB(255, 67, 67, 67));
     var elevatedStyle = ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         backgroundColor: Colors.white,
@@ -50,7 +52,7 @@ class _Match extends ConsumerState {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text(
+            Text(
               '경기 일정',
               style: textStyle,
             ),
@@ -119,8 +121,11 @@ class _Match extends ConsumerState {
                       decoration: BoxDecoration(
                           color: const Color.fromRGBO(14, 32, 87, 1),
                           borderRadius: BorderRadius.circular(15)),
-                      child: const Text("MY팀",
-                          style: TextStyle(fontSize: 10, color: Colors.white))))
+                      child: Text("MY팀",
+                          style: TextStyle(
+                              fontSize: const AdaptiveTextSize()
+                                  .getadaptiveTextSize(context, 10),
+                              color: Colors.white))))
             ]),
             SizedBox(
                 height: size.height,
@@ -145,11 +150,7 @@ class _Match extends ConsumerState {
 }
 
 class MatchBox extends StatelessWidget {
-  const MatchBox({
-    super.key,
-    required this.size,
-    required this.info,
-  });
+  const MatchBox({super.key, required this.size, required this.info});
   final Size size;
   final List info;
   @override
@@ -170,14 +171,24 @@ class MatchBox extends StatelessWidget {
             ]),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Text('[${getDate(info.first.data)}]',
-              style: const TextStyle(fontSize: 15)),
+              style: TextStyle(
+                  fontSize: const AdaptiveTextSize()
+                      .getadaptiveTextSize(context, 15))),
           const SizedBox(height: 5),
-          const Row(
+          Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('H', style: TextStyle(fontSize: 13, color: Colors.blue)),
-                Text('A', style: TextStyle(fontSize: 13, color: Colors.red))
+                Text('H',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 13),
+                        color: Colors.blue)),
+                Text('A',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 13),
+                        color: Colors.red))
               ]),
           ListView.builder(
               shrinkWrap: true,
@@ -189,7 +200,9 @@ class MatchBox extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text('${info[index].time}',
-                              style: const TextStyle(fontSize: 12)),
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 12))),
                           SizedBox(
                               width: size.width * 0.08,
                               height: size.width * 0.08,
@@ -198,19 +211,27 @@ class MatchBox extends StatelessWidget {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(
-                                    // transferName[info[index].team1]!,
-                                    teamTransfer[info[index].team1]['name'],
-                                    style: const TextStyle(fontSize: 13),
+                                Text(teamTransfer[info[index].team1]['name'],
+                                    style: TextStyle(
+                                        fontSize: const AdaptiveTextSize()
+                                            .getadaptiveTextSize(context, 13)),
                                     textAlign: TextAlign.center),
                                 getScore(info.first.data)
                                     ? Text(
                                         ' ${info[index].score1} : ${info[index].score2} ',
-                                        style: const TextStyle(fontSize: 13))
-                                    : const Text(' vs ',
-                                        style: TextStyle(fontSize: 13)),
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 13)))
+                                    : Text(' vs ',
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 13))),
                                 Text(teamTransfer[info[index].team2]['name'],
-                                    style: const TextStyle(fontSize: 13),
+                                    style: TextStyle(
+                                        fontSize: const AdaptiveTextSize()
+                                            .getadaptiveTextSize(context, 13)),
                                     textAlign: TextAlign.center)
                               ]),
                           SizedBox(
@@ -263,21 +284,35 @@ class FilteredBox extends StatelessWidget {
                   )
             ]),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Text('[${getDate(info.data)}]', style: const TextStyle(fontSize: 15)),
+          Text('[${getDate(info.data)}]',
+              style: TextStyle(
+                  fontSize: const AdaptiveTextSize()
+                      .getadaptiveTextSize(context, 15))),
           const SizedBox(height: 5),
-          const Row(
+          Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('H', style: TextStyle(fontSize: 13, color: Colors.blue)),
-                Text('A', style: TextStyle(fontSize: 13, color: Colors.red))
+                Text('A',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 13),
+                        color: Colors.red)),
+                Text('H',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 13),
+                        color: Colors.blue)),
               ]),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('${info.time}', style: const TextStyle(fontSize: 12)),
+                    Text('${info.time}',
+                        style: TextStyle(
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 12))),
                     SizedBox(
                         width: size.width * 0.08,
                         height: size.width * 0.08,
@@ -286,15 +321,23 @@ class FilteredBox extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(teamTransfer[info.team1]['name'],
-                              style: const TextStyle(fontSize: 13),
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 13)),
                               textAlign: TextAlign.center),
                           getScore(info.data)
                               ? Text(' ${info.score1} : ${info.score2} ',
-                                  style: const TextStyle(fontSize: 13))
-                              : const Text(' vs ',
-                                  style: TextStyle(fontSize: 13)),
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 13)))
+                              : Text(' vs ',
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 13))),
                           Text(teamTransfer[info.team2]['name'],
-                              style: const TextStyle(fontSize: 13),
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 13)),
                               textAlign: TextAlign.center)
                         ]),
                     SizedBox(
@@ -327,8 +370,9 @@ class DefaultWidget extends StatelessWidget {
       color: Color.fromARGB(255, 67, 67, 67),
       width: 1.0,
     );
-    const textStyle =
-        TextStyle(fontSize: 12, color: Color.fromARGB(255, 67, 67, 67));
+    var textStyle = TextStyle(
+        fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+        color: Color.fromARGB(255, 67, 67, 67));
     var elevatedStyle = ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         backgroundColor: Colors.white,
@@ -339,7 +383,7 @@ class DefaultWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               '경기 일정',
               style: textStyle,
             ),
@@ -350,14 +394,14 @@ class DefaultWidget extends StatelessWidget {
                   ElevatedButton(
                       style: elevatedStyle, //Elevated Button Background
                       onPressed: () {}, //make onPressed callback empty
-                      child: const Text('K리그1', style: textStyle)),
+                      child: Text('K리그1', style: textStyle)),
                   const SizedBox(
                     width: 10,
                   ),
                   ElevatedButton(
                       style: elevatedStyle, //Elevated Button Background
                       onPressed: () {}, //make onPressed callback empty
-                      child: const Text('강원 FC', style: textStyle)),
+                      child: Text('강원 FC', style: textStyle)),
                 ]),
                 Container(
                   margin: const EdgeInsets.all(10),
