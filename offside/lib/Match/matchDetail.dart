@@ -74,7 +74,7 @@ class Top extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,7 +112,7 @@ class Top extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      teamTransfer[team1]['name'],
+                      teamTransfer[team1]['show'],
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: const AdaptiveTextSize()
@@ -145,7 +145,7 @@ class Top extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      teamTransfer[team2]['name'],
+                      teamTransfer[team2]['show'],
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: const AdaptiveTextSize()
@@ -160,7 +160,7 @@ class Top extends StatelessWidget {
             color: Colors.grey, // 색상 지정
             thickness: 1, // 두께 지정
             indent: 10, // 시작 여백 지정
-            endIndent: 20, // 끝 여백 지정
+            endIndent: 30, // 끝 여백 지정
           ),
           Container(
             width: double.infinity,
@@ -180,12 +180,23 @@ class Top extends StatelessWidget {
                   SizedBox(
                     height: size.height * 0.01,
                   ),
-                  Text(
-                    '< ${teamTransfer[team1]['stadium']} >',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 13)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.location_on,
+                          size: 20, color: Color.fromRGBO(18, 32, 84, 1)),
+                      SizedBox(
+                        width: size.width * 0.01,
+                      ),
+                      Text(
+                        '${teamTransfer[team1]['stadium']}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 12)),
+                      ),
+                    ],
                   ),
                 ]),
           )
@@ -244,7 +255,7 @@ class Bottom extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${team1} 1승',
+                          '${teamTransfer[team1]['show']} 1승',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: const AdaptiveTextSize()
@@ -260,7 +271,7 @@ class Bottom extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          '${team2} 5승',
+                          '${teamTransfer[team2]['show']} 5승',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: const AdaptiveTextSize()
@@ -297,7 +308,7 @@ class Bottom extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${team1} 1승',
+                          '${teamTransfer[team1]['show']} 1승',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: const AdaptiveTextSize()
@@ -313,7 +324,7 @@ class Bottom extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          '${team2} 5승',
+                          '${teamTransfer[team2]['show']} 5승',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: const AdaptiveTextSize()
