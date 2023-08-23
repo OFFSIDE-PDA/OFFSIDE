@@ -8,6 +8,7 @@ class TeamInfo {
     color = map["color"];
     founded = map["founded"];
     fullName = map["full_name"];
+    middleName = map["middle_name"];
     league = map["league"];
     name = map["name"];
     site = map["site"];
@@ -26,4 +27,6 @@ class TeamInfo {
   GeoPoint stadiumGeo = const GeoPoint(0.0, 0.0);
   String stadiumImg = "dummy";
   String logoImg = "dummy";
+  int id = 0;
+  String middleName = "dummy";
 }

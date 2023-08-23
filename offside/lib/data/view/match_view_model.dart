@@ -209,7 +209,7 @@ class MatchViewModel extends ChangeNotifier {
     return {'team': myTeam, 'win': win, 'draw': draw, 'lose': lose};
   }
 
-  getFilteredTeams(int league, String selectedTeam) {
+  getFilteredTeams(int league, int selectedTeam) {
     List<MatchModel> team = [];
     for (List<MatchModel> matches in _allMatchViewModel?['all']?[league - 1]) {
       for (MatchModel match in matches) {

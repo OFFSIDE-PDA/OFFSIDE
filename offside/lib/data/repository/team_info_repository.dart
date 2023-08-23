@@ -18,13 +18,14 @@ class TeamInfoRepository {
 
     for (Map<String, dynamic> teamInfo in allTeamInfo) {
       TeamInfo teaminfo = TeamInfo.fromMap(teamInfo);
+      teaminfo.id = teamInfo["idx"] + 1;
       //로고 url, 주경기장 url 획득
       logoUrlFutureList1.add(_teamInfoDataSource
           .getTeamImg(teaminfo.fullName.replaceAll(" ", "")));
       stadiumUrlFutureList2.add(_teamInfoDataSource
           .getStadiumImg(teaminfo.fullName.replaceAll(" ", "")));
 
-      teamsInfo.add(TeamInfo.fromMap(teamInfo));
+      teamsInfo.add(teaminfo);
     }
     //병렬로 url 획득
     List<String> imgUrlList =

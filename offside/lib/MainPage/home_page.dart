@@ -75,60 +75,59 @@ class _HomePage extends ConsumerState {
       width: 10,
     );
 
-
     return SingleChildScrollView(
-        child: Column(children: [
-      Container(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: Row(
-          children: [
-            Text(
-              "경기 일정",
-              style: TextStyle(
-                  fontFamily: 'NanumSquare',
-                  fontSize: const AdaptiveTextSize()
-                      .getadaptiveTextSize(context, 12)),
-            ),
-            wSizedBox,
-            ElevatedButton(
-                onPressed: chooseLeague,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: league == 1
-                      ? const Color.fromRGBO(14, 32, 87, 1)
-                      : Colors.white,
-                  side: borderSide,
-                ),
-                child: Text(
-                  "K리그1",
+      child: Column(children: [
+        Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: Row(
+              children: [
+                Text(
+                  "경기 일정",
                   style: TextStyle(
+                      fontFamily: 'NanumSquare',
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 12),
-                      color: league == 1 ? Colors.white : Colors.grey,
-                      fontFamily: 'NanumSquare'),
-                )),
-            wSizedBox,
-            ElevatedButton(
-              onPressed: chooseLeague,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: league == 1
-                    ? Colors.white
-                    : const Color.fromRGBO(14, 32, 87, 1),
-                side: const BorderSide(
-                  color: Colors.grey,
-                  width: 2.0,
-                ), // Background color
-              ),
-              child: Text(
-                "K리그2",
-                style: TextStyle(
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 12),
-                    color: league == 1 ? Colors.grey : Colors.white,
-                    fontFamily: 'NanumSquare'),
-              ),
-            )
-          ],
-        ),
+                          .getadaptiveTextSize(context, 12)),
+                ),
+                wSizedBox,
+                ElevatedButton(
+                    onPressed: chooseLeague,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: league == 1
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.white,
+                      side: borderSide,
+                    ),
+                    child: Text(
+                      "K리그1",
+                      style: TextStyle(
+                          fontSize: const AdaptiveTextSize()
+                              .getadaptiveTextSize(context, 12),
+                          color: league == 1 ? Colors.white : Colors.grey,
+                          fontFamily: 'NanumSquare'),
+                    )),
+                wSizedBox,
+                ElevatedButton(
+                  onPressed: chooseLeague,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: league == 1
+                        ? Colors.white
+                        : const Color.fromRGBO(14, 32, 87, 1),
+                    side: const BorderSide(
+                      color: Colors.grey,
+                      width: 2.0,
+                    ), // Background color
+                  ),
+                  child: Text(
+                    "K리그2",
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 12),
+                        color: league == 1 ? Colors.grey : Colors.white,
+                        fontFamily: 'NanumSquare'),
+                  ),
+                )
+              ],
+            )),
         MatchCarousel(
             size: size,
             info: matchData.getWeekMatches(league),

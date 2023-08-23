@@ -28,7 +28,7 @@ class AdaptiveTextSize {
 class _Match extends ConsumerState {
   List<String> league = ["K리그1", "K리그2"];
   String selectedLeague = 'K리그1';
-  String selectedTeam = '강원 FC';
+  int selectedTeam = 1;
   bool filtering = false;
 
   @override
@@ -56,8 +56,9 @@ class _Match extends ConsumerState {
     final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
     final k1 = teamInfoList.where((element) => element.league == 1).toList();
     final k2 = teamInfoList.where((element) => element.league == 2).toList();
+    print(teamInfoList[4].id);
     final filteredTeam = matchData.getFilteredTeams(
-        selectedLeague == 'K리그1' ? 1 : 2, getName(selectedTeam));
+        selectedLeague == 'K리그1' ? 1 : 2, selectedTeam);
     var leagueLen =
         matchData.getLeagueLength('all', selectedLeague == 'K리그1' ? 1 : 2);
     var matchIdx =
@@ -97,8 +98,8 @@ class _Match extends ConsumerState {
                               setState(() {
                                 selectedLeague = value.toString();
                                 selectedLeague == 'K리그1'
-                                    ? selectedTeam = k1[0].fullName
-                                    : selectedTeam = k2[0].fullName;
+                                    ? selectedTeam = k1[0].id
+                                    : selectedTeam = k2[0].id;
                                 filtering = false;
                               });
                             },
@@ -123,20 +124,18 @@ class _Match extends ConsumerState {
                               value: selectedTeam,
                               onChanged: (value) {
                                 setState(() {
-                                  selectedTeam = value.toString();
+                                  selectedTeam = value!;
                                   filtering = true;
                                 });
                               },
                               items: selectedLeague == 'K리그1'
                                   ? k1.map((e) {
                                       return DropdownMenuItem(
-                                          value: e.fullName,
-                                          child: Text(e.fullName));
+                                          value: e.id, child: Text(e.fullName));
                                     }).toList()
                                   : k2.map((e) {
                                       return DropdownMenuItem(
-                                          value: e.fullName,
-                                          child: Text(e.fullName));
+                                          value: e.id, child: Text(e.fullName));
                                     }).toList()),
                         )
                       ],
@@ -152,13 +151,13 @@ class _Match extends ConsumerState {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
-                            color: const Color.fromRGBO(33, 58, 135, 1),
+                            color: const Color.fromRGBO(14, 32, 87, 1),
                             borderRadius: BorderRadius.circular(15)),
                         child: Text(
                           "MY팀",
                           style: TextStyle(
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 11),
+                                  .getadaptiveTextSize(context, 10),
                               color: Colors.white),
                         ),
                       ),
@@ -187,8 +186,7 @@ class _Match extends ConsumerState {
                             return MatchBox(
                                 teamInfoList: teamInfoList,
                                 size: size,
-                                info: matchData.getMatchIndex('all',
-                                    selectedLeague == 'K리그1' ? 1 : 2, index));
+                                info: matchIdx[index]);
                           }),
                 )
                 // MatchBox(size: size)
@@ -280,7 +278,6 @@ class MatchBox extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                // transferName[info[index].team1]!,
                                 teamInfoList[info[index].team1].name,
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
@@ -290,12 +287,15 @@ class MatchBox extends StatelessWidget {
                               getScore(info.first.data)
                                   ? Text(
                                       ' ${info[index].score1} : ${info[index].score2} ',
-                                      style: const TextStyle(fontSize: 13),
-                                    )
-                                  : const Text(
-                                      ' vs ',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
+                                      style: TextStyle(
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(
+                                                  context, 13)))
+                                  : Text(' vs ',
+                                      style: TextStyle(
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(
+                                                  context, 13))),
                               Text(
                                 teamInfoList[info[index].team2].name,
                                 style: TextStyle(
@@ -329,7 +329,7 @@ class MatchBox extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: const Color.fromRGBO(33, 58, 135, 1),
                                 borderRadius: BorderRadius.circular(15)),
-                            child: Icon(
+                            child: const Icon(
                               CupertinoIcons.paperplane,
                               color: Colors.white,
                               size: 15,
@@ -374,7 +374,7 @@ class FilteredBox extends StatelessWidget {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Text(
-            '${getDate(info.data)}',
+            getDate(info.data),
             style: TextStyle(
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 13)),
@@ -419,7 +419,7 @@ class FilteredBox extends StatelessWidget {
                           teamInfoList[info.team1!].name,
                           style: TextStyle(
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 12)),
+                                  .getadaptiveTextSize(context, 13)),
                           textAlign: TextAlign.center,
                         ),
                         getScore(info.data)
@@ -427,12 +427,12 @@ class FilteredBox extends StatelessWidget {
                                 ' ${info.score1} : ${info.score2} ',
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12)),
+                                        .getadaptiveTextSize(context, 13)),
                               )
-                            : const Text(
-                                ' vs ',
-                                style: TextStyle(fontSize: 13),
-                              ),
+                            : Text(' vs ',
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 13))),
                         Text(
                           teamInfoList[info.team2!].name,
                           style: TextStyle(
@@ -444,25 +444,25 @@ class FilteredBox extends StatelessWidget {
                   SizedBox(
                       width: size.width * 0.08,
                       height: size.width * 0.08,
-                      child: Image.asset(teamInfoList[info.team2!].logoImg)),
+                      child: Image.network(teamInfoList[info.team2!].logoImg)),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MatchDetail(
-                                  date: getDate(info.data),
-                                  time: info.time!,
-                                  team1: info.team1!,
-                                  team2: info.team2!,
-                                  score1: info.score1,
-                                  score2: info.score2)));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => MatchDetail(
+                      //             date: getDate(info.data),
+                      //             time: info.time!,
+                      //             team1: info.team1!,
+                      //             team2: info.team2!,
+                      //             score1: info.score1,
+                      //             score2: info.score2)));
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
-                          color: const Color.fromRGBO(33, 58, 135, 1),
+                          color: const Color.fromRGBO(14, 32, 87, 1),
                           borderRadius: BorderRadius.circular(15)),
                       child: Icon(
                         CupertinoIcons.paperplane,
@@ -485,8 +485,9 @@ class DefaultWidget extends StatelessWidget {
       color: Color.fromARGB(255, 67, 67, 67),
       width: 1.0,
     );
-    const textStyle =
-        TextStyle(fontSize: 12, color: Color.fromARGB(255, 67, 67, 67));
+    var textStyle = TextStyle(
+        fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+        color: Color.fromARGB(255, 67, 67, 67));
     var elevatedStyle = ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         backgroundColor: Colors.white,
@@ -497,7 +498,7 @@ class DefaultWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               '경기 일정',
               style: textStyle,
             ),
@@ -508,14 +509,14 @@ class DefaultWidget extends StatelessWidget {
                   ElevatedButton(
                       style: elevatedStyle, //Elevated Button Background
                       onPressed: () {}, //make onPressed callback empty
-                      child: const Text('K리그1', style: textStyle)),
+                      child: Text('K리그1', style: textStyle)),
                   const SizedBox(
                     width: 10,
                   ),
                   ElevatedButton(
                       style: elevatedStyle, //Elevated Button Background
                       onPressed: () {}, //make onPressed callback empty
-                      child: const Text('강원 FC', style: textStyle)),
+                      child: Text('강원 FC', style: textStyle)),
                 ]),
                 Container(
                   margin: const EdgeInsets.all(10),

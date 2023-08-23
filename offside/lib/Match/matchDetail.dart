@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/MyPage/myteam.dart';
-import 'package:offside/data/model/match_model.dart';
-import 'package:offside/data/model/team_transfer.dart';
-import 'package:offside/data/view/match_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
 
 class MatchDetail extends StatelessWidget {
   const MatchDetail(
@@ -21,10 +18,10 @@ class MatchDetail extends StatelessWidget {
 
   final String date;
   final String time;
-  final String team1;
-  final String team2;
-  final String? score1;
-  final String? score2;
+  final int team1;
+  final int team2;
+  final int? score1;
+  final int? score2;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,7 +50,7 @@ class AdaptiveTextSize {
   }
 }
 
-class Top extends StatelessWidget {
+class Top extends ConsumerWidget {
   const Top(
       {super.key,
       required this.date,
@@ -65,14 +62,15 @@ class Top extends StatelessWidget {
 
   final String date;
   final String time;
-  final String team1;
-  final String team2;
-  final String? score1;
-  final String? score2;
+  final int team1;
+  final int team2;
+  final int? score1;
+  final int? score2;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var size = MediaQuery.of(context).size;
+    final teamInfoList = ref.read(teamInfoViewModelProvider).teamInfoList;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
       child: Column(
@@ -107,12 +105,12 @@ class Top extends StatelessWidget {
                     SizedBox(
                         width: size.width * 0.12,
                         height: size.width * 0.12,
-                        child: Image.asset(teamTransfer[team1]['img'])),
+                        child: Image.network(teamInfoList[team1].logoImg)),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                      teamTransfer[team1]['show'],
+                      teamInfoList[team1].middleName,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: const AdaptiveTextSize()
@@ -122,7 +120,7 @@ class Top extends StatelessWidget {
                 ),
                 getScore(date)
                     ? Text(
-                        ' ${score1} : ${score2} ',
+                        ' $score1 : ${score2} ',
                         style: TextStyle(
                             fontSize: const AdaptiveTextSize()
                                 .getadaptiveTextSize(context, 14),
@@ -140,12 +138,12 @@ class Top extends StatelessWidget {
                     SizedBox(
                         width: size.width * 0.12,
                         height: size.width * 0.12,
-                        child: Image.asset(teamTransfer[team2]['img'])),
+                        child: Image.network(teamInfoList[team2].logoImg)),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                      teamTransfer[team2]['show'],
+                      teamInfoList[team2].middleName,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: const AdaptiveTextSize()
@@ -170,8 +168,8 @@ class Top extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
-                    child: Image.asset(
-                      teamTransfer[team1]['stadium_img'],
+                    child: Image.network(
+                      teamInfoList[team1].stadiumImg,
                       fit: BoxFit.fill,
                       width: size.width * 0.7,
                       height: size.height * 0.15,
@@ -190,7 +188,7 @@ class Top extends StatelessWidget {
                         width: size.width * 0.01,
                       ),
                       Text(
-                        '${teamTransfer[team1]['stadium']}',
+                        '${teamInfoList[team1].stadium}',
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: const AdaptiveTextSize()
@@ -206,19 +204,20 @@ class Top extends StatelessWidget {
   }
 }
 
-class Bottom extends StatelessWidget {
+class Bottom extends ConsumerWidget {
   const Bottom({
     super.key,
     required this.team1,
     required this.team2,
   });
 
-  final String team1;
-  final String team2;
+  final int team1;
+  final int team2;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var size = MediaQuery.of(context).size;
+    final teamInfoList = ref.read(teamInfoViewModelProvider).teamInfoList;
     return (Expanded(
       child: Container(
         color: const Color.fromRGBO(18, 32, 84, 1),
@@ -255,7 +254,7 @@ class Bottom extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${teamTransfer[team1]['show']} 1승',
+                          '${teamInfoList[team1].middleName} 1승',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: const AdaptiveTextSize()
@@ -271,7 +270,7 @@ class Bottom extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          '${teamTransfer[team2]['show']} 5승',
+                          '${teamInfoList[team2].middleName} 5승',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: const AdaptiveTextSize()
@@ -308,7 +307,7 @@ class Bottom extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${teamTransfer[team1]['show']} 1승',
+                          '${teamInfoList[team1].middleName} 1승',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: const AdaptiveTextSize()
@@ -324,7 +323,7 @@ class Bottom extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          '${teamTransfer[team2]['show']} 5승',
+                          '${teamInfoList[team2].middleName} 5승',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: const AdaptiveTextSize()

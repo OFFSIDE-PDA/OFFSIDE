@@ -12,6 +12,9 @@ class TeamInfoPage extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   final TeamInfoModel.TeamInfo team;
+  @override
+  createState() => _TeamInfo();
+}
 
 class _TeamInfo extends ConsumerState<TeamInfoPage> {
   @override

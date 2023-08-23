@@ -132,134 +132,129 @@ class ResultBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-            width: size.width,
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 30),
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            decoration: BoxDecoration(
-                color: Color(resultColor(info[0].data, info[1])),
-                borderRadius: BorderRadius.circular(20)
-                // border: const Border(
-                //   bottom: BorderSide(width: 1, color: Colors.grey),
-                // ),
+    return Column(children: [
+      Container(
+          width: size.width,
+          padding: const EdgeInsets.fromLTRB(10, 5, 10, 30),
+          margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          decoration: BoxDecoration(
+              color: Color(resultColor(info[0].data, info[1])),
+              borderRadius: BorderRadius.circular(20)
+              // border: const Border(
+              //   bottom: BorderSide(width: 1, color: Colors.grey),
+              // ),
+              ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('${info[0].score1}', style: const TextStyle(fontSize: 15)),
+              SizedBox(
+                  width: size.width * 0.08,
+                  height: size.width * 0.08,
+                  child: Image.asset(teamInfoList[info[0].team1].logoImg)),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Text(
+                  teamInfoList[info[0].team1].name,
+                  style: const TextStyle(fontSize: 15),
+                  textAlign: TextAlign.center,
                 ),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text('${info[0].score1}',
-                      style: const TextStyle(fontSize: 15)),
-                  SizedBox(
-                      width: size.width * 0.08,
-                      height: size.width * 0.08,
-                      child: Image.asset(teamInfoList[info[0].team1].logoImg)),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          teamInfoList[info[0].team1].name,
-                          style: const TextStyle(fontSize: 15),
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          ' vs ',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        Text(
-                          teamInfoList[info[0].team2].name,
-                          style: const TextStyle(fontSize: 15),
-                          textAlign: TextAlign.center,
-                        ),
-                      ]),
-                  SizedBox(
-                      width: size.width * 0.08,
-                      height: size.width * 0.08,
-                      child: Image.asset(teamInfoList[info[0].team2].logoImg)),
-                  Text('${info[0].score2}',
-                      style: const TextStyle(fontSize: 15)),
-                ],
-              )),
-        ]));
-                  Text(
-                    '${getDate(info[0].data)}',
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                  const SizedBox(height: 25),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('${info[0].score1}',
-                              style: TextStyle(
-                                  fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 16),
-                                  fontWeight: FontWeight.w600)),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                  width: size.width * 0.1,
-                                  height: size.width * 0.1,
-                                  child: Image.asset(
-                                      teamTransfer[info[0].team1]['img'])),
-                              Text(
-                                teamTransfer[info[0].team1]['name']!,
-                                style: TextStyle(
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
-                                    fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            ' vs ',
-                            style: TextStyle(
-                                fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 16),
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                  width: size.width * 0.1,
-                                  height: size.width * 0.1,
-                                  child: Image.asset(
-                                      teamTransfer[info[0].team2]['img'])),
-                              Text(
-                                teamTransfer[info[0].team2]['name']!,
-                                style: TextStyle(
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
-                                    fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          Text('${info[0].score2}',
-                              style: TextStyle(
-                                  fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 16),
-                                  fontWeight: FontWeight.w600)),
-                        ],
-                      )),
-                ])),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Divider(
-            height: 15, // 구분선 위 아래의 간격
-            thickness: 1, // 구분선의 두께
-            color: Colors.grey, // 구분선의 색상
-          ),
-        ),
-      ],
-    );
+                const Text(
+                  ' vs ',
+                  style: TextStyle(fontSize: 15),
+                ),
+                Text(
+                  teamInfoList[info[0].team2].name,
+                  style: const TextStyle(fontSize: 15),
+                  textAlign: TextAlign.center,
+                ),
+              ]),
+              SizedBox(
+                  width: size.width * 0.08,
+                  height: size.width * 0.08,
+                  child: Image.asset(teamInfoList[info[0].team2].logoImg)),
+              Text('${info[0].score2}', style: const TextStyle(fontSize: 15)),
+            ],
+          )),
+    ]);
+    //               Text(
+    //                 '${getDate(info[0].data)}',
+    //                 style: const TextStyle(fontSize: 15),
+    //               ),
+    //               const SizedBox(height: 25),
+    //               Padding(
+    //                   padding: const EdgeInsets.symmetric(vertical: 5),
+    //                   child: Row(
+    //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //                     children: [
+    //                       Text('${info[0].score1}',
+    //                           style: TextStyle(
+    //                               fontSize: const AdaptiveTextSize()
+    //                                   .getadaptiveTextSize(context, 16),
+    //                               fontWeight: FontWeight.w600)),
+    //                       Column(
+    //                         mainAxisAlignment: MainAxisAlignment.center,
+    //                         crossAxisAlignment: CrossAxisAlignment.center,
+    //                         children: [
+    //                           SizedBox(
+    //                               width: size.width * 0.1,
+    //                               height: size.width * 0.1,
+    //                               child: Image.asset(
+    //                                   teamTransfer[info[0].team1]['img'])),
+    //                           Text(
+    //                             teamTransfer[info[0].team1]['name']!,
+    //                             style: TextStyle(
+    //                                 fontSize: const AdaptiveTextSize()
+    //                                     .getadaptiveTextSize(context, 12),
+    //                                 fontWeight: FontWeight.w500),
+    //                             textAlign: TextAlign.center,
+    //                           ),
+    //                         ],
+    //                       ),
+    //                       Text(
+    //                         ' vs ',
+    //                         style: TextStyle(
+    //                             fontSize: const AdaptiveTextSize()
+    //                                 .getadaptiveTextSize(context, 16),
+    //                             fontWeight: FontWeight.w600),
+    //                       ),
+    //                       Column(
+    //                         mainAxisAlignment: MainAxisAlignment.center,
+    //                         crossAxisAlignment: CrossAxisAlignment.center,
+    //                         children: [
+    //                           SizedBox(
+    //                               width: size.width * 0.1,
+    //                               height: size.width * 0.1,
+    //                               child: Image.asset(
+    //                                   teamTransfer[info[0].team2]['img'])),
+    //                           Text(
+    //                             teamTransfer[info[0].team2]['name']!,
+    //                             style: TextStyle(
+    //                                 fontSize: const AdaptiveTextSize()
+    //                                     .getadaptiveTextSize(context, 12),
+    //                                 fontWeight: FontWeight.w500),
+    //                             textAlign: TextAlign.center,
+    //                           ),
+    //                         ],
+    //                       ),
+    //                       Text('${info[0].score2}',
+    //                           style: TextStyle(
+    //                               fontSize: const AdaptiveTextSize()
+    //                                   .getadaptiveTextSize(context, 16),
+    //                               fontWeight: FontWeight.w600)),
+    //                     ],
+    //                   )),
+    //             ])),
+    //     Padding(
+    //       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+    //       child: Divider(
+    //         height: 15, // 구분선 위 아래의 간격
+    //         thickness: 1, // 구분선의 두께
+    //         color: Colors.grey, // 구분선의 색상
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 }
 

@@ -23,9 +23,10 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
     authRepositoryProvider.signOut();
     Navigator.pop(context);
   }
+
   final List _pages = [
     const KLeague(),
-    const CommunityPage(),
+    const TourSchedule(),
     const HomePage(),
     const Match(),
     const MyPage(),

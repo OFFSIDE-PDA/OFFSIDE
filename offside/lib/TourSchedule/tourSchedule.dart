@@ -6,6 +6,7 @@ import 'package:offside/Match/match.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
 import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/match_view_model.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
 
 class TourSchedule extends ConsumerStatefulWidget {
   const TourSchedule({super.key});
@@ -33,6 +34,7 @@ class _TourSchedule extends ConsumerState {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var matchData = ref.watch(matchViewModelProvider);
+    final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
     var data = matchData.getMatchDate();
     var matches = [];
     if (data['k1'][selectedDate] != null && data['k2'][selectedDate] != null) {
@@ -47,7 +49,7 @@ class _TourSchedule extends ConsumerState {
     var tmp = [];
     for (var element in matches) {
       tmp.add(
-          '${teamTransfer[element.team1]['name']}vs${teamTransfer[element.team2]['name']}');
+          '${teamInfoList[element.team1].name}vs${teamInfoList[element.team2].name}');
     }
     matchList = tmp;
     selectedMatch = selectedIdx <= matchList.length - 1
@@ -177,17 +179,17 @@ class _TourSchedule extends ConsumerState {
                                 SizedBox(
                                     width: size.width * 0.08,
                                     height: size.width * 0.08,
-                                    child: Image.asset(
-                                        teamTransfer[matches[selectedIdx].team1]
-                                            ['img'])),
+                                    child: Image.network(
+                                        teamInfoList[matches[selectedIdx].team1]
+                                            .logoImg)),
                                 const SizedBox(width: 20),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        teamTransfer[matches[selectedIdx].team1]
-                                            ['name'],
+                                        teamInfoList[matches[selectedIdx].team1]
+                                            .name,
                                         style: TextStyle(
                                           fontSize: const AdaptiveTextSize()
                                               .getadaptiveTextSize(context, 15),
@@ -204,8 +206,8 @@ class _TourSchedule extends ConsumerState {
                                       ),
                                       const SizedBox(width: 10),
                                       Text(
-                                        teamTransfer[matches[selectedIdx].team2]
-                                            ['name'],
+                                        teamInfoList[matches[selectedIdx].team2]
+                                            .name,
                                         style: TextStyle(
                                           fontSize: const AdaptiveTextSize()
                                               .getadaptiveTextSize(context, 15),
@@ -216,13 +218,13 @@ class _TourSchedule extends ConsumerState {
                                       SizedBox(
                                           width: size.width * 0.08,
                                           height: size.width * 0.08,
-                                          child: Image.asset(teamTransfer[
+                                          child: Image.network(teamInfoList[
                                                   matches[selectedIdx].team2]
-                                              ['img']))
+                                              .logoImg))
                                     ])
                               ])),
                       const SizedBox(height: 5),
-                      Text(teamTransfer[matches[selectedIdx].team1]['stadium'],
+                      Text(teamInfoList[matches[selectedIdx].team1].stadium,
                           style: TextStyle(
                             fontSize: const AdaptiveTextSize()
                                 .getadaptiveTextSize(context, 15),
