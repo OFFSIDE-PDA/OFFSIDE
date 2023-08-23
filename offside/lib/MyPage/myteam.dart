@@ -14,10 +14,23 @@ class MyTeam extends ConsumerStatefulWidget {
   _MyTeamState createState() => _MyTeamState();
 }
 
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
+  }
+}
+
 class _MyTeamState extends ConsumerState {
   @override
   void initState() {
     super.initState();
+  }
+
+  double getAdaptiveTextSize(BuildContext context, double value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
   }
 
   @override
@@ -32,6 +45,7 @@ class _MyTeamState extends ConsumerState {
     return SingleChildScrollView(
       child: Column(
         children: [
+          AppBar(),
           Padding(
             padding: const EdgeInsets.all(30),
             child: Row(
@@ -48,7 +62,10 @@ class _MyTeamState extends ConsumerState {
                   ),
                   Text(
                     teamInfoList[user.user!.team!].fullName,
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 16),
+                        fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
                 ]),
@@ -57,9 +74,11 @@ class _MyTeamState extends ConsumerState {
             width: size.width,
             margin: const EdgeInsets.fromLTRB(10, 0, 20, 10),
             child: Text(
-              '${myTeam['win']}W${myTeam['lose']}L${myTeam['draw']}D',
+              '${myTeam['win']}승 ${myTeam['draw']}무 ${myTeam['lose']}패',
               textAlign: TextAlign.right,
-              style: const TextStyle(fontSize: 15),
+              style: TextStyle(
+                  fontSize: const AdaptiveTextSize()
+                      .getadaptiveTextSize(context, 13)),
             ),
           ),
           SizedBox(
@@ -93,7 +112,7 @@ class ResultBox extends StatelessWidget {
   final String team;
 
   String getDate(data) {
-    return "${data[0]}${data[1]}.${data[2]}${data[3]}.${data[4]}${data[5]}";
+    return "${data[0]}${data[1]}년 ${data[2]}${data[3]}월 ${data[4]}${data[5]}일";
   }
 
   int resultColor(String date, result) {
@@ -104,7 +123,7 @@ class ResultBox extends StatelessWidget {
       } else if (result == 2) {
         return 0xffffeeeb;
       } else {
-        return 0xfffff6d7;
+        return 0xf5f5f5f5;
       }
     } else {
       return 0xffffffff;
@@ -113,24 +132,22 @@ class ResultBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: size.width,
-        padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
-        decoration: BoxDecoration(
-            color: Color(resultColor(info[0].data, info[1])),
-            border: const Border(
-              bottom: BorderSide(width: 1, color: Colors.grey),
-            )),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Text(
-            '[${getDate(info[0].data)}]',
-            style: const TextStyle(fontSize: 15),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
+      children: [
+        Container(
+            width: size.width,
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 30),
+            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            decoration: BoxDecoration(
+                color: Color(resultColor(info[0].data, info[1])),
+                borderRadius: BorderRadius.circular(20)
+                // border: const Border(
+                //   bottom: BorderSide(width: 1, color: Colors.grey),
+                // ),
+                ),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text('${info[0].score1}',
                       style: const TextStyle(fontSize: 15)),
@@ -165,6 +182,84 @@ class ResultBox extends StatelessWidget {
                 ],
               )),
         ]));
+                  Text(
+                    '${getDate(info[0].data)}',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                  const SizedBox(height: 25),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('${info[0].score1}',
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 16),
+                                  fontWeight: FontWeight.w600)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                  width: size.width * 0.1,
+                                  height: size.width * 0.1,
+                                  child: Image.asset(
+                                      teamTransfer[info[0].team1]['img'])),
+                              Text(
+                                teamTransfer[info[0].team1]['name']!,
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 12),
+                                    fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            ' vs ',
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 16),
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                  width: size.width * 0.1,
+                                  height: size.width * 0.1,
+                                  child: Image.asset(
+                                      teamTransfer[info[0].team2]['img'])),
+                              Text(
+                                teamTransfer[info[0].team2]['name']!,
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 12),
+                                    fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                          Text('${info[0].score2}',
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 16),
+                                  fontWeight: FontWeight.w600)),
+                        ],
+                      )),
+                ])),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Divider(
+            height: 15, // 구분선 위 아래의 간격
+            thickness: 1, // 구분선의 두께
+            color: Colors.grey, // 구분선의 색상
+          ),
+        ),
+      ],
+    );
   }
 }
 

@@ -1,10 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/Kleague/TeamInfo.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/model/team_info.dart';
+
+import '../Match/matchDetail.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -13,7 +16,15 @@ class HomePage extends ConsumerStatefulWidget {
   _HomePage createState() => _HomePage();
 }
 
-class _HomePage extends ConsumerState<HomePage> {
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
+  }
+}
+
+class _HomePage extends ConsumerState {
   int league = 1;
   final List<String> k1 = <String>['k1-1', 'k1-2', 'k1-3', 'k1-4', 'k1-5'];
   final List<String> k2 = <String>['k2-1', 'k2-2', 'k2-3', 'k2-4', 'k2-5'];
@@ -43,8 +54,16 @@ class _HomePage extends ConsumerState<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final matchData = ref.watch(matchViewModelProvider);
+    final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
+    var isNull = matchData.isNull();
     const borderSide = BorderSide(
       color: Colors.grey,
       width: 2.0,
@@ -55,57 +74,60 @@ class _HomePage extends ConsumerState<HomePage> {
     const wSizedBox = SizedBox(
       width: 10,
     );
-    final matchData = ref.watch(matchViewModelProvider);
-    final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
+
 
     return SingleChildScrollView(
-      child: Column(children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Row(
-            children: [
-              const Text(
-                "경기 일정",
-                style: TextStyle(fontFamily: 'NanumSquare'),
-              ),
-              wSizedBox,
-              ElevatedButton(
-                  onPressed: chooseLeague,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: league == 1
-                        ? const Color.fromRGBO(14, 32, 87, 1)
-                        : Colors.white,
-                    side: borderSide,
-                  ),
-                  child: Text(
-                    "K리그1",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: league == 1 ? Colors.white : Colors.grey,
-                        fontFamily: 'NanumSquare'),
-                  )),
-              wSizedBox,
-              ElevatedButton(
+        child: Column(children: [
+      Container(
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+        child: Row(
+          children: [
+            Text(
+              "경기 일정",
+              style: TextStyle(
+                  fontFamily: 'NanumSquare',
+                  fontSize: const AdaptiveTextSize()
+                      .getadaptiveTextSize(context, 12)),
+            ),
+            wSizedBox,
+            ElevatedButton(
                 onPressed: chooseLeague,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: league == 1
-                      ? Colors.white
-                      : const Color.fromRGBO(14, 32, 87, 1),
-                  side: const BorderSide(
-                    color: Colors.grey,
-                    width: 2.0,
-                  ), // Background color
+                      ? const Color.fromRGBO(14, 32, 87, 1)
+                      : Colors.white,
+                  side: borderSide,
                 ),
                 child: Text(
-                  "K리그2",
+                  "K리그1",
                   style: TextStyle(
-                      fontSize: 12,
-                      color: league == 1 ? Colors.grey : Colors.white,
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 12),
+                      color: league == 1 ? Colors.white : Colors.grey,
                       fontFamily: 'NanumSquare'),
-                ),
-              )
-            ],
-          ),
+                )),
+            wSizedBox,
+            ElevatedButton(
+              onPressed: chooseLeague,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: league == 1
+                    ? Colors.white
+                    : const Color.fromRGBO(14, 32, 87, 1),
+                side: const BorderSide(
+                  color: Colors.grey,
+                  width: 2.0,
+                ), // Background color
+              ),
+              child: Text(
+                "K리그2",
+                style: TextStyle(
+                    fontSize: const AdaptiveTextSize()
+                        .getadaptiveTextSize(context, 12),
+                    color: league == 1 ? Colors.grey : Colors.white,
+                    fontFamily: 'NanumSquare'),
+              ),
+            )
+          ],
         ),
         MatchCarousel(
             size: size,
@@ -144,11 +166,13 @@ class StadiumTour extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 40),
-            child: const Text(
-              "경기장 주변 추천 맛집 리스트",
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              "경기장 주변 관광 정보 확인하기",
               style: TextStyle(
-                  fontSize: 17, color: Color.fromARGB(255, 67, 67, 67)),
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+                  color: Color.fromARGB(255, 67, 67, 67)),
             ),
           ),
           hSizedBox,
@@ -191,7 +215,12 @@ class StadiumTour extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         child: Image.network(teaminfoList[info[index]].logoImg),
                       ),
-                      Text(teaminfoList[info[index]].name)
+                      Text(
+                        teaminfoList[info[index]].name,
+                        style: TextStyle(
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 11)),
+                      )
                     ],
                   ),
                 );
@@ -218,9 +247,9 @@ class RandomMatch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textStyle = TextStyle(
-        fontSize: 18,
-        color: Color.fromARGB(255, 67, 67, 67),
+    var textStyle = TextStyle(
+        fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 13),
+        color: Color.fromRGBO(18, 32, 84, 1),
         fontFamily: 'NanumSquare',
         fontWeight: FontWeight.w600);
     const sizedBox = SizedBox(
@@ -229,13 +258,16 @@ class RandomMatch extends StatelessWidget {
     return Column(
       children: [
         Container(
-            color: const Color.fromRGBO(14, 32, 87, 1),
+            color: const Color.fromRGBO(18, 32, 84, 1),
             width: size.width,
             padding: const EdgeInsets.all(10),
-            child: const Text(
+            child: Text(
               '이 MATCH 어때?',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: const AdaptiveTextSize()
+                      .getadaptiveTextSize(context, 12)),
             )),
         Container(
           padding: const EdgeInsets.all(10),
@@ -250,7 +282,7 @@ class RandomMatch extends StatelessWidget {
               sizedBox,
               Text(teaminfoList[info[0]].fullName, style: textStyle),
               sizedBox,
-              const Text("VS", style: textStyle),
+              Text("VS", style: textStyle),
               sizedBox,
               Text(teaminfoList[info[1]].fullName, style: textStyle),
               sizedBox,
@@ -264,18 +296,20 @@ class RandomMatch extends StatelessWidget {
         Row(
           children: [
             Container(
-              color: const Color.fromRGBO(14, 32, 87, 1),
+              color: const Color.fromRGBO(18, 32, 84, 1),
               width: size.width,
               child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                const Text(
+                Text(
                   "경기장 주변 관광 일정 보러가기",
                   style: TextStyle(
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 11),
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'NanumSquare'),
                 ),
                 const SizedBox(
-                  width: 5,
+                  width: 2,
                 ),
                 Container(
                   margin: const EdgeInsets.all(10),
@@ -343,7 +377,7 @@ class MatchBox extends StatelessWidget {
   final List<TeamInfo> teaminfoList;
 
   String getDate(data) {
-    return "${data[0]}${data[1]}.${data[2]}${data[3]}.${data[4]}${data[5]}";
+    return "${data[0]}${data[1]}년 ${data[2]}${data[3]}월 ${data[4]}${data[5]}일";
   }
 
   @override
@@ -366,16 +400,28 @@ class MatchBox extends StatelessWidget {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Text(
-            '[${getDate(match.first.data)}]',
-            style: const TextStyle(fontSize: 15),
+            '${getDate(match.first.data)}',
+            style: TextStyle(
+                fontSize:
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 12)),
           ),
           const SizedBox(height: 5),
-          const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('H', style: TextStyle(fontSize: 13, color: Colors.blue)),
-                Text('A', style: TextStyle(fontSize: 13, color: Colors.red)),
+                Text('H',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11),
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w600)),
+                Text('A',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11),
+                        color: Colors.red,
+                        fontWeight: FontWeight.w600)),
               ]),
           ListView.builder(
               shrinkWrap: true,
@@ -388,7 +434,9 @@ class MatchBox extends StatelessWidget {
                       children: [
                         Text(
                           '${match[index].time}',
-                          style: const TextStyle(fontSize: 12),
+                          style: TextStyle(
+                              fontSize: const AdaptiveTextSize()
+                                  .getadaptiveTextSize(context, 12)),
                         ),
                         SizedBox(
                             width: size.width * 0.08,
@@ -400,16 +448,21 @@ class MatchBox extends StatelessWidget {
                             children: [
                               Text(
                                 teaminfoList[match[index].team1].name,
-                                style: const TextStyle(fontSize: 13),
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 11)),
                                 textAlign: TextAlign.center,
                               ),
                               const Text(
                                 ' vs ',
-                                style: TextStyle(fontSize: 13),
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w600),
                               ),
                               Text(
                                 teaminfoList[match[index].team2].name,
-                                style: const TextStyle(fontSize: 13),
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 11)),
                                 textAlign: TextAlign.center,
                               ),
                             ]),
@@ -419,17 +472,27 @@ class MatchBox extends StatelessWidget {
                             child: Image.network(
                                 teaminfoList[match[index].team2].logoImg)),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MatchDetail(
+                                          date: getDate(match[index].data),
+                                          time: match[index].time!,
+                                          team1: match[index].team1!,
+                                          team2: match[index].team2!,
+                                        )));
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
                                 color: const Color.fromRGBO(33, 58, 135, 1),
                                 borderRadius: BorderRadius.circular(15)),
-                            child: const Text(
-                              "상세정보",
-                              style:
-                                  TextStyle(fontSize: 10, color: Colors.white),
+                            child: Icon(
+                              CupertinoIcons.paperplane,
+                              color: Colors.white,
+                              size: 15,
                             ),
                           ),
                         )
