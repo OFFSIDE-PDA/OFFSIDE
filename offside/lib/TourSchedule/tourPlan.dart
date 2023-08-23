@@ -6,8 +6,8 @@ import 'package:offside/Match/match.dart';
 import 'package:offside/data/model/team_transfer.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:offside/data/view/tour_view_model.dart';
-import 'package:kakaomap_webview/kakaomap_webview.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:kakaomap_webview/kakaomap_webview.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 
 class TourPlan extends ConsumerStatefulWidget {
   const TourPlan(
@@ -19,9 +19,17 @@ class TourPlan extends ConsumerStatefulWidget {
   _TourPlan createState() => _TourPlan();
 }
 
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
+  }
+}
+
 class _TourPlan extends ConsumerState<TourPlan> {
   int step = 1;
-  late WebViewController _mapController;
+  // late WebViewController _mapController;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;

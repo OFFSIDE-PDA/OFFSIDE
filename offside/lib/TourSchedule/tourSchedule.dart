@@ -14,6 +14,14 @@ class TourSchedule extends ConsumerStatefulWidget {
   _TourSchedule createState() => _TourSchedule();
 }
 
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
+  }
+}
+
 List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
 class _TourSchedule extends ConsumerState {
