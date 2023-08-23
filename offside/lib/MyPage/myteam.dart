@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:offside/data/model/team_info.dart';
-import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
@@ -152,7 +151,7 @@ class ResultBox extends StatelessWidget {
               SizedBox(
                   width: size.width * 0.08,
                   height: size.width * 0.08,
-                  child: Image.asset(teamInfoList[info[0].team1].logoImg)),
+                  child: Image.network(teamInfoList[info[0].team1].logoImg)),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 Text(
                   teamInfoList[info[0].team1].name,
@@ -172,7 +171,7 @@ class ResultBox extends StatelessWidget {
               SizedBox(
                   width: size.width * 0.08,
                   height: size.width * 0.08,
-                  child: Image.asset(teamInfoList[info[0].team2].logoImg)),
+                  child: Image.network(teamInfoList[info[0].team2].logoImg)),
               Text('${info[0].score2}', style: const TextStyle(fontSize: 15)),
             ],
           )),

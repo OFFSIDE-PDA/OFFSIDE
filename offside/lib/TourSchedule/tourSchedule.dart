@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/Kleague/TeamInfo.dart';
 import 'package:offside/Match/match.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
-import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 

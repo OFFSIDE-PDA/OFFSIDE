@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/Kleague/TeamInfo.dart';
 import 'package:offside/Match/match.dart';
-import 'package:offside/data/model/team_transfer.dart';
+import 'package:offside/data/model/team_info.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/tour_view_model.dart';
 // import 'package:kakaomap_webview/kakaomap_webview.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
@@ -12,8 +12,8 @@ import 'package:offside/data/view/tour_view_model.dart';
 class TourPlan extends ConsumerStatefulWidget {
   const TourPlan(
       {super.key, required this.home, required this.away, required this.date});
-  final String home;
-  final String away;
+  final int home;
+  final int away;
   final String date;
   @override
   _TourPlan createState() => _TourPlan();
@@ -33,6 +33,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -49,7 +50,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                       fontFamily: 'NanumSquare'))),
           PlanStep(size: size, step: step),
           const SizedBox(height: 15),
-          returnStep(step, size),
+          returnStep(step, size, teamInfoList),
         ])),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Stack(fit: StackFit.expand, children: [
@@ -95,7 +96,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
         ]));
   }
 
-  returnStep(int step, Size size) {
+  returnStep(int step, Size size, List<TeamInfo> teamInfoList) {
     if (step == 1) {
       return Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -103,7 +104,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
           GetLocation(
               context: context,
               title: '경기장 위치',
-              text: teamTransfer[widget.home]['stadium'])
+              text: teamInfoList[widget.home].stadium)
         ]),
         // KakaoMapView(
         //   width: size.width,
@@ -130,7 +131,10 @@ class _TourPlan extends ConsumerState<TourPlan> {
         // )
       ]);
     } else if (step == 2) {
-      return ChooseCategory(context: context, size: size, home: widget.home);
+      return ChooseCategory(
+          context: context,
+          size: size,
+          home: teamInfoList[widget.home].fullName);
     } else {
       return Column(children: [
         Container(
@@ -160,14 +164,14 @@ class _TourPlan extends ConsumerState<TourPlan> {
                         SizedBox(
                             width: size.width * 0.08,
                             height: size.width * 0.08,
-                            child:
-                                Image.asset(teamTransfer[widget.home]['img'])),
+                            child: Image.network(
+                                teamInfoList[widget.home].logoImg)),
                         const SizedBox(width: 10),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                teamTransfer[widget.home]['name'],
+                                teamInfoList[widget.home].name,
                                 style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
                                       .getadaptiveTextSize(context, 15),
@@ -184,7 +188,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                teamTransfer[widget.away]['name'],
+                                teamInfoList[widget.away].name,
                                 style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
                                       .getadaptiveTextSize(context, 15),
@@ -195,8 +199,8 @@ class _TourPlan extends ConsumerState<TourPlan> {
                               SizedBox(
                                   width: size.width * 0.08,
                                   height: size.width * 0.08,
-                                  child: Image.asset(
-                                      teamTransfer[widget.away]['img']))
+                                  child: Image.network(
+                                      teamInfoList[widget.away].logoImg))
                             ])
                       ])
                 ]))
