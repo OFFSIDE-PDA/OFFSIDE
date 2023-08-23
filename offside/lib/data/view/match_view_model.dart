@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/data/model/match_model.dart';
 import 'package:offside/data/model/team_transfer.dart';
@@ -12,6 +13,7 @@ final matchViewModelProvider =
 class MatchViewModel extends ChangeNotifier {
   Map<String, List<dynamic>>? _allMatchViewModel = {};
   Map<String, List<dynamic>>? get matchViewModel => _allMatchViewModel;
+
 
   Future<void> getAllMatches() async {
     var data =
@@ -98,15 +100,40 @@ class MatchViewModel extends ChangeNotifier {
       matches.add([e['team1'], e['team2'], week2.length]);
     }
 
-    var home = homeTeams(matches);
-
     _allMatchViewModel = {
       'all': [kLeague1, kLeague2],
       'week': [week1, week2],
-      'home': home,
+      'home': homeTeams(matches),
       'random': matches[today % matches.length]
     };
     notifyListeners();
+  }
+
+  getMatchDate() {
+    var data1 = _allMatchViewModel?['all']?[0];
+    var data2 = _allMatchViewModel?['all']?[1];
+    Map<String, dynamic> k1 = {};
+    Map<String, dynamic> k2 = {};
+    var date = [];
+    for (var item in data1) {
+      var tmp = [];
+      for (var element in item) {
+        tmp.add(element);
+      }
+      k1[item[0].data] = tmp;
+      date.add(item[0].data);
+    }
+    for (var item in data2) {
+      var tmp = [];
+      for (var element in item) {
+        tmp.add(element);
+      }
+      k2[item[0].data] = tmp;
+      date.add(item[0].data);
+    }
+    date = date.toSet().toList();
+    date.sort();
+    return {'date': date, 'k1': k1, 'k2': k2};
   }
 
   getWeekMatches(int league) {
@@ -117,12 +144,20 @@ class MatchViewModel extends ChangeNotifier {
     return _allMatchViewModel?[type]?[league - 1].length;
   }
 
-  getMatchIndex(String type, int league, int index) {
-    return _allMatchViewModel?[type]?[league - 1][index];
+  getMatchIndex(String type, int league) {
+    return _allMatchViewModel?[type]?[league - 1];
   }
 
   getHomeTeams() {
     return _allMatchViewModel?['home'];
+  }
+
+  isNull() {
+    if (_allMatchViewModel == null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   getRandomMatch() {

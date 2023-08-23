@@ -12,7 +12,6 @@ class TeamInfoPage extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   final TeamInfoModel.TeamInfo team;
-
   @override
   createState() => _TeamInfo();
 }
@@ -363,7 +362,7 @@ Widget here(var info) {
   return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: info.length,
+      itemCount: (info.length / 2).floor(),
       itemBuilder: (BuildContext context, int idx) {
         var size = MediaQuery.of(context).size;
         return Column(
