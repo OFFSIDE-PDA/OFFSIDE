@@ -5,13 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 class TeamInfo extends ConsumerStatefulWidget {
-  const TeamInfo({
-    Key? key,
-    required this.team,
-  }) : super(key: key);
-
+  const TeamInfo({Key? key, required this.team}) : super(key: key);
   final String team;
-
   @override
   createState() => _TeamInfo();
 }
@@ -27,22 +22,21 @@ class _TeamInfo extends ConsumerState<TeamInfo> {
     final tourData = ref.read(tourViewModelProvider);
     return ListView(children: [
       Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AppBar(),
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-            child: Column(children: [
-              nameAndPage(widget.team, context),
-              teamInfo(widget.team, context),
-              teamPic(widget.team, context),
-              Recommended(
-                  name: widget.team, info: tourData.getTourInfo(widget.team))
-            ]),
-          )
-        ],
-      )
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AppBar(),
+            Container(
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                child: Column(children: [
+                  nameAndPage(widget.team, context),
+                  teamInfo(widget.team, context),
+                  teamPic(widget.team, context),
+                  Recommended(
+                      name: widget.team,
+                      info: tourData.getTourInfo(widget.team))
+                ]))
+          ])
     ]);
   }
 }
@@ -364,7 +358,7 @@ Widget here(String name, var info) {
   return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: info.length,
+      itemCount: (info.length / 2).floor(),
       itemBuilder: (BuildContext context, int idx) {
         var size = MediaQuery.of(context).size;
         return Column(
