@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/login/login.dart';
 import 'myteam.dart';
-import '../community/Community.dart';
+import '../community/community.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({Key? key}) : super(key: key);
@@ -81,6 +81,7 @@ class _ProfileState extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userViewModelProvider);
+    final teaminfo = ref.watch(teamInfoViewModelProvider);
     return (Container(
       margin: const EdgeInsets.all(30),
       padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
@@ -98,8 +99,8 @@ class _ProfileState extends ConsumerState {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(
-                  teamTransfer[user.user!.team]['img'],
+                Image.network(
+                  teaminfo.teamInfoList[user.user!.team!].logoImg!,
                   width: 100,
                   height: 100,
                 ),
@@ -132,7 +133,7 @@ class _ProfileState extends ConsumerState {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            user.user!.team!,
+                            teaminfo.teamInfoList[user.user!.team!].fullName!,
                             style: TextStyle(
                                 fontSize: const AdaptiveTextSize()
                                     .getadaptiveTextSize(context, 13),
@@ -210,7 +211,7 @@ class Second extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyTeam()),
+                  MaterialPageRoute(builder: (context) => const MyTeam()),
                 );
                 // 내 응원팀 경기일정 보기로 이동
               },
@@ -282,14 +283,14 @@ class Third extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(
                 width: 2,
-                color: Color.fromRGBO(18, 32, 84, 1),
+                color: const Color.fromRGBO(18, 32, 84, 1),
               ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              borderRadius: const BorderRadius.all(Radius.circular(10.0))),
           child: InkWell(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CommunityPage()),
+                MaterialPageRoute(builder: (context) => const CommunityPage()),
               ); // 내 응원팀 커뮤니티로 이동
             },
             child: Column(

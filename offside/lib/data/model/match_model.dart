@@ -2,25 +2,33 @@ class MatchModel {
   MatchModel(this.data, this.score2, this.team1, this.team2, this.location,
       this.time, this.score1);
 
+  MatchModel.fromMap(Map<String, dynamic> map) {
+    data = map["data"];
+    score1 = map["score1"];
+    score2 = map["score2"];
+    team1 = map["team1"];
+    team2 = map["team2"];
+    location = map["location"];
+    time = map["time"];
+  }
+
+  ///`matchModel` 깊은 복사
+  MatchModel.copy(MatchModel matchModel) {
+    data = matchModel.data;
+    score1 = matchModel.score1;
+    score2 = matchModel.score2;
+    team1 = matchModel.team1;
+    team2 = matchModel.team2;
+    location = matchModel.location;
+    time = matchModel.time;
+  }
+
+  //todo : data, time을 Timestamp datetime;으로 변경
   String? data;
-  String? score2;
-  String? team1;
-  String? team2;
-  String? location;
   String? time;
-  String? score1;
-
-  String? getDate() => data;
-
-  String? getTeam1() => team1;
-
-  String? getTeam2() => team2;
-
-  String? getLocation() => location;
-
-  String? getScore1() => score1;
-
-  String? getScore2() => score2;
-
-  String? getTime() => time;
+  int? score2;
+  int? team1;
+  int? team2;
+  int? location;
+  int? score1;
 }

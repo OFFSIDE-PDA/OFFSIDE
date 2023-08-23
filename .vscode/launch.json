@@ -28,6 +28,7 @@
       "name": "크롬시작",
       "request": "launch",
       "type": "dart",
+      "cwd": "offside",
       "args": ["-d", "chrome", "--web-port", "1044"]
     }
   ]

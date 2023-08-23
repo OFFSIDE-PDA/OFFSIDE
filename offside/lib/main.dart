@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:offside/MainPage/main_page.dart';
-import 'package:offside/data/datasource/tour_data_source.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/tour_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
-import 'package:get/get.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/firebase_options.dart';
 import 'package:offside/login/login.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
@@ -13,7 +13,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding); //스플래쉬화면 유지
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -22,7 +23,7 @@ void main() async {
     javaScriptAppKey: 'a8bd91fccbb230b5011148456b3cd404',
   );
 
-  runApp(ProviderScope(
+  runApp(const ProviderScope(
     child: Offside(),
   ));
 }
@@ -35,8 +36,14 @@ class Offside extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final autoLogin = ref.read(userViewModelProvider).autoSignIn();
-    ref.read(matchViewModelProvider).getAllMatches();
     ref.read(tourViewModelProvider).getTourData();
+    Future.wait([
+      ref.read(teamInfoViewModelProvider).getTeamInfo(),
+      ref.read(matchViewModelProvider).getAllMatches()
+    ]).then((value) {
+      print("정보 다운 완료");
+      FlutterNativeSplash.remove(); //스플래쉬화면 삭제
+    });
     return MaterialApp(
         title: 'Offside',
         initialRoute: '/',

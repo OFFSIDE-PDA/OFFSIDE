@@ -4,10 +4,10 @@ import 'package:offside/data/datasource/remote_data_source.dart';
 final chatRepositoryProvider = ChatRepository();
 
 class ChatRepository {
-  late final ChatDataSource _chatDataSource = ChatDataSource();
+  final ChatDataSource _chatDataSource = ChatDataSource();
 
   Future<void> addChat(
-      {required String team,
+      {required int team,
       required String text,
       required String uid,
       required String writer}) async {
@@ -15,7 +15,7 @@ class ChatRepository {
         team: team, text: text, uid: uid, writer: writer);
   }
 
-  Stream<QuerySnapshot<Object?>>? getChatStream({required String team}) {
+  Stream<QuerySnapshot<Object?>>? getChatStream({required int team}) {
     return _chatDataSource.getChatStream(team: team);
   }
 }

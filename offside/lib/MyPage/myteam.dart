@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/model/team_transfer.dart';
 import 'package:offside/data/view/match_view_model.dart';
+import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +38,8 @@ class _MyTeamState extends ConsumerState {
     var size = MediaQuery.of(context).size;
     var user = ref.watch(userViewModelProvider);
     var matchData = ref.watch(matchViewModelProvider);
-    String team = user.user!.team!;
+    final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
+    int team = user.user!.team!;
     var myTeam = matchData.getMyTeam(team);
 
     return SingleChildScrollView(
@@ -52,12 +55,13 @@ class _MyTeamState extends ConsumerState {
                   SizedBox(
                       width: size.width * 0.15,
                       height: size.width * 0.15,
-                      child: Image.asset(teamTransfer[team]['img'])),
+                      child: Image.network(
+                          teamInfoList[user.user!.team!].logoImg)),
                   SizedBox(
                     width: size.width * 0.02,
                   ),
                   Text(
-                    team,
+                    teamInfoList[user.user!.team!].fullName,
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
                             .getadaptiveTextSize(context, 16),
@@ -83,7 +87,10 @@ class _MyTeamState extends ConsumerState {
                 scrollDirection: Axis.vertical,
                 itemCount: myTeam['team'].length,
                 itemBuilder: (context, index) => ResultBox(
-                    size: size, info: myTeam['team'][index], team: team)),
+                    teamInfoList: teamInfoList,
+                    size: size,
+                    info: myTeam['team'][index],
+                    team: teamInfoList[user.user!.team!].fullName)),
           )
         ],
       ),
@@ -93,8 +100,13 @@ class _MyTeamState extends ConsumerState {
 
 class ResultBox extends StatelessWidget {
   const ResultBox(
-      {super.key, required this.size, required this.info, required this.team});
+      {super.key,
+      required this.teamInfoList,
+      required this.size,
+      required this.info,
+      required this.team});
 
+  final List<TeamInfo> teamInfoList;
   final Size size;
   final List<dynamic> info;
   final String team;
@@ -137,6 +149,39 @@ class ResultBox extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  Text('${info[0].score1}',
+                      style: const TextStyle(fontSize: 15)),
+                  SizedBox(
+                      width: size.width * 0.08,
+                      height: size.width * 0.08,
+                      child: Image.asset(teamInfoList[info[0].team1].logoImg)),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          teamInfoList[info[0].team1].name,
+                          style: const TextStyle(fontSize: 15),
+                          textAlign: TextAlign.center,
+                        ),
+                        const Text(
+                          ' vs ',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        Text(
+                          teamInfoList[info[0].team2].name,
+                          style: const TextStyle(fontSize: 15),
+                          textAlign: TextAlign.center,
+                        ),
+                      ]),
+                  SizedBox(
+                      width: size.width * 0.08,
+                      height: size.width * 0.08,
+                      child: Image.asset(teamInfoList[info[0].team2].logoImg)),
+                  Text('${info[0].score2}',
+                      style: const TextStyle(fontSize: 15)),
+                ],
+              )),
+        ]));
                   Text(
                     '${getDate(info[0].data)}',
                     style: const TextStyle(fontSize: 15),

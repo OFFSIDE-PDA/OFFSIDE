@@ -4,7 +4,7 @@ import 'package:offside/Match/match.dart';
 import 'package:offside/TourSchedule/tourSchedule.dart';
 import '../Kleague/kLeague.dart';
 import 'package:offside/data/repository/auth_repository.dart';
-import '../community/Community.dart';
+import '../community/community.dart';
 import '../MyPage/mypage.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,19 +19,17 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
       List.generate(5, (index) => GlobalKey<NavigatorState>());
   int _currentIndex = 2;
 
-  final _pages = const [
-    KLeague(),
-    TourSchedule(),
-    HomePage(),
-    Match(),
-    MyPage(),
-  ];
-
   void onPressed() {
     authRepositoryProvider.signOut();
     Navigator.pop(context);
   }
-
+  final List _pages = [
+    const KLeague(),
+    const CommunityPage(),
+    const HomePage(),
+    const Match(),
+    const MyPage(),
+  ];
   @override
   void initState() {
     super.initState();
