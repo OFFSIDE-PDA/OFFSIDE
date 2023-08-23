@@ -29,7 +29,7 @@ class TourDataSource {
 
 Future<List<dynamic>> getApi(Object? mapX, Object? mapY, int type) async {
   String queryParams2 =
-      "&numOfRows=10&MobileOS=AND&MobileApp=Offside&_type=json&mapX=$mapX&mapY=$mapY&radius=7000&contentTypeId=$type";
+      "&numOfRows=20&MobileOS=AND&MobileApp=Offside&_type=json&mapX=$mapX&mapY=$mapY&radius=7000&contentTypeId=$type";
   final response = await http
       .get(Uri.parse(url + queryParams1 + queryParams2))
       .then((value) {
