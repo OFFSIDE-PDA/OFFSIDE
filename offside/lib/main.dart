@@ -31,12 +31,12 @@ class Offside extends ConsumerWidget {
   const Offside({super.key});
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final autoLogin = ref.read(userViewModelProvider).autoSignIn();
-    final matchData = ref.read(matchViewModelProvider).getAllMatches();
-    final tourData = ref.read(tourViewModelProvider).getTourData();
-
+    ref.read(matchViewModelProvider).getAllMatches();
+    ref.read(tourViewModelProvider).getTourData();
     return MaterialApp(
         title: 'Offside',
         initialRoute: '/',

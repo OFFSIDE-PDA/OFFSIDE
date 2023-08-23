@@ -19,7 +19,7 @@ class MyPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+            SizedBox(
               height: 55,
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
@@ -27,7 +27,8 @@ class MyPage extends StatelessWidget {
                   "마이페이지",
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 14),
                       fontWeight: FontWeight.w800,
                       color: Color.fromRGBO(18, 32, 84, 1)),
                 ),
@@ -51,6 +52,14 @@ class MyPage extends StatelessWidget {
             Container(alignment: Alignment.center, child: (const Under()))
           ]),
     ));
+  }
+}
+
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
   }
 }
 
@@ -101,8 +110,9 @@ class _ProfileState extends ConsumerState {
                     children: [
                       Text(
                         user.user!.nickname!,
-                        style: const TextStyle(
-                            fontSize: 15,
+                        style: TextStyle(
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 13),
                             color: Color.fromRGBO(18, 32, 84, 1),
                             fontWeight: FontWeight.w700),
                       ),
@@ -110,8 +120,10 @@ class _ProfileState extends ConsumerState {
                       user.user!.email != null
                           ? Text(
                               user.user!.email!,
-                              style: const TextStyle(
-                                  color: Colors.grey, fontSize: 13),
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 12)),
                             )
                           : const SizedBox(),
                       Container(height: 10),
@@ -121,8 +133,10 @@ class _ProfileState extends ConsumerState {
                         children: [
                           Text(
                             user.user!.team!,
-                            style: const TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 13),
+                                fontWeight: FontWeight.w600),
                           ),
                         ],
                       )
@@ -150,10 +164,12 @@ class _ProfileState extends ConsumerState {
                           MaterialPageRoute(builder: (context) => Edit()));
                       // 회원정보 수정 페이지로 이동
                     },
-                    child: const Text(
-                      "회원 정보 수정하기",
+                    child: Text(
+                      "회원 정보 수정",
                       style: TextStyle(
                           decoration: TextDecoration.underline,
+                          fontSize: const AdaptiveTextSize()
+                              .getadaptiveTextSize(context, 11),
                           color: Colors.grey),
                     ),
                   )
@@ -198,13 +214,15 @@ class Second extends StatelessWidget {
                 );
                 // 내 응원팀 경기일정 보기로 이동
               },
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     "내 응원팀 경기 일정",
-                    style: TextStyle(fontSize: 13),
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11)),
                   ),
                   Icon(Icons.event_available,
                       color: Color.fromRGBO(18, 32, 84, 1))
@@ -226,13 +244,15 @@ class Second extends StatelessWidget {
               onTap: () {
                 // 내 여행 일정 페이지로 이동
               },
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     "내 여행 일정",
-                    style: TextStyle(fontSize: 13),
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11)),
                   ),
                   Icon(Icons.card_travel, color: Color.fromRGBO(18, 32, 84, 1))
                 ],
@@ -272,13 +292,17 @@ class Third extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => CommunityPage()),
               ); // 내 응원팀 커뮤니티로 이동
             },
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "팀 커뮤니티",
-                  style: TextStyle(fontSize: 13),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Color.fromARGB(255, 67, 67, 67),
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 12)),
                 ),
                 Icon(Icons.forum_outlined, color: Color.fromRGBO(18, 32, 84, 1))
               ],
@@ -296,17 +320,26 @@ class Under extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const SizedBox(
+          height: 10,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "KOREAN ",
-              style: TextStyle(fontSize: 13, color: Colors.grey),
+              style: TextStyle(
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+                  color: Colors.grey),
             ),
             Container(width: 1, height: 15, color: Colors.grey),
-            const Text(
+            Text(
               " ENGLISH",
-              style: TextStyle(fontSize: 13, color: Colors.grey),
+              style: TextStyle(
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+                  color: Colors.grey),
             )
           ],
         ),
@@ -324,9 +357,12 @@ class Under extends ConsumerWidget {
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
                   const Color.fromRGBO(33, 58, 135, 1))),
-          child: const Text(
+          child: Text(
             "LOGOUT",
-            style: TextStyle(fontSize: 12, color: Colors.white),
+            style: TextStyle(
+                fontSize:
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 11),
+                color: Colors.white),
           ),
         )
       ],

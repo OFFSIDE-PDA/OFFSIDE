@@ -1,6 +1,5 @@
 import 'package:offside/data/model/team_transfer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'TeamInfo.dart';
 
 class KLeague extends StatelessWidget {
@@ -21,6 +20,14 @@ class KLeague extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
   }
 }
 
@@ -49,13 +56,14 @@ class KLeagueOne extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.topLeft,
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
               child: Text(
                 "K 리그 1",
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: const AdaptiveTextSize()
+                        .getadaptiveTextSize(context, 13),
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
@@ -114,13 +122,14 @@ class KLeagueTwo extends StatelessWidget {
       child: Column(children: [
         Container(
           alignment: Alignment.topLeft,
-          child: const Padding(
+          child: Padding(
             padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
             child: Text(
               "K 리그 2",
               textAlign: TextAlign.left,
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 13),
                   fontWeight: FontWeight.bold,
                   color: Color.fromRGBO(18, 32, 84, 1)),
             ),
@@ -214,7 +223,8 @@ Widget team(int id, BuildContext context, name) {
                 color: id >= 13
                     ? const Color.fromRGBO(18, 32, 84, 1)
                     : Colors.white,
-                fontSize: 14),
+                fontSize:
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 11)),
           ),
         )
       ],
