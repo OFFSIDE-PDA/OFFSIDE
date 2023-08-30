@@ -215,7 +215,7 @@ class StadiumTour extends StatelessWidget {
                         child: Image.network(teaminfoList[info[index]].logoImg),
                       ),
                       Text(
-                        teaminfoList[info[index]].name,
+                        teaminfoList[info[index]].middleName,
                         style: TextStyle(
                             fontSize: const AdaptiveTextSize()
                                 .getadaptiveTextSize(context, 11)),

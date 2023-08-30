@@ -226,7 +226,8 @@ class Second extends StatelessWidget {
                     "내 응원팀 경기 일정",
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 11)),
+                            .getadaptiveTextSize(context, 11),
+                        fontWeight: FontWeight.w600),
                   ),
                   Icon(Icons.event_available,
                       color: Color.fromRGBO(18, 32, 84, 1))
@@ -256,7 +257,8 @@ class Second extends StatelessWidget {
                     "내 여행 일정",
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 11)),
+                            .getadaptiveTextSize(context, 11),
+                        fontWeight: FontWeight.w600),
                   ),
                   Icon(Icons.card_travel, color: Color.fromRGBO(18, 32, 84, 1))
                 ],
