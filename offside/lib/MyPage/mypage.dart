@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -248,6 +249,10 @@ class Second extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 // 내 여행 일정 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyTravel()),
+                );
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
