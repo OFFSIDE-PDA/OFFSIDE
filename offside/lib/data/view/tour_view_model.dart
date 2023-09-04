@@ -24,7 +24,6 @@ class TourViewModel extends ChangeNotifier {
         'food': food
       };
     });
-
     _tourViewModel = tourData;
     notifyListeners();
   }
@@ -42,7 +41,9 @@ class TourViewModel extends ChangeNotifier {
             value['contentid'],
             getType[value['contenttypeid']],
             value['firstimage'],
-            value['title']));
+            value['title'],
+            value['mapy'],
+            value['mapx']));
       }
     });
     return data;
