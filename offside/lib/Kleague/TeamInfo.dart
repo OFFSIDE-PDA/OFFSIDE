@@ -71,7 +71,7 @@ Widget nameAndPage(dynamic team, BuildContext context) {
                 height: size.width * 0.13,
                 child: Image.network(team.logoImg)),
             Text(
-              team.name,
+              team.fullName,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: const Color.fromRGBO(18, 32, 84, 1),

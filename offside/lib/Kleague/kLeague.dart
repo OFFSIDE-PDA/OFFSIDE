@@ -219,7 +219,7 @@ Widget team(int id, BuildContext context, TeamInfo team) {
         SizedBox(
           width: 80,
           child: Text(
-            team.name,
+            team.middleName,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.w500,
