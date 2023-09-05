@@ -172,51 +172,15 @@ class StadiumTour extends StatelessWidget {
           ),
           hSizedBox,
           Container(
-            height: info.length / 4 * 100,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: GridView.builder(
-              itemCount: info.length, //item 개수
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, //1 개의 행에 보여줄 item 개수
-                childAspectRatio: 1 / 1, //item 의 가로 1, 세로 2 의 비율
-                mainAxisSpacing: 20, //수평 Padding
-                crossAxisSpacing: 20, //수직 Padding
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return FloatingActionButton(
-                  heroTag: index,
-                  onPressed: () async {
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                TeamInfoPage(team: teaminfoList[info[index]])));
-                  },
-                  elevation: 10,
-                  highlightElevation: 20,
-                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                  shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        width: 1,
-                        color: Color.fromRGBO(33, 58, 135, 1),
-                      ),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.transparent,
-                        child: Image.network(teaminfoList[info[index]].logoImg),
-                      ),
-                      Text(
-                        teaminfoList[info[index]].middleName,
-                        style: TextStyle(
-                            fontSize: const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 11)),
-                      )
-                    ],
+              height: info.length / 4 * 100,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: GridView.builder(
+                  itemCount: info.length, //item 개수
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4, //1 개의 행에 보여줄 item 개수
+                    childAspectRatio: 1 / 1, //item 의 가로 1, 세로 2 의 비율
+                    mainAxisSpacing: 20, //수평 Padding
+                    crossAxisSpacing: 20, //수직 Padding
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     return FloatingActionButton(
@@ -249,7 +213,7 @@ class StadiumTour extends StatelessWidget {
                                     teaminfoList[info[index]].logoImg),
                               ),
                               Text(
-                                teaminfoList[info[index]].name,
+                                teaminfoList[info[index]].middleName,
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
                                         .getadaptiveTextSize(context, 11)),
