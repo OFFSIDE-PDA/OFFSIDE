@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.offside</string>
+	<string>com.OFFSIDE.offside</string>
 	<key>PROJECT_ID</key>
 	<string>offside-d1a25</string>
 	<key>STORAGE_BUCKET</key>

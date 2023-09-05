@@ -1,4 +1,4 @@
-package com.example.offside
+package com.OFFSIDE.offside
 
 import io.flutter.embedding.android.FlutterActivity
 

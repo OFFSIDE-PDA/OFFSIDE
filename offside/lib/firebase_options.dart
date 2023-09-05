@@ -70,7 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '427516758522',
     projectId: 'offside-d1a25',
     storageBucket: 'offside-d1a25.appspot.com',
-    iosClientId: '427516758522-n9lnsbroa8ccjbrns3h8a9o66ghj59pt.apps.googleusercontent.com',
-    iosBundleId: 'com.example.offside',
+    iosClientId:
+        '427516758522-n9lnsbroa8ccjbrns3h8a9o66ghj59pt.apps.googleusercontent.com',
+    iosBundleId: 'com.OFFSIDE.offside',
   );
 }
