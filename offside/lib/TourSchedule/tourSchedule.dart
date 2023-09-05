@@ -65,7 +65,7 @@ class _TourSchedule extends ConsumerState {
     return (Column(
       children: [
         Container(
-            height: size.height * 0.2,
+            // height: size.height * 0.2,
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Text('나의 여행 일정',
