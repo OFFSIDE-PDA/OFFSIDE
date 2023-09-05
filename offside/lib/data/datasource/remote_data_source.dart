@@ -25,6 +25,7 @@ class AuthDataSource extends remoteDataSource {
     }
     try {
       //이미 존재하는 연결된 카카오 계정이 있는지 확인
+      Kakao.User user = await Kakao.UserApi.instance.me();
     } catch (e) {
       //연결된 카카오 계정이 없다면 카카오 로그인
       if (e is Kakao.KakaoClientException) {
@@ -69,8 +70,9 @@ class AuthDataSource extends remoteDataSource {
     Kakao.User user = await Kakao.UserApi.instance.me();
 
     //파이어베이스에 카카오 인증 uid를 통해 계정 생성
-    var response =
-        await get(Uri.http('localhost:8000', '/', {'id': user.id.toString()}));
+    var response = await get(Uri.https(
+        'kakaoauth-7trkcd7bvq-uc.a.run.app', '', {'id': user.id.toString()}));
+
     var responseBody = response.body;
     final userCredential = await FirebaseAuth.instance
         .signInWithCustomToken(responseBody.toString());
