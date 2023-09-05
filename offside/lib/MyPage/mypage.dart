@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,7 @@ class MyPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 55,
+              height: 50,
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
                 child: Text(
@@ -82,8 +83,10 @@ class _ProfileState extends ConsumerState {
   Widget build(BuildContext context) {
     final user = ref.watch(userViewModelProvider);
     final teaminfo = ref.watch(teamInfoViewModelProvider);
+    var size = MediaQuery.of(context).size;
     return (Container(
-      margin: const EdgeInsets.all(30),
+      margin: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02,
+          size.width * 0.05, size.height * 0.02),
       padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
       decoration: BoxDecoration(
           border: Border.all(
@@ -101,8 +104,8 @@ class _ProfileState extends ConsumerState {
               children: [
                 Image.network(
                   teaminfo.teamInfoList[user.user!.team!].logoImg!,
-                  width: 100,
-                  height: 100,
+                  width: 80,
+                  height: 80,
                 ),
                 SizedBox(
                   child: Column(
@@ -192,7 +195,8 @@ class Second extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var wSize = size.width * (2 / 6) + 20;
     return (Container(
-      margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
+      margin: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02,
+          size.width * 0.05, size.height * 0.02),
       child: (Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -200,7 +204,7 @@ class Second extends StatelessWidget {
           Container(
             // padding: const EdgeInsets.all(8),
             width: wSize,
-            height: 100,
+            height: size.height * 0.13,
             decoration: BoxDecoration(
                 border: Border.all(
                   width: 2,
@@ -223,7 +227,8 @@ class Second extends StatelessWidget {
                     "내 응원팀 경기 일정",
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 11)),
+                            .getadaptiveTextSize(context, 11),
+                        fontWeight: FontWeight.w600),
                   ),
                   Icon(Icons.event_available,
                       color: Color.fromRGBO(18, 32, 84, 1))
@@ -234,7 +239,7 @@ class Second extends StatelessWidget {
           Container(
             // padding: const EdgeInsets.all(8),
             width: wSize,
-            height: 100,
+            height: size.height * 0.13,
             decoration: BoxDecoration(
                 border: Border.all(
                   width: 2,
@@ -244,6 +249,10 @@ class Second extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 // 내 여행 일정 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyTravel()),
+                );
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -253,7 +262,8 @@ class Second extends StatelessWidget {
                     "내 여행 일정",
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 11)),
+                            .getadaptiveTextSize(context, 11),
+                        fontWeight: FontWeight.w600),
                   ),
                   Icon(Icons.card_travel, color: Color.fromRGBO(18, 32, 84, 1))
                 ],
@@ -275,11 +285,12 @@ class Third extends StatelessWidget {
     var wSize = size.width;
     // TODO: implement build
     return (Container(
-        margin: const EdgeInsets.fromLTRB(30, 15, 30, 30),
+        margin: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02,
+            size.width * 0.05, size.height * 0.02),
         child: Container(
           // padding: const EdgeInsets.all(8),
           width: wSize,
-          height: 100,
+          height: size.height * 0.13,
           decoration: BoxDecoration(
               border: Border.all(
                 width: 2,
