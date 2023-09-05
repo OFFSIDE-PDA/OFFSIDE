@@ -3,11 +3,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/Match/match.dart';
 import 'package:offside/data/model/team_info.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/tour_view_model.dart';
-// import 'package:kakaomap_webview/kakaomap_webview.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+List tourList = [];
 
 class TourPlan extends ConsumerStatefulWidget {
   const TourPlan(
@@ -29,7 +31,20 @@ class AdaptiveTextSize {
 
 class _TourPlan extends ConsumerState<TourPlan> {
   int step = 1;
-  // late WebViewController _mapController;
+  Set<Marker> markers = {}; // 마커 변수
+  late KakaoMapController mapController;
+
+  getDate(date) {
+    return date[0] +
+        date[1] +
+        "." +
+        date[2] +
+        date[3] +
+        "." +
+        date[4] +
+        date[5];
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -106,29 +121,37 @@ class _TourPlan extends ConsumerState<TourPlan> {
               title: '경기장 위치',
               text: teamInfoList[widget.home].stadium)
         ]),
-        // KakaoMapView(
-        //   width: size.width,
-        //   height: 400,
-        //   kakaoMapKey: 'a8bd91fccbb230b5011148456b3cd404',
-        //   lat: 36.6284028,
-        //   lng: 127.4592136,
-        //   zoomLevel: 7,
-        //   // showMapTypeControl: true,
-        //   // showZoomControl: true,
-        //   mapController: (controller) {
-        //     _mapController = controller;
-        //   },
-        //   onTapMarker: (message) {
-        //     //event callback when the marker is tapped
-        //   },
-        //   polyline: KakaoFigure(path: [
-        //     KakaoLatLng(lat: 36.6284028, lng: 127.4592136),
-        //     KakaoLatLng(lat: 36.6440447, lng: 127.471475),
-        //     KakaoLatLng(lat: 36.6069879, lng: 127.503097),
-        //     KakaoLatLng(lat: 36.6163125, lng: 127.5159531),
-        //     KakaoLatLng(lat: 36.6342146, lng: 127.5181335),
-        //   ]),
-        // )
+        Container(
+          width: size.width,
+          height: size.width,
+          padding: const EdgeInsets.all(20),
+          // child: KakaoMap(
+          //   onMapCreated: ((controller) async {
+          //     mapController = controller;
+
+          //     if (await Permission.location.isGranted) {
+          //       Position position = await Geolocator.getCurrentPosition(
+          //           desiredAccuracy: LocationAccuracy.high);
+          //       markers.add(Marker(
+          //           markerId: '현위치',
+          //           latLng: LatLng(position.latitude, position.longitude),
+          //           width: 17,
+          //           height: 21));
+          //     }
+          //     if (await Permission.location.isDenied) {}
+          //     markers.add(Marker(
+          //         markerId: teamInfoList[widget.home].stadium,
+          //         latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
+          //             teamInfoList[widget.home].stadiumGeo.longitude),
+          //         width: 17,
+          //         height: 21));
+          //     setState(() {});
+          //   }),
+          //   currentLevel: 8,
+          //   markers: markers.toList(),
+          //   center: LatLng(36.6284028, 127.4592136),
+          // ),
+        ),
       ]);
     } else if (step == 2) {
       return ChooseCategory(
@@ -136,6 +159,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
           size: size,
           home: teamInfoList[widget.home].fullName);
     } else {
+      print(tourList[0].typeId);
       return Column(children: [
         Container(
             margin: const EdgeInsets.only(bottom: 15),
@@ -170,31 +194,22 @@ class _TourPlan extends ConsumerState<TourPlan> {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                teamInfoList[widget.home].name,
-                                style: TextStyle(
-                                  fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 15),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                              Text(teamInfoList[widget.home].name,
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 15)),
+                                  textAlign: TextAlign.center),
                               const SizedBox(width: 5),
-                              Text(
-                                ' vs ',
-                                style: TextStyle(
-                                  fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 15),
-                                ),
-                              ),
+                              Text(' vs ',
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 15))),
                               const SizedBox(width: 5),
-                              Text(
-                                teamInfoList[widget.away].name,
-                                style: TextStyle(
-                                  fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 15),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                              Text(teamInfoList[widget.away].name,
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 15)),
+                                  textAlign: TextAlign.center),
                               const SizedBox(width: 10),
                               SizedBox(
                                   width: size.width * 0.08,
@@ -203,7 +218,69 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                       teamInfoList[widget.away].logoImg))
                             ])
                       ])
-                ]))
+                ])),
+        Container(
+          height: size.height,
+          margin: const EdgeInsets.only(top: 15),
+          child: ReorderableListView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            children: <Widget>[
+              for (int index = 0; index < tourList.length; index += 1)
+                Container(
+                  key: Key('$index'),
+                  decoration:
+                      const BoxDecoration(border: Border(top: BorderSide())),
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Container(
+                            width: size.width * 0.7,
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Flexible(
+                                child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    text: TextSpan(
+                                        text: tourList[index].title,
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 14),
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.black,
+                                            fontFamily: 'NanumSquare'))))),
+                        // Text(tourList[index].typeId)
+                      ],
+                    ),
+                    subtitle: Container(
+                        width: size.width * 0.7,
+                        margin: const EdgeInsets.only(top: 5),
+                        child: Flexible(
+                            child: RichText(
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                text: TextSpan(
+                                    text: tourList[index].addr,
+                                    style: TextStyle(
+                                        fontSize: const AdaptiveTextSize()
+                                            .getadaptiveTextSize(context, 14),
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black,
+                                        fontFamily: 'NanumSquare'))))),
+                  ),
+                ),
+            ],
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                final item = tourList.removeAt(oldIndex);
+                tourList.insert(newIndex, item);
+              });
+            },
+          ),
+        )
       ]);
     }
   }
@@ -376,7 +453,7 @@ class _ChooseCategory extends ConsumerState<ChooseCategory> {
             return LocationList(
                 tourInfo: searchList.isEmpty ? tourInfo[category] : searchList,
                 category: category,
-                widget: widget,
+                choose: widget,
                 index: index);
           }),
       const SizedBox(height: 10)
@@ -384,19 +461,26 @@ class _ChooseCategory extends ConsumerState<ChooseCategory> {
   }
 }
 
-class LocationList extends StatelessWidget {
+class LocationList extends StatefulWidget {
   const LocationList(
       {super.key,
       required this.tourInfo,
       required this.category,
-      required this.widget,
+      required this.choose,
       required this.index});
 
   final List tourInfo;
   final String category;
-  final ChooseCategory widget;
+  final ChooseCategory choose;
   final int index;
 
+  @override
+  State<LocationList> createState() => _LocationList();
+}
+
+class _LocationList extends State<LocationList> {
+  Set<Marker> markers = {}; // 마커 변수
+  late KakaoMapController mapController;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -412,11 +496,11 @@ class LocationList extends StatelessWidget {
                     child: Icon(
                         size: 25, Icons.expand_more, color: Colors.white))),
             title: Row(children: [
-              Image.network(tourInfo[index].img,
-                  width: widget.size.width * 0.2,
+              Image.network(widget.tourInfo[widget.index].img,
+                  width: widget.choose.size.width * 0.2,
                   fit: BoxFit.fill,
                   errorBuilder: (context, url, error) => SizedBox(
-                      width: widget.size.width * 0.2,
+                      width: widget.choose.size.width * 0.2,
                       child: Image.asset('images/mainpage/logo.png'))),
               const SizedBox(width: 10),
               Column(
@@ -424,13 +508,13 @@ class LocationList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
-                        width: widget.size.width * 0.5,
+                        width: widget.choose.size.width * 0.5,
                         child: Flexible(
                             child: RichText(
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 text: TextSpan(
-                                    text: tourInfo[index].title,
+                                    text: widget.tourInfo[widget.index].title,
                                     style: TextStyle(
                                         fontSize: const AdaptiveTextSize()
                                             .getadaptiveTextSize(context, 14),
@@ -438,13 +522,13 @@ class LocationList extends StatelessWidget {
                                         color: Colors.black,
                                         fontFamily: 'NanumSquare'))))),
                     SizedBox(
-                        width: widget.size.width * 0.5,
+                        width: widget.choose.size.width * 0.5,
                         child: Flexible(
                             child: RichText(
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 text: TextSpan(
-                                    text: tourInfo[index].addr,
+                                    text: widget.tourInfo[widget.index].addr,
                                     style: TextStyle(
                                         fontSize: const AdaptiveTextSize()
                                             .getadaptiveTextSize(context, 11),
@@ -455,16 +539,50 @@ class LocationList extends StatelessWidget {
             ]),
             children: [
               Container(
-                  width: widget.size.width,
-                  height: widget.size.width,
+                  width: widget.choose.size.width,
+                  height: widget.choose.size.width,
                   color: const Color.fromRGBO(239, 239, 239, 1),
                   child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.red)),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 50),
-                      width: widget.size.width * 0.3,
-                      height: widget.size.width * 0.25))
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 40),
+                    width: widget.choose.size.width * 0.3,
+                    height: widget.choose.size.width * 0.25,
+                    // child: KakaoMap(
+                    //   onMapCreated: ((controller) async {
+                    //     mapController = controller;
+                    //     Position position = await Geolocator.getCurrentPosition(
+                    //         desiredAccuracy: LocationAccuracy.high);
+                    //     markers.add(Marker(
+                    //         markerId: '현위치',
+                    //         latLng:
+                    //             LatLng(position.latitude, position.longitude),
+                    //         width: 17,
+                    //         height: 21));
+                    //     markers.add(Marker(
+                    //         markerId: widget.tourInfo[widget.index].title,
+                    //         latLng: LatLng(widget.tourInfo[widget.index].lat,
+                    //             widget.tourInfo[widget.index].lng),
+                    //         width: 17,
+                    //         height: 21));
+                    //     setState(() {});
+                    //   }),
+                    //   currentLevel: 8,
+                    //   markers: markers.toList(),
+                    //   center: LatLng(
+                    //       double.parse(widget.tourInfo[widget.index].lat),
+                    //       double.parse(widget.tourInfo[widget.index].lng)),
+                    // ),
+                  )),
+              Container(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        tourList.add(widget.tourInfo[widget.index]);
+                      });
+                    },
+                    child: const Text('추가하기')),
+              )
             ]));
   }
 }

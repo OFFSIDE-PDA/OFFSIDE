@@ -86,7 +86,7 @@ class Top extends ConsumerWidget {
                       fontWeight: FontWeight.w600,
                       fontSize: const AdaptiveTextSize()
                           .getadaptiveTextSize(context, 13))),
-              Text(time,
+              Text("pm " + time[0] + time[1] + "시 " + time[2] + time[3] + "분",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: const AdaptiveTextSize()
