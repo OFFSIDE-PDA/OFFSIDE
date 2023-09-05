@@ -125,32 +125,32 @@ class _TourPlan extends ConsumerState<TourPlan> {
           width: size.width,
           height: size.width,
           padding: const EdgeInsets.all(20),
-          // child: KakaoMap(
-          //   onMapCreated: ((controller) async {
-          //     mapController = controller;
+          child: KakaoMap(
+            onMapCreated: ((controller) async {
+              mapController = controller;
 
-          //     if (await Permission.location.isGranted) {
-          //       Position position = await Geolocator.getCurrentPosition(
-          //           desiredAccuracy: LocationAccuracy.high);
-          //       markers.add(Marker(
-          //           markerId: '현위치',
-          //           latLng: LatLng(position.latitude, position.longitude),
-          //           width: 17,
-          //           height: 21));
-          //     }
-          //     if (await Permission.location.isDenied) {}
-          //     markers.add(Marker(
-          //         markerId: teamInfoList[widget.home].stadium,
-          //         latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
-          //             teamInfoList[widget.home].stadiumGeo.longitude),
-          //         width: 17,
-          //         height: 21));
-          //     setState(() {});
-          //   }),
-          //   currentLevel: 8,
-          //   markers: markers.toList(),
-          //   center: LatLng(36.6284028, 127.4592136),
-          // ),
+              if (await Permission.location.isGranted) {
+                Position position = await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.high);
+                markers.add(Marker(
+                    markerId: '현위치',
+                    latLng: LatLng(position.latitude, position.longitude),
+                    width: 17,
+                    height: 21));
+              }
+              if (await Permission.location.isDenied) {}
+              markers.add(Marker(
+                  markerId: teamInfoList[widget.home].stadium,
+                  latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
+                      teamInfoList[widget.home].stadiumGeo.longitude),
+                  width: 17,
+                  height: 21));
+              setState(() {});
+            }),
+            currentLevel: 8,
+            markers: markers.toList(),
+            center: LatLng(36.6284028, 127.4592136),
+          ),
         ),
       ]);
     } else if (step == 2) {
@@ -547,31 +547,31 @@ class _LocationList extends State<LocationList> {
                         vertical: 20, horizontal: 40),
                     width: widget.choose.size.width * 0.3,
                     height: widget.choose.size.width * 0.25,
-                    // child: KakaoMap(
-                    //   onMapCreated: ((controller) async {
-                    //     mapController = controller;
-                    //     Position position = await Geolocator.getCurrentPosition(
-                    //         desiredAccuracy: LocationAccuracy.high);
-                    //     markers.add(Marker(
-                    //         markerId: '현위치',
-                    //         latLng:
-                    //             LatLng(position.latitude, position.longitude),
-                    //         width: 17,
-                    //         height: 21));
-                    //     markers.add(Marker(
-                    //         markerId: widget.tourInfo[widget.index].title,
-                    //         latLng: LatLng(widget.tourInfo[widget.index].lat,
-                    //             widget.tourInfo[widget.index].lng),
-                    //         width: 17,
-                    //         height: 21));
-                    //     setState(() {});
-                    //   }),
-                    //   currentLevel: 8,
-                    //   markers: markers.toList(),
-                    //   center: LatLng(
-                    //       double.parse(widget.tourInfo[widget.index].lat),
-                    //       double.parse(widget.tourInfo[widget.index].lng)),
-                    // ),
+                    child: KakaoMap(
+                      onMapCreated: ((controller) async {
+                        mapController = controller;
+                        Position position = await Geolocator.getCurrentPosition(
+                            desiredAccuracy: LocationAccuracy.high);
+                        markers.add(Marker(
+                            markerId: '현위치',
+                            latLng:
+                                LatLng(position.latitude, position.longitude),
+                            width: 17,
+                            height: 21));
+                        markers.add(Marker(
+                            markerId: widget.tourInfo[widget.index].title,
+                            latLng: LatLng(widget.tourInfo[widget.index].lat,
+                                widget.tourInfo[widget.index].lng),
+                            width: 17,
+                            height: 21));
+                        setState(() {});
+                      }),
+                      currentLevel: 8,
+                      markers: markers.toList(),
+                      center: LatLng(
+                          double.parse(widget.tourInfo[widget.index].lat),
+                          double.parse(widget.tourInfo[widget.index].lng)),
+                    ),
                   )),
               Container(
                 alignment: Alignment.centerRight,
