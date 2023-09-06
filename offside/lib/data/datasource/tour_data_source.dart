@@ -9,20 +9,20 @@ String queryParams1 = "?serviceKey=$encodingKey";
 class TourDataSource {
   Map<String, dynamic> getTourData() {
     Map<String, dynamic> data = {};
-    teams.forEach((teamName, value) {
-      var mapX = value['mapX'];
-      var mapY = value['mapY'];
-      final resTour = getApi(mapX, mapY, 12);
-      final resCulture = getApi(mapX, mapY, 14);
-      final resHotel = getApi(mapX, mapY, 32);
-      final resFood = getApi(mapX, mapY, 39);
-      data[teamName] = {
-        'tour': resTour,
-        'culture': resCulture,
-        'hotel': resHotel,
-        'food': resFood
-      };
-    });
+    // teams.forEach((teamName, value) {
+    //   var mapX = value['mapX'];
+    //   var mapY = value['mapY'];
+    //   final resTour = getApi(mapX, mapY, 12);
+    //   final resCulture = getApi(mapX, mapY, 14);
+    //   final resHotel = getApi(mapX, mapY, 32);
+    //   final resFood = getApi(mapX, mapY, 39);
+    //   data[teamName] = {
+    //     'tour': resTour,
+    //     'culture': resCulture,
+    //     'hotel': resHotel,
+    //     'food': resFood
+    //   };
+    // });
     return data;
   }
 }

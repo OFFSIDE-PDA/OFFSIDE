@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/Match/match.dart';
+import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/tour_view_model.dart';
@@ -125,39 +127,41 @@ class _TourPlan extends ConsumerState<TourPlan> {
           width: size.width,
           height: size.width,
           padding: const EdgeInsets.all(20),
-          child: KakaoMap(
-            onMapCreated: ((controller) async {
-              mapController = controller;
+          // child: KakaoMap(
+          //   onMapCreated: ((controller) async {
+          //     mapController = controller;
 
-              if (await Permission.location.isGranted) {
-                Position position = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.high);
-                markers.add(Marker(
-                    markerId: '현위치',
-                    latLng: LatLng(position.latitude, position.longitude),
-                    width: 17,
-                    height: 21));
-              }
-              if (await Permission.location.isDenied) {}
-              markers.add(Marker(
-                  markerId: teamInfoList[widget.home].stadium,
-                  latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
-                      teamInfoList[widget.home].stadiumGeo.longitude),
-                  width: 17,
-                  height: 21));
-              setState(() {});
-            }),
-            currentLevel: 8,
-            markers: markers.toList(),
-            center: LatLng(36.6284028, 127.4592136),
-          ),
+          //     if (await Permission.location.isGranted) {
+          //       Position position = await Geolocator.getCurrentPosition(
+          //           desiredAccuracy: LocationAccuracy.high);
+          //       markers.add(Marker(
+          //           markerId: '현위치',
+          //           latLng: LatLng(position.latitude, position.longitude),
+          //           width: 17,
+          //           height: 21));
+          //     }
+          //     if (await Permission.location.isDenied) {}
+          //     markers.add(Marker(
+          //         markerId: teamInfoList[widget.home].stadium,
+          //         latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
+          //             teamInfoList[widget.home].stadiumGeo.longitude),
+          //         width: 17,
+          //         height: 21));
+          //     setState(() {});
+          //   }),
+          //   currentLevel: 8,
+          //   markers: markers.toList(),
+          //   center: LatLng(36.6284028, 127.4592136),
+          // ),
         ),
       ]);
     } else if (step == 2) {
       return ChooseCategory(
           context: context,
           size: size,
-          home: teamInfoList[widget.home].fullName);
+          home: teamInfoList[widget.home].fullName,
+          lat: teamInfoList[widget.home].stadiumGeo.latitude,
+          lng: teamInfoList[widget.home].stadiumGeo.longitude);
     } else {
       print(tourList[0].typeId);
       return Column(children: [
@@ -327,23 +331,31 @@ class GetLocation extends StatelessWidget {
   }
 }
 
-class ChooseCategory extends ConsumerStatefulWidget {
+class ChooseCategory extends StatefulWidget {
   const ChooseCategory(
-      {Key? key, required this.context, required this.home, required this.size})
+      {Key? key,
+      required this.context,
+      required this.home,
+      required this.size,
+      required this.lat,
+      required this.lng})
       : super(key: key);
   final BuildContext context;
   final String home;
   final Size size;
+  final double lat;
+  final double lng;
   @override
-  createState() => _ChooseCategory();
+  State<ChooseCategory> createState() => _ChooseCategory();
 }
 
-class _ChooseCategory extends ConsumerState<ChooseCategory> {
-  String category = 'tour';
+class _ChooseCategory extends State<ChooseCategory> {
+  int category = 12;
   TextEditingController textEditingController = TextEditingController();
   List searchList = [];
+  late Future<List<TourModel>> futureTourData;
 
-  void chooseCategory(String value) {
+  void chooseCategory(int value) {
     setState(() {
       category = value;
     });
@@ -359,24 +371,23 @@ class _ChooseCategory extends ConsumerState<ChooseCategory> {
   @override
   void initState() {
     super.initState();
+    futureTourData = getTourData(widget.lat, widget.lng, category);
+
     textEditingController = TextEditingController(text: "");
   }
 
   @override
   Widget build(BuildContext context) {
-    var tourData = ref.read(tourViewModelProvider);
-    var tourInfo = tourData.getTourInfo(widget.home);
-
     search(string) {
       String searchText = textEditingController.value.text;
       var tmpList = [];
-      for (var item in tourInfo[category]) {
-        String addr = item.addr;
-        String title = item.title;
-        if (addr.contains(searchText) || title.contains(searchText)) {
-          tmpList.add(item);
-        }
-      }
+      // for (var item in futureTourData) {
+      //   String addr = item.addr;
+      //   String title = item.title;
+      //   if (addr.contains(searchText) || title.contains(searchText)) {
+      //     tmpList.add(item);
+      //   }
+      // }
       setState(() {
         searchList = tmpList;
       });
@@ -443,18 +454,92 @@ class _ChooseCategory extends ConsumerState<ChooseCategory> {
                 choose: chooseCategory)
           ])),
       const SizedBox(height: 15),
-      ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: searchList.isEmpty
-              ? tourInfo[category].length
-              : searchList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return LocationList(
-                tourInfo: searchList.isEmpty ? tourInfo[category] : searchList,
-                category: category,
-                choose: widget,
-                index: index);
+      FutureBuilder<List<TourModel>>(
+          future: futureTourData,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<TourModel> info = snapshot.data!;
+              return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: info.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var size = MediaQuery.of(context).size;
+                    return Column(children: [
+                      Container(
+                          width: size.width,
+                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.network(info[index].img,
+                                        width: size.width * 0.15,
+                                        fit: BoxFit.fill,
+                                        errorBuilder: (context, url, error) =>
+                                            SizedBox(
+                                                width: size.width * 0.15,
+                                                child: Image.asset(
+                                                    'images/mainpage/logo.png')))),
+                                SizedBox(width: size.width * 0.05),
+                                Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                          width: size.width * 0.65,
+                                          child: Flexible(
+                                              child: RichText(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  text: TextSpan(
+                                                      text: info[index].title,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              const AdaptiveTextSize()
+                                                                  .getadaptiveTextSize(
+                                                                      context,
+                                                                      13),
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color:
+                                                              Colors.black))))),
+                                      const SizedBox(height: 5),
+                                      SizedBox(
+                                          width: size.width * 0.65,
+                                          child: Flexible(
+                                              child: RichText(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  text: TextSpan(
+                                                      text: info[index].addr,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              const AdaptiveTextSize()
+                                                                  .getadaptiveTextSize(
+                                                                      context,
+                                                                      11),
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          color: const Color
+                                                                  .fromARGB(255,
+                                                              67, 67, 67))))))
+                                    ])
+                              ])),
+                      const Divider(thickness: 1, color: Colors.grey)
+                    ]);
+                  });
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+              return const Center(child: Text('error'));
+            }
+            return const Center(child: CupertinoActivityIndicator());
           }),
       const SizedBox(height: 10)
     ]);
@@ -547,31 +632,31 @@ class _LocationList extends State<LocationList> {
                         vertical: 20, horizontal: 40),
                     width: widget.choose.size.width * 0.3,
                     height: widget.choose.size.width * 0.25,
-                    child: KakaoMap(
-                      onMapCreated: ((controller) async {
-                        mapController = controller;
-                        Position position = await Geolocator.getCurrentPosition(
-                            desiredAccuracy: LocationAccuracy.high);
-                        markers.add(Marker(
-                            markerId: '현위치',
-                            latLng:
-                                LatLng(position.latitude, position.longitude),
-                            width: 17,
-                            height: 21));
-                        markers.add(Marker(
-                            markerId: widget.tourInfo[widget.index].title,
-                            latLng: LatLng(widget.tourInfo[widget.index].lat,
-                                widget.tourInfo[widget.index].lng),
-                            width: 17,
-                            height: 21));
-                        setState(() {});
-                      }),
-                      currentLevel: 8,
-                      markers: markers.toList(),
-                      center: LatLng(
-                          double.parse(widget.tourInfo[widget.index].lat),
-                          double.parse(widget.tourInfo[widget.index].lng)),
-                    ),
+                    // child: KakaoMap(
+                    //   onMapCreated: ((controller) async {
+                    //     mapController = controller;
+                    //     Position position = await Geolocator.getCurrentPosition(
+                    //         desiredAccuracy: LocationAccuracy.high);
+                    //     markers.add(Marker(
+                    //         markerId: '현위치',
+                    //         latLng:
+                    //             LatLng(position.latitude, position.longitude),
+                    //         width: 17,
+                    //         height: 21));
+                    //     markers.add(Marker(
+                    //         markerId: widget.tourInfo[widget.index].title,
+                    //         latLng: LatLng(widget.tourInfo[widget.index].lat,
+                    //             widget.tourInfo[widget.index].lng),
+                    //         width: 17,
+                    //         height: 21));
+                    //     setState(() {});
+                    //   }),
+                    //   currentLevel: 8,
+                    //   markers: markers.toList(),
+                    //   center: LatLng(
+                    //       double.parse(widget.tourInfo[widget.index].lat),
+                    //       double.parse(widget.tourInfo[widget.index].lng)),
+                    // ),
                   )),
               Container(
                 alignment: Alignment.centerRight,
@@ -587,7 +672,7 @@ class _LocationList extends State<LocationList> {
   }
 }
 
-class CategoryBtn extends StatelessWidget {
+class CategoryBtn extends StatefulWidget {
   const CategoryBtn(
       {super.key,
       required this.context,
@@ -597,30 +682,37 @@ class CategoryBtn extends StatelessWidget {
       required this.choose});
 
   final BuildContext context;
-  final String category;
+  final int category;
   final String info;
   final String text;
   final Function choose;
 
   @override
+  State<CategoryBtn> createState() => _CategoryBtn();
+}
+
+class _CategoryBtn extends State<CategoryBtn> {
+  Map<int, String> getType = {12: '관광지', 14: '문화시설', 32: '숙박', 39: '음식점'};
+
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: () {
-          choose(info);
+          widget.choose(widget.category);
         },
         style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            backgroundColor: category == info
+            backgroundColor: getType[widget.category] == widget.info
                 ? const Color.fromRGBO(14, 32, 87, 1)
                 : Colors.white,
             side: BorderSide(
                 color: const Color.fromARGB(255, 149, 149, 149),
-                width: category == info ? 0.0 : 2.0)),
-        child: Text(text,
+                width: getType[widget.category] == widget.info ? 0.0 : 2.0)),
+        child: Text(widget.text,
             style: TextStyle(
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-                color: category == info
+                color: getType[widget.category] == widget.info
                     ? Colors.white
                     : const Color.fromARGB(255, 125, 125, 125),
                 fontFamily: 'NanumSquare')));
