@@ -4,7 +4,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:offside/MainPage/main_page.dart';
 import 'package:offside/data/view/match_view_model.dart';
-import 'package:offside/data/view/tour_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/firebase_options.dart';
@@ -34,11 +33,9 @@ class Offside extends ConsumerWidget {
   const Offside({super.key});
 
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final autoLogin = ref.read(userViewModelProvider).autoSignIn();
-    ref.read(tourViewModelProvider).getTourData();
     Future.wait([
       ref.read(teamInfoViewModelProvider).getTeamInfo(),
       ref.read(matchViewModelProvider).getAllMatches()

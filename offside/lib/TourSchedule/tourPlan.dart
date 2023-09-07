@@ -2,16 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/Match/match.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
-import 'package:offside/data/view/tour_view_model.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-List tourList = [];
+List selectedList = [];
 
 class TourPlan extends ConsumerStatefulWidget {
   const TourPlan(
@@ -163,7 +161,6 @@ class _TourPlan extends ConsumerState<TourPlan> {
           lat: teamInfoList[widget.home].stadiumGeo.latitude,
           lng: teamInfoList[widget.home].stadiumGeo.longitude);
     } else {
-      print(tourList[0].typeId);
       return Column(children: [
         Container(
             margin: const EdgeInsets.only(bottom: 15),
@@ -229,7 +226,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
           child: ReorderableListView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             children: <Widget>[
-              for (int index = 0; index < tourList.length; index += 1)
+              for (int index = 0; index < selectedList.length; index += 1)
                 Container(
                   key: Key('$index'),
                   decoration:
@@ -245,7 +242,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     text: TextSpan(
-                                        text: tourList[index].title,
+                                        text: selectedList[index].title,
                                         style: TextStyle(
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
@@ -264,7 +261,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 text: TextSpan(
-                                    text: tourList[index].addr,
+                                    text: selectedList[index].addr,
                                     style: TextStyle(
                                         fontSize: const AdaptiveTextSize()
                                             .getadaptiveTextSize(context, 14),
@@ -279,8 +276,8 @@ class _TourPlan extends ConsumerState<TourPlan> {
                 if (oldIndex < newIndex) {
                   newIndex -= 1;
                 }
-                final item = tourList.removeAt(oldIndex);
-                tourList.insert(newIndex, item);
+                final item = selectedList.removeAt(oldIndex);
+                selectedList.insert(newIndex, item);
               });
             },
           ),
@@ -371,13 +368,12 @@ class _ChooseCategory extends State<ChooseCategory> {
   @override
   void initState() {
     super.initState();
-    futureTourData = getTourData(widget.lat, widget.lng, category);
-
     textEditingController = TextEditingController(text: "");
   }
 
   @override
   Widget build(BuildContext context) {
+    futureTourData = getTourData(widget.lat, widget.lng, category);
     search(string) {
       String searchText = textEditingController.value.text;
       var tmpList = [];
@@ -430,25 +426,25 @@ class _ChooseCategory extends State<ChooseCategory> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             CategoryBtn(
                 context: context,
-                category: category,
+                category: 12,
                 info: 'tour',
                 text: "관광지",
                 choose: chooseCategory),
             CategoryBtn(
                 context: context,
-                category: category,
+                category: 14,
                 info: 'culture',
                 text: "문화시설",
                 choose: chooseCategory),
             CategoryBtn(
                 context: context,
-                category: category,
+                category: 32,
                 info: 'hotel',
                 text: "숙박",
                 choose: chooseCategory),
             CategoryBtn(
                 context: context,
-                category: category,
+                category: 39,
                 info: 'food',
                 text: "음식점",
                 choose: chooseCategory)
@@ -475,7 +471,7 @@ class _ChooseCategory extends State<ChooseCategory> {
                               children: [
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    child: Image.network(info[index].img,
+                                    child: Image.network(info[index].img!,
                                         width: size.width * 0.15,
                                         fit: BoxFit.fill,
                                         errorBuilder: (context, url, error) =>
@@ -663,7 +659,7 @@ class _LocationList extends State<LocationList> {
                 child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        tourList.add(widget.tourInfo[widget.index]);
+                        selectedList.add(widget.tourInfo[widget.index]);
                       });
                     },
                     child: const Text('추가하기')),
