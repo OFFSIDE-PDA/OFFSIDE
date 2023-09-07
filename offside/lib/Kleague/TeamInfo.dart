@@ -229,11 +229,11 @@ class _PlaceListState extends State<PlaceList> {
   @override
   void initState() {
     super.initState();
-    futureTourData = getTourData(widget.lat, widget.lng, widget.category);
   }
 
   @override
   Widget build(BuildContext context) {
+    futureTourData = getTourData(widget.lat, widget.lng, widget.category);
     return FutureBuilder<List<TourModel>>(
         future: futureTourData,
         builder: (context, snapshot) {
@@ -255,7 +255,7 @@ class _PlaceListState extends State<PlaceList> {
                             children: [
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(info[index].img,
+                                  child: Image.network(info[index].img!,
                                       width: size.width * 0.15,
                                       fit: BoxFit.fill,
                                       errorBuilder: (context, url, error) =>
