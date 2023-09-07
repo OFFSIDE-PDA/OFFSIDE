@@ -374,18 +374,23 @@ class _ChooseCategory extends State<ChooseCategory> {
   @override
   Widget build(BuildContext context) {
     futureTourData = getTourData(widget.lat, widget.lng, category);
+
     search(string) {
       String searchText = textEditingController.value.text;
-      var tmpList = [];
-      // for (var item in futureTourData) {
-      //   String addr = item.addr;
-      //   String title = item.title;
-      //   if (addr.contains(searchText) || title.contains(searchText)) {
-      //     tmpList.add(item);
-      //   }
-      // }
-      setState(() {
-        searchList = tmpList;
+      futureTourData.then((value) {
+        var tmpList = [];
+        for (var item in value) {
+          String addr = item.addr!;
+          String title = item.title!;
+          if (addr.contains(searchText) || title.contains(searchText)) {
+            tmpList.add(item);
+          }
+        }
+        return tmpList;
+      }).then((value) {
+        setState(() {
+          searchList = value;
+        });
       });
     }
 
@@ -458,78 +463,14 @@ class _ChooseCategory extends State<ChooseCategory> {
               return ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: info.length,
+                  itemCount:
+                      searchList.isEmpty ? info.length : searchList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var size = MediaQuery.of(context).size;
-                    return Column(children: [
-                      Container(
-                          width: size.width,
-                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: Image.network(info[index].img!,
-                                        width: size.width * 0.15,
-                                        fit: BoxFit.fill,
-                                        errorBuilder: (context, url, error) =>
-                                            SizedBox(
-                                                width: size.width * 0.15,
-                                                child: Image.asset(
-                                                    'images/mainpage/logo.png')))),
-                                SizedBox(width: size.width * 0.05),
-                                Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                          width: size.width * 0.65,
-                                          child: Flexible(
-                                              child: RichText(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  text: TextSpan(
-                                                      text: info[index].title,
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              const AdaptiveTextSize()
-                                                                  .getadaptiveTextSize(
-                                                                      context,
-                                                                      13),
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          color:
-                                                              Colors.black))))),
-                                      const SizedBox(height: 5),
-                                      SizedBox(
-                                          width: size.width * 0.65,
-                                          child: Flexible(
-                                              child: RichText(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  text: TextSpan(
-                                                      text: info[index].addr,
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              const AdaptiveTextSize()
-                                                                  .getadaptiveTextSize(
-                                                                      context,
-                                                                      11),
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          color: const Color
-                                                                  .fromARGB(255,
-                                                              67, 67, 67))))))
-                                    ])
-                              ])),
-                      const Divider(thickness: 1, color: Colors.grey)
-                    ]);
+                    return LocationList(
+                        tourInfo: searchList.isEmpty ? info : searchList,
+                        category: category,
+                        choose: widget,
+                        index: index);
                   });
             } else if (snapshot.hasError) {
               print(snapshot.error);
@@ -551,7 +492,7 @@ class LocationList extends StatefulWidget {
       required this.index});
 
   final List tourInfo;
-  final String category;
+  final int category;
   final ChooseCategory choose;
   final int index;
 

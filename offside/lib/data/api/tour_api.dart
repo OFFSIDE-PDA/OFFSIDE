@@ -25,7 +25,6 @@ Future<List<dynamic>> getApi(Object? mapX, Object? mapY, int type) async {
 Future<List<TourModel>> getTourData(double lat, double lng, int type) async {
   var data = await getApi(lng, lat, type);
   List<TourModel> tourInfo = [];
-  var tmp = [];
   for (var value in data) {
     tourInfo.add(TourModel.fromMap(value));
   }
@@ -62,6 +61,6 @@ class TourModel {
     mapy = tourModel.mapy;
     mapx = tourModel.mapx;
   }
-}
 
-Map<int, String> getType = {12: '관광지', 14: '문화시설', 32: '숙박', 39: '음식점'};
+  Map<int, String> getType = {12: '관광지', 14: '문화시설', 32: '숙박', 39: '음식점'};
+}
