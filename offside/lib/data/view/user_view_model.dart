@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/app_user.dart';
 import 'package:offside/data/repository/auth_repository.dart';
 import 'package:offside/data/repository/user_info_repository.dart';
@@ -111,5 +112,9 @@ class UserViewModel extends ChangeNotifier {
     await userInfoRepositoryProvider.updateMyTeam(uid: uid, team: team);
     _user!.team = team;
     notifyListeners();
+  }
+
+  Future<List> getMyTour({required String? uid}) async {
+    return await userInfoRepositoryProvider.getMyTour(uid: uid!);
   }
 }

@@ -7,16 +7,22 @@ import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:offside/data/view/user_view_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 List selectedList = [];
 
 class TourPlan extends ConsumerStatefulWidget {
   const TourPlan(
-      {super.key, required this.home, required this.away, required this.date});
+      {super.key,
+      required this.home,
+      required this.away,
+      required this.date,
+      required this.time});
   final int home;
   final int away;
   final String date;
+  final String time;
   @override
   _TourPlan createState() => _TourPlan();
 }
@@ -34,21 +40,15 @@ class _TourPlan extends ConsumerState<TourPlan> {
   Set<Marker> markers = {}; // 마커 변수
   late KakaoMapController mapController;
 
-  getDate(date) {
-    return date[0] +
-        date[1] +
-        "." +
-        date[2] +
-        date[3] +
-        "." +
-        date[4] +
-        date[5];
-  }
+  getDate(date) =>
+      '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
+    final user = ref.watch(userViewModelProvider);
+    var uid = user.user!.uid;
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -65,7 +65,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                       fontFamily: 'NanumSquare'))),
           PlanStep(size: size, step: step),
           const SizedBox(height: 15),
-          returnStep(step, size, teamInfoList),
+          returnStep(step, size, teamInfoList, uid),
         ])),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Stack(fit: StackFit.expand, children: [
@@ -76,6 +76,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   onPressed: () {
                     setState(() {
                       if (step == 1) {
+                        selectedList.clear();
                         Navigator.pop(context);
                       } else {
                         step -= 1;
@@ -111,7 +112,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
         ]));
   }
 
-  returnStep(int step, Size size, List<TeamInfo> teamInfoList) {
+  returnStep(int step, Size size, List<TeamInfo> teamInfoList, String? uid) {
     if (step == 1) {
       return Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -221,67 +222,66 @@ class _TourPlan extends ConsumerState<TourPlan> {
                       ])
                 ])),
         Container(
-          height: size.height,
-          margin: const EdgeInsets.only(top: 15),
-          child: ReorderableListView(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            children: <Widget>[
-              for (int index = 0; index < selectedList.length; index += 1)
-                Container(
-                  key: Key('$index'),
-                  decoration:
-                      const BoxDecoration(border: Border(top: BorderSide())),
-                  child: ListTile(
-                    title: Row(
-                      children: [
-                        Container(
-                            width: size.width * 0.7,
-                            margin: const EdgeInsets.only(bottom: 5),
-                            child: Flexible(
-                                child: RichText(
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    text: TextSpan(
-                                        text: selectedList[index].title,
-                                        style: TextStyle(
-                                            fontSize: const AdaptiveTextSize()
-                                                .getadaptiveTextSize(
-                                                    context, 14),
-                                            fontWeight: FontWeight.normal,
-                                            color: Colors.black,
-                                            fontFamily: 'NanumSquare'))))),
-                        // Text(tourList[index].typeId)
-                      ],
-                    ),
-                    subtitle: Container(
-                        width: size.width * 0.7,
-                        margin: const EdgeInsets.only(top: 5),
-                        child: Flexible(
-                            child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                text: TextSpan(
-                                    text: selectedList[index].addr,
-                                    style: TextStyle(
-                                        fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 14),
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.black,
-                                        fontFamily: 'NanumSquare'))))),
-                  ),
-                ),
-            ],
-            onReorder: (int oldIndex, int newIndex) {
-              setState(() {
-                if (oldIndex < newIndex) {
-                  newIndex -= 1;
-                }
-                final item = selectedList.removeAt(oldIndex);
-                selectedList.insert(newIndex, item);
-              });
+            height: selectedList.length * 80,
+            margin: const EdgeInsets.only(top: 15),
+            child: ReorderableListView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                children: <Widget>[
+                  for (int index = 0; index < selectedList.length; index += 1)
+                    Container(
+                        key: Key('$index'),
+                        decoration: const BoxDecoration(
+                            border: Border(top: BorderSide())),
+                        child: ListTile(
+                            leading: Image.network(selectedList[index].img,
+                                width: size.width * 0.18,
+                                errorBuilder: (context, url, error) => SizedBox(
+                                    width: size.width * 0.18,
+                                    child: Image.asset(
+                                        'images/mainpage/logo.png'))),
+                            title: Text(
+                                '${selectedList[index].title}  ${getType[selectedList[index].typeId]}',
+                                style: const TextStyle(fontSize: 12.5)),
+                            subtitle: Text(selectedList[index].addr,
+                                style: const TextStyle(fontSize: 11.5))))
+                ],
+                onReorder: (int oldIndex, int newIndex) {
+                  setState(() {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final item = selectedList.removeAt(oldIndex);
+                    selectedList.insert(newIndex, item);
+                  });
+                })),
+        ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        title: Text('20${getDate(widget.date)}'),
+                        content: const SingleChildScrollView(
+                            child: ListBody(
+                                children: <Widget>[Text('여행일정을 저장하시겠습니까?')])),
+                        actions: [
+                          TextButton(
+                              child: const Text('취소'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }),
+                          TextButton(
+                              child: const Text('확인'),
+                              onPressed: () {
+                                createTourPlan(uid, selectedList, widget.date,
+                                    widget.home, widget.away, widget.time);
+                                Navigator.of(context).pop();
+                              })
+                        ]);
+                  });
             },
-          ),
-        )
+            child: const Text('일정 저장'))
       ]);
     }
   }
@@ -431,26 +431,26 @@ class _ChooseCategory extends State<ChooseCategory> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             CategoryBtn(
                 context: context,
-                category: 12,
-                info: 'tour',
+                category: category,
+                id: 12,
                 text: "관광지",
                 choose: chooseCategory),
             CategoryBtn(
                 context: context,
-                category: 14,
-                info: 'culture',
+                id: 14,
+                category: category,
                 text: "문화시설",
                 choose: chooseCategory),
             CategoryBtn(
                 context: context,
-                category: 32,
-                info: 'hotel',
+                id: 32,
+                category: category,
                 text: "숙박",
                 choose: chooseCategory),
             CategoryBtn(
                 context: context,
-                category: 39,
-                info: 'food',
+                id: 39,
+                category: category,
                 text: "음식점",
                 choose: chooseCategory)
           ])),
@@ -473,7 +473,6 @@ class _ChooseCategory extends State<ChooseCategory> {
                         index: index);
                   });
             } else if (snapshot.hasError) {
-              print(snapshot.error);
               return const Center(child: Text('error'));
             }
             return const Center(child: CupertinoActivityIndicator());
@@ -613,14 +612,14 @@ class CategoryBtn extends StatefulWidget {
   const CategoryBtn(
       {super.key,
       required this.context,
+      required this.id,
       required this.category,
-      required this.info,
       required this.text,
       required this.choose});
 
   final BuildContext context;
+  final int id;
   final int category;
-  final String info;
   final String text;
   final Function choose;
 
@@ -629,27 +628,23 @@ class CategoryBtn extends StatefulWidget {
 }
 
 class _CategoryBtn extends State<CategoryBtn> {
-  Map<int, String> getType = {12: '관광지', 14: '문화시설', 32: '숙박', 39: '음식점'};
-
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
-          widget.choose(widget.category);
-        },
+        onPressed: () => widget.choose(widget.id),
         style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            backgroundColor: getType[widget.category] == widget.info
+            backgroundColor: widget.category == widget.id
                 ? const Color.fromRGBO(14, 32, 87, 1)
                 : Colors.white,
             side: BorderSide(
                 color: const Color.fromARGB(255, 149, 149, 149),
-                width: getType[widget.category] == widget.info ? 0.0 : 2.0)),
+                width: widget.category == widget.id ? 0.0 : 2.0)),
         child: Text(widget.text,
             style: TextStyle(
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-                color: getType[widget.category] == widget.info
+                color: widget.category == widget.id
                     ? Colors.white
                     : const Color.fromARGB(255, 125, 125, 125),
                 fontFamily: 'NanumSquare')));

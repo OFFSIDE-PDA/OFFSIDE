@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 String encodingKey =
     '4cLVOervdUDMVZg9nQde%2FY99WAtbEexyIhfSUAZEi04RhOZBXkLWHextf%2F4fT1TZtzclmylXmC7Y%2BZI5mrNq1g%3D%3D';
@@ -61,6 +63,41 @@ class TourModel {
     mapy = tourModel.mapy;
     mapx = tourModel.mapx;
   }
+}
 
-  Map<int, String> getType = {12: '관광지', 14: '문화시설', 32: '숙박', 39: '음식점'};
+Map<String, String> getType = {
+  '12': '관광지',
+  '14': '문화시설',
+  '32': '숙박',
+  '39': '음식점'
+};
+
+final firestore = FirebaseFirestore.instance;
+
+Future<void> createTourPlan(String? uid, List selectedList, String date,
+    int home, int away, String time) async {
+  var planInfo = [];
+  for (var item in selectedList) {
+    planInfo.add({
+      'addr': item.addr,
+      'contentId': item.contentId,
+      'typeId': item.typeId,
+      'img': item.img,
+      'title': item.title,
+      'mapy': item.mapy,
+      'mapx': item.mapx,
+    });
+  }
+
+  await firestore
+      .collection('users')
+      .doc(uid)
+      .collection("tour")
+      .doc(const Uuid().v4())
+      .set({
+    date: {
+      'tour': planInfo,
+      'match': {'away': away, 'home': home, 'time': time}
+    },
+  });
 }

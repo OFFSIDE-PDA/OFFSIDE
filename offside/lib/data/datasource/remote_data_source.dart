@@ -168,6 +168,27 @@ class UserInfoDataSource {
 
     return data["team"];
   }
+
+  //여행 일정 조회
+  Future<List> getMyTour({required String uid}) async {
+    final db = FirebaseFirestore.instance;
+    var tourList = [];
+    try {
+      await db.collection("users").doc(uid).collection("tour").get().then(
+        (querySnapshot) {
+          for (var docSnapshot in querySnapshot.docs) {
+            docSnapshot.data().forEach((key, value) {
+              tourList.add({key: value});
+            });
+          }
+        },
+        onError: (e) => print("Error completing: $e"),
+      );
+      return tourList;
+    } catch (e) {
+      return [];
+    }
+  }
 }
 
 class ChatDataSource {
