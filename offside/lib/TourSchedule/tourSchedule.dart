@@ -240,13 +240,13 @@ class _TourSchedule extends ConsumerState {
             ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TourPlan(
-                            home: matches[selectedIdx].team1,
-                            away: matches[selectedIdx].team2,
-                            date: matches[selectedIdx].data)),
-                  );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TourPlan(
+                              home: matches[selectedIdx].team1,
+                              away: matches[selectedIdx].team2,
+                              date: matches[selectedIdx].data,
+                              time: matches[selectedIdx].time)));
                 },
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
