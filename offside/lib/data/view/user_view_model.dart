@@ -114,7 +114,7 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List> getMyTour({required String? uid}) async {
+  Future<Map> getMyTour({required String? uid}) async {
     return await userInfoRepositoryProvider.getMyTour(uid: uid!);
   }
 }

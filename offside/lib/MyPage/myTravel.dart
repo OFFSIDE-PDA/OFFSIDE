@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:offside/MyPage/myTravelDetail.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
@@ -22,7 +23,9 @@ class _MyTravel extends ConsumerState<MyTravel> {
         future: user.getMyTour(uid: user.user!.uid),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
-            List info = snapshot.data!;
+            Map info = snapshot.data!;
+            // print(info);
+
             return ListView(children: [
               AppBar(),
               Padding(
@@ -36,10 +39,12 @@ class _MyTravel extends ConsumerState<MyTravel> {
                   height: size.height * 0.8,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: info.length,
+                      itemCount: info.keys.length,
                       itemBuilder: (BuildContext context, int index) {
                         return MatchBox(
-                            info: info[index], teamInfo: teamInfoList);
+                            info: info[info.keys.elementAt(index)],
+                            teamInfo: teamInfoList,
+                            docUid: info.keys.elementAt(index));
                       }))
             ]);
           } else if (snapshot.hasError) {
@@ -51,10 +56,15 @@ class _MyTravel extends ConsumerState<MyTravel> {
 }
 
 class MatchBox extends StatelessWidget {
-  const MatchBox({Key? key, required this.info, required this.teamInfo})
+  const MatchBox(
+      {Key? key,
+      required this.info,
+      required this.teamInfo,
+      required this.docUid})
       : super(key: key);
   final Map info;
   final List<TeamInfo> teamInfo;
+  final String docUid;
 
   getDate(date) =>
       '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
@@ -63,7 +73,6 @@ class MatchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var matchDate = info.keys.first;
-
     return Container(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
         margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
@@ -177,7 +186,13 @@ class MatchBox extends StatelessWidget {
                   width: size.width,
                   padding: const EdgeInsets.fromLTRB(0, 15, 10, 0),
                   child: InkWell(
-                      onTap: () {},
+                      onTap: () async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyTravelDetail(
+                                    info: info, docUid: docUid)));
+                      },
                       // 여행 일정으로 이동
                       child: Text("자세히 보기",
                           textAlign: TextAlign.right,
@@ -199,51 +214,44 @@ class TravelBox extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
-      child: (Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Icon(Icons.lens,
-              size: 10, color: Color.fromARGB(255, 92, 127, 255)),
-          SizedBox(width: size.width * 0.05),
-          Column(
+        padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
+        child: (Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(tour['title'],
-                      style: TextStyle(
-                          fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 12),
-                          fontWeight: FontWeight.w600)),
-                  SizedBox(width: size.width * 0.02),
-                  Text(getType[tour['typeId']]!,
-                      style: TextStyle(
-                          fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 11),
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey))
-                ],
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                tour['addr'],
-                style: TextStyle(
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 11),
-                    fontWeight: FontWeight.w500),
-              )
-            ],
-          )
-        ],
-      )),
-    );
+              const Icon(Icons.lens,
+                  size: 10, color: Color.fromARGB(255, 92, 127, 255)),
+              SizedBox(width: size.width * 0.05),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(tour['title'],
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 12),
+                                fontWeight: FontWeight.w600)),
+                        SizedBox(width: size.width * 0.02),
+                        Text(getType[tour['typeId']]!,
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 11),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey))
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(tour['addr'],
+                        style: TextStyle(
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 11),
+                            fontWeight: FontWeight.w500))
+                  ])
+            ])));
   }
 }
 
