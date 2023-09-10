@@ -190,6 +190,12 @@ class KLeagueTwo extends ConsumerWidget {
 }
 
 Widget team(int id, BuildContext context, TeamInfo team) {
+// String convertedName(name){
+//     if(name.len() >= 7 ){
+//       return name.replaceFirst(' ', '\n');
+//     }
+//   }
+
   var size = MediaQuery.of(context).size;
 
   return SizedBox(

@@ -67,6 +67,16 @@ class Top extends ConsumerWidget {
   final int? score1;
   final int? score2;
 
+  String convertTime(date) {
+    var tmp = int.parse(date[0] + date[1]);
+    var returnString = '';
+    if (tmp < 12) {
+      returnString = (tmp + 12).toString();
+    }
+
+    return "${returnString}시 ${date[2]}${date[3]}분";
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var size = MediaQuery.of(context).size;
@@ -86,7 +96,7 @@ class Top extends ConsumerWidget {
                       fontWeight: FontWeight.w600,
                       fontSize: const AdaptiveTextSize()
                           .getadaptiveTextSize(context, 13))),
-              Text("pm " + time[0] + time[1] + "시 " + time[2] + time[3] + "분",
+              Text(convertTime(time),
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: const AdaptiveTextSize()
