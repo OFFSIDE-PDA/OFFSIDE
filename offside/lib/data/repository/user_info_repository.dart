@@ -13,7 +13,7 @@ class UserInfoRepository {
     return await _userInfoDataSource.updateMyTeam(uid: uid, team: team);
   }
 
-  Future<List> getMyTour({required String uid}) async {
+  Future<Map> getMyTour({required String uid}) async {
     return await _userInfoDataSource.getMyTour(uid: uid);
   }
 }

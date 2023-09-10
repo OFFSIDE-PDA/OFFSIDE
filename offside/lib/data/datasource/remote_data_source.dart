@@ -170,23 +170,26 @@ class UserInfoDataSource {
   }
 
   //여행 일정 조회
-  Future<List> getMyTour({required String uid}) async {
+  Future<Map> getMyTour({required String uid}) async {
     final db = FirebaseFirestore.instance;
-    var tourList = [];
+    var tourList = {};
     try {
       await db.collection("users").doc(uid).collection("tour").get().then(
         (querySnapshot) {
           for (var docSnapshot in querySnapshot.docs) {
-            docSnapshot.data().forEach((key, value) {
-              tourList.add({key: value});
-            });
+            // var tmp = [];
+            // docSnapshot.data().forEach((key, value) {
+            //   tmp.add({key: value});
+            // });
+            tourList[docSnapshot.id] = docSnapshot.data();
           }
         },
         onError: (e) => print("Error completing: $e"),
       );
+      // print(tourList);
       return tourList;
     } catch (e) {
-      return [];
+      return {};
     }
   }
 }

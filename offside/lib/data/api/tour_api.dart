@@ -101,3 +101,31 @@ Future<void> createTourPlan(String? uid, List selectedList, String date,
     },
   });
 }
+
+Future<void> updateTourPlan(String? uid, List selectedList, String date,
+    int home, int away, String time, String docUid) async {
+  var planInfo = [];
+  for (var item in selectedList) {
+    planInfo.add({
+      'addr': item['addr'],
+      'contentId': item['contentId'],
+      'typeId': item['typeId'],
+      'img': item['img'],
+      'title': item['title'],
+      'mapy': item['mapy'],
+      'mapx': item['mapx'],
+    });
+  }
+
+  await firestore
+      .collection('users')
+      .doc(uid)
+      .collection("tour")
+      .doc(docUid)
+      .set({
+    date: {
+      'tour': planInfo,
+      'match': {'away': away, 'home': home, 'time': time}
+    },
+  });
+}

@@ -281,7 +281,11 @@ class _TourPlan extends ConsumerState<TourPlan> {
                         ]);
                   });
             },
-            child: const Text('일정 저장'))
+            style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(), //<-- SEE HERE
+                padding: const EdgeInsets.all(20),
+                backgroundColor: const Color.fromRGBO(33, 58, 135, 1)),
+            child: const Icon(Icons.check, color: Colors.white))
       ]);
     }
   }
