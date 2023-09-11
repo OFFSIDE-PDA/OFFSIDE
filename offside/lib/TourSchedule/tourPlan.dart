@@ -229,22 +229,56 @@ class _TourPlan extends ConsumerState<TourPlan> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 children: <Widget>[
                   for (int index = 0; index < selectedList.length; index += 1)
-                    Container(
-                        key: Key('$index'),
-                        decoration: const BoxDecoration(
-                            border: Border(top: BorderSide())),
-                        child: ListTile(
-                            leading: Image.network(selectedList[index].img,
-                                width: size.width * 0.18,
-                                errorBuilder: (context, url, error) => SizedBox(
-                                    width: size.width * 0.18,
-                                    child: Image.asset(
-                                        'images/mainpage/logo.png'))),
-                            title: Text(
-                                '${selectedList[index].title}  ${getType[selectedList[index].typeId]}',
-                                style: const TextStyle(fontSize: 12.5)),
-                            subtitle: Text(selectedList[index].addr,
-                                style: const TextStyle(fontSize: 11.5))))
+                    InkWell(
+                      key: Key('$index'),
+                      onLongPress: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  title: Text(selectedList[index].title,
+                                      style: TextStyle(
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(
+                                                  context, 13))),
+                                  content: const SingleChildScrollView(
+                                      child: ListBody(children: <Widget>[
+                                    Text('해당 일정을 삭제하시겠습니까?')
+                                  ])),
+                                  actions: [
+                                    TextButton(
+                                        child: const Text('취소'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        }),
+                                    TextButton(
+                                        child: const Text('확인'),
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedList.removeAt(index);
+                                          });
+                                          Navigator.of(context).pop();
+                                        })
+                                  ]);
+                            });
+                      },
+                      child: Container(
+                          decoration: const BoxDecoration(
+                              border: Border(top: BorderSide())),
+                          child: ListTile(
+                              leading: Image.network(selectedList[index].img,
+                                  width: size.width * 0.18,
+                                  errorBuilder: (context, url, error) =>
+                                      SizedBox(
+                                          width: size.width * 0.18,
+                                          child: Image.asset(
+                                              'images/mainpage/logo.png'))),
+                              title: Text(
+                                  '${selectedList[index].title}  ${getType[selectedList[index].typeId]}',
+                                  style: const TextStyle(fontSize: 12.5)),
+                              subtitle: Text(selectedList[index].addr,
+                                  style: const TextStyle(fontSize: 11.5)))),
+                    )
                 ],
                 onReorder: (int oldIndex, int newIndex) {
                   setState(() {
@@ -257,29 +291,39 @@ class _TourPlan extends ConsumerState<TourPlan> {
                 })),
         ElevatedButton(
             onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                        title: Text('20${getDate(widget.date)}'),
-                        content: const SingleChildScrollView(
-                            child: ListBody(
-                                children: <Widget>[Text('여행일정을 저장하시겠습니까?')])),
-                        actions: [
-                          TextButton(
-                              child: const Text('취소'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }),
-                          TextButton(
-                              child: const Text('확인'),
-                              onPressed: () {
-                                createTourPlan(uid, selectedList, widget.date,
-                                    widget.home, widget.away, widget.time);
-                                Navigator.of(context).pop();
-                              })
-                        ]);
-                  });
+              selectedList.isNotEmpty
+                  ? showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            title: Text('20${getDate(widget.date)}'),
+                            content: const SingleChildScrollView(
+                                child: ListBody(children: <Widget>[
+                              Text('여행일정을 저장하시겠습니까?')
+                            ])),
+                            actions: [
+                              TextButton(
+                                  child: const Text('취소'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }),
+                              TextButton(
+                                  child: const Text('확인'),
+                                  onPressed: () {
+                                    createTourPlan(
+                                        uid,
+                                        selectedList,
+                                        widget.date,
+                                        widget.home,
+                                        widget.away,
+                                        widget.time);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(saveSnackBar);
+                                    Navigator.of(context).pop();
+                                  })
+                            ]);
+                      })
+                  : ScaffoldMessenger.of(context).showSnackBar(emptySnackBar);
             },
             style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(), //<-- SEE HERE
@@ -702,6 +746,22 @@ class Step extends StatelessWidget {
     ]);
   }
 }
+
+final emptySnackBar = SnackBar(
+    content: const Text('여행 일정이 없습니다'),
+    action: SnackBarAction(
+        label: '확인',
+        onPressed: () {
+          // Some code to undo the change.
+        }));
+
+final saveSnackBar = SnackBar(
+    content: const Text('여행 일정이 저장되었습니다'),
+    action: SnackBarAction(
+        label: '확인',
+        onPressed: () {
+          // Some code to undo the change.
+        }));
 
 BoxDecoration selectedBox() {
   return BoxDecoration(
