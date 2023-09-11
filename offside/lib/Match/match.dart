@@ -63,6 +63,7 @@ class _Match extends ConsumerState {
         matchData.getLeagueLength('all', selectedLeague == 'K리그1' ? 1 : 2);
     var matchIdx =
         matchData.getMatchIndex('all', selectedLeague == 'K리그1' ? 1 : 2);
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -211,6 +212,16 @@ class MatchBox extends StatelessWidget {
   final Size size;
   final List info;
 
+  String convertTime(date) {
+    var tmp = int.parse(date[0] + date[1]);
+    var returnString = '';
+    if (tmp < 12) {
+      returnString = (tmp + 12).toString();
+    }
+
+    return "${returnString}:${date[2]}${date[3]}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -264,7 +275,7 @@ class MatchBox extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          '${info[index].time}',
+                          convertTime(info[index].time),
                           style: TextStyle(
                               fontSize: const AdaptiveTextSize()
                                   .getadaptiveTextSize(context, 11)),

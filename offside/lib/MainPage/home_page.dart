@@ -155,6 +155,14 @@ class StadiumTour extends StatelessWidget {
   final List info;
   final List<TeamInfo> teaminfoList;
 
+  String convertedName(name) {
+    if (name.length >= 7) {
+      return name.replaceFirst(' ', '\n');
+    }
+
+    return name;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -213,7 +221,8 @@ class StadiumTour extends StatelessWidget {
                                     teaminfoList[info[index]].logoImg),
                               ),
                               Text(
-                                teaminfoList[info[index]].middleName,
+                                convertedName(
+                                    teaminfoList[info[index]].middleName),
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
                                         .getadaptiveTextSize(context, 11)),
@@ -360,6 +369,16 @@ class MatchBox extends StatelessWidget {
     return "${data[0]}${data[1]}년 ${data[2]}${data[3]}월 ${data[4]}${data[5]}일";
   }
 
+  String convertTime(date) {
+    var tmp = int.parse(date[0] + date[1]);
+    var returnString = '';
+    if (tmp < 12) {
+      returnString = (tmp + 12).toString();
+    }
+
+    return "${returnString}:${date[2]}${date[3]}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -378,103 +397,132 @@ class MatchBox extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Text(
-            getDate(match.first.data),
-            style: TextStyle(
-                fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 12)),
-          ),
-          const SizedBox(height: 5),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('H',
-                    style: TextStyle(
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 11),
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w600)),
-                Text('A',
-                    style: TextStyle(
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 11),
-                        color: Colors.red,
-                        fontWeight: FontWeight.w600)),
-              ]),
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: match.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: ListView.builder(
+            shrinkWrap: true, // ListView가 자식 위젯의 크기에 맞게 축소될 수 있도록 설정
+            physics:
+                ClampingScrollPhysics(), // 스크롤 물리학을 ClampingScrollPhysics로 설정하여 스크롤 효과를 줍니다.
+            itemCount: 1,
+            itemBuilder: (context, index) {
+              return (Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      getDate(match.first.data),
+                      style: TextStyle(
+                          fontSize: const AdaptiveTextSize()
+                              .getadaptiveTextSize(context, 12)),
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            '${match[index].time}',
-                            style: TextStyle(
-                                fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 12)),
-                          ),
-                          SizedBox(
-                              width: size.width * 0.08,
-                              height: size.width * 0.08,
-                              child: Image.network(
-                                  teaminfoList[match[index].team1].logoImg)),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  teaminfoList[match[index].team1].name,
-                                  style: TextStyle(
-                                      fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 11)),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const Text(
-                                  ' vs ',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  teaminfoList[match[index].team2].name,
-                                  style: TextStyle(
-                                      fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 11)),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ]),
-                          SizedBox(
-                              width: size.width * 0.08,
-                              height: size.width * 0.08,
-                              child: Image.network(
-                                  teaminfoList[match[index].team2].logoImg)),
-                          InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MatchDetail(
-                                              date: getDate(match[index].data),
-                                              time: match[index].time!,
-                                              team1: match[index].team1!,
-                                              team2: match[index].team2!,
-                                            )));
-                              },
-                              child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
-                                      color:
-                                          const Color.fromRGBO(33, 58, 135, 1),
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: const Icon(CupertinoIcons.paperplane,
-                                      color: Colors.white, size: 15)))
-                        ]));
-              })
-        ]));
+                          Text('H',
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 11),
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w600)),
+                          Text('A',
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 11),
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w600)),
+                        ]),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemCount: match.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      convertTime(match[index].time),
+                                      style: TextStyle(
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(
+                                                  context, 12)),
+                                    ),
+                                    SizedBox(
+                                        width: size.width * 0.08,
+                                        height: size.width * 0.08,
+                                        child: Image.network(
+                                            teaminfoList[match[index].team1]
+                                                .logoImg)),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            teaminfoList[match[index].team1]
+                                                .name,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    const AdaptiveTextSize()
+                                                        .getadaptiveTextSize(
+                                                            context, 11)),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          const Text(
+                                            ' vs ',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Text(
+                                            teaminfoList[match[index].team2]
+                                                .name,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    const AdaptiveTextSize()
+                                                        .getadaptiveTextSize(
+                                                            context, 11)),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ]),
+                                    SizedBox(
+                                        width: size.width * 0.08,
+                                        height: size.width * 0.08,
+                                        child: Image.network(
+                                            teaminfoList[match[index].team2]
+                                                .logoImg)),
+                                    InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MatchDetail(
+                                                        date: getDate(
+                                                            match[index].data),
+                                                        time:
+                                                            match[index].time!,
+                                                        team1:
+                                                            match[index].team1!,
+                                                        team2:
+                                                            match[index].team2!,
+                                                      )));
+                                        },
+                                        child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 5),
+                                            decoration: BoxDecoration(
+                                                color: const Color.fromRGBO(
+                                                    33, 58, 135, 1),
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: const Icon(
+                                                CupertinoIcons.paperplane,
+                                                color: Colors.white,
+                                                size: 15)))
+                                  ]));
+                        })
+                  ]));
+            }));
   }
 }

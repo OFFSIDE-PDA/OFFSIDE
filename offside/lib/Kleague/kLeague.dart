@@ -83,28 +83,28 @@ class KLeagueOne extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    team(1, context, k1[0]),
-                    team(2, context, k1[1]),
-                    team(3, context, k1[2]),
-                    team(4, context, k1[3])
+                    Team(id: 1, team: k1[0]),
+                    Team(id: 2, team: k1[1]),
+                    Team(id: 3, team: k1[2]),
+                    Team(id: 4, team: k1[3])
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    team(5, context, k1[4]),
-                    team(6, context, k1[5]),
-                    team(7, context, k1[6]),
-                    team(8, context, k1[7])
+                    Team(id: 5, team: k1[4]),
+                    Team(id: 6, team: k1[5]),
+                    Team(id: 7, team: k1[6]),
+                    Team(id: 8, team: k1[7])
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    team(9, context, k1[8]),
-                    team(10, context, k1[9]),
-                    team(11, context, k1[10]),
-                    team(12, context, k1[11])
+                    Team(id: 9, team: k1[8]),
+                    Team(id: 10, team: k1[9]),
+                    Team(id: 11, team: k1[10]),
+                    Team(id: 12, team: k1[11])
                   ],
                 )
               ],
@@ -151,35 +151,33 @@ class KLeagueTwo extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  team(13, context, k2[0]),
-                  team(14, context, k2[1]),
-                  team(15, context, k2[2]),
-                  team(16, context, k2[3])
+                  Team(id: 13, team: k2[0]),
+                  Team(id: 14, team: k2[1]),
+                  Team(id: 15, team: k2[2]),
+                  Team(id: 16, team: k2[3])
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  team(17, context, k2[4]),
-                  team(18, context, k2[5]),
-                  team(19, context, k2[6]),
-                  team(20, context, k2[7])
+                  Team(id: 17, team: k2[4]),
+                  Team(id: 18, team: k2[5]),
+                  Team(id: 19, team: k2[6]),
+                  Team(id: 20, team: k2[7])
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  team(21, context, k2[8]),
-                  team(22, context, k2[9]),
-                  team(23, context, k2[10]),
-                  team(24, context, k2[11])
+                  Team(id: 21, team: k2[8]),
+                  Team(id: 22, team: k2[9]),
+                  Team(id: 23, team: k2[10]),
+                  Team(id: 24, team: k2[11])
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  team(25, context, k2[12]),
-                ],
+                children: [Team(id: 25, team: k2[12])],
               )
             ],
           ),
@@ -189,48 +187,64 @@ class KLeagueTwo extends ConsumerWidget {
   }
 }
 
-Widget team(int id, BuildContext context, TeamInfo team) {
-  var size = MediaQuery.of(context).size;
+class Team extends StatelessWidget {
+  const Team({super.key, required this.id, required this.team});
 
-  return SizedBox(
-    height: 120,
-    child: Column(
-      children: [
-        InkWell(
-          onTap: () async {
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TeamInfoPage(team: team)));
-          },
-          child: Container(
-            padding: const EdgeInsets.all(4),
-            margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            width: size.width * 0.13,
-            height: size.width * 0.13,
-            decoration: BoxDecoration(
-                color: id >= 13
-                    ? const Color.fromRGBO(18, 32, 84, 1)
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(100)),
-            child: Image.network(team.logoImg),
+  final int id;
+  final TeamInfo team;
+
+  String convertedName(name) {
+    if (name.length >= 7) {
+      return name.replaceFirst(' ', '\n');
+    }
+
+    return name;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
+    return (SizedBox(
+      height: 120,
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () async {
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TeamInfoPage(team: team)));
+            },
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              width: size.width * 0.13,
+              height: size.width * 0.13,
+              decoration: BoxDecoration(
+                  color: id >= 13
+                      ? const Color.fromRGBO(18, 32, 84, 1)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(100)),
+              child: Image.network(team.logoImg),
+            ),
           ),
-        ),
-        SizedBox(
-          width: 80,
-          child: Text(
-            team.middleName,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: id >= 13
-                    ? const Color.fromRGBO(18, 32, 84, 1)
-                    : Colors.white,
-                fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 11)),
-          ),
-        )
-      ],
-    ),
-  );
+          SizedBox(
+            width: 80,
+            child: Text(
+              convertedName(team.middleName),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: id >= 13
+                      ? const Color.fromRGBO(18, 32, 84, 1)
+                      : Colors.white,
+                  fontSize: const AdaptiveTextSize()
+                      .getadaptiveTextSize(context, 11)),
+            ),
+          )
+        ],
+      ),
+    ));
+  }
 }
