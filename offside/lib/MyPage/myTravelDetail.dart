@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/TourSchedule/tourPlan.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
@@ -115,22 +115,59 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 children: <Widget>[
                   for (int index = 0; index < tour.length; index += 1)
-                    Container(
-                        key: Key('$index'),
-                        decoration: const BoxDecoration(
-                            border: Border(top: BorderSide())),
-                        child: ListTile(
-                            leading: Image.network(tour[index]['img'],
-                                width: size.width * 0.18,
-                                errorBuilder: (context, url, error) => SizedBox(
-                                    width: size.width * 0.18,
-                                    child: Image.asset(
-                                        'images/mainpage/logo.png'))),
-                            title: Text(
-                                '${tour[index]['title']}  ${getType[tour[index]['typeId']]}',
-                                style: const TextStyle(fontSize: 12.5)),
-                            subtitle: Text(tour[index]['addr'],
-                                style: const TextStyle(fontSize: 11.5))))
+                    InkWell(
+                      key: Key('$index'),
+                      onLongPress: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  title: Text(tour[index]['title'],
+                                      style: TextStyle(
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(
+                                                  context, 13))),
+                                  content: const SingleChildScrollView(
+                                      child: ListBody(children: <Widget>[
+                                    Text('해당 일정을 삭제하시겠습니까?')
+                                  ])),
+                                  actions: [
+                                    TextButton(
+                                        child: const Text('취소'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        }),
+                                    TextButton(
+                                        child: const Text('확인'),
+                                        onPressed: () {
+                                          setState(() {
+                                            tour.removeAt(index);
+                                          });
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(deleteSnackBar);
+                                          Navigator.of(context).pop();
+                                        })
+                                  ]);
+                            });
+                      },
+                      child: Container(
+                          decoration: const BoxDecoration(
+                              border: Border(top: BorderSide())),
+                          child: ListTile(
+                              leading: Image.network(tour[index]['img'],
+                                  width: size.width * 0.18,
+                                  errorBuilder: (context, url, error) => SizedBox(
+                                      width: size.width * 0.18,
+                                      child: Image.asset(
+                                          'images/mainpage/logo.png'))),
+                              title: Text('${tour[index]['title']}  ${getType[tour[index]['typeId']]}',
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 12))),
+                              subtitle: Text(tour[index]['addr'],
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12))))),
+                    )
                 ],
                 onReorder: (int oldIndex, int newIndex) {
                   setState(() {
@@ -147,10 +184,16 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                        title: Text('20${getDate(matchDate)}'),
-                        content: const SingleChildScrollView(
-                            child: ListBody(
-                                children: <Widget>[Text('여행일정을 수정하시겠습니까?')])),
+                        title: Text('20${getDate(matchDate)}',
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 13))),
+                        content: SingleChildScrollView(
+                            child: ListBody(children: <Widget>[
+                          Text(tour.isNotEmpty
+                              ? '여행일정을 수정하시겠습니까?'
+                              : '여행일정을 삭제하시겠습니까?')
+                        ])),
                         actions: [
                           TextButton(
                               child: const Text('취소'),
@@ -160,14 +203,24 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                           TextButton(
                               child: const Text('확인'),
                               onPressed: () {
-                                updateTourPlan(
-                                    user.user!.uid,
-                                    tour,
-                                    matchDate,
-                                    match['home'],
-                                    match['away'],
-                                    match['time'],
-                                    widget.docUid);
+                                tour.isNotEmpty
+                                    ? updateTourPlan(
+                                            user.user!.uid,
+                                            tour,
+                                            matchDate,
+                                            match['home'],
+                                            match['away'],
+                                            match['time'],
+                                            widget.docUid)
+                                        .then((value) =>
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(saveSnackBar))
+                                    : deleteTourPlan(
+                                            user.user!.uid, widget.docUid)
+                                        .then((value) =>
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(deleteSnackBar));
+
                                 Navigator.of(context).pop();
                               })
                         ]);
@@ -182,6 +235,14 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
     );
   }
 }
+
+final deleteSnackBar = SnackBar(
+    content: const Text('여행 일정이 삭제되었습니다'),
+    action: SnackBarAction(
+        label: '확인',
+        onPressed: () {
+          // Some code to undo the change.
+        }));
 
 class AdaptiveTextSize {
   const AdaptiveTextSize();

@@ -129,3 +129,12 @@ Future<void> updateTourPlan(String? uid, List selectedList, String date,
     },
   });
 }
+
+Future<void> deleteTourPlan(String? uid, String docUid) async {
+  await firestore
+      .collection('users')
+      .doc(uid)
+      .collection("tour")
+      .doc(docUid)
+      .delete();
+}
