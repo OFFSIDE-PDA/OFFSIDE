@@ -155,6 +155,14 @@ class StadiumTour extends StatelessWidget {
   final List info;
   final List<TeamInfo> teaminfoList;
 
+  String convertedName(name) {
+    if (name.length >= 7) {
+      return name.replaceFirst(' ', '\n');
+    }
+
+    return name;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -213,7 +221,8 @@ class StadiumTour extends StatelessWidget {
                                     teaminfoList[info[index]].logoImg),
                               ),
                               Text(
-                                teaminfoList[info[index]].middleName,
+                                convertedName(
+                                    teaminfoList[info[index]].middleName),
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
                                         .getadaptiveTextSize(context, 11)),
