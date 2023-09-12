@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'profile.dart';
@@ -361,10 +362,10 @@ class Under extends ConsumerWidget {
         ElevatedButton(
           onPressed: () {
             ref.watch(userViewModelProvider).signOut();
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-                (route) => false);
+            // Navigator.pushAndRemoveUntil(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => LoginPage()),
+            //     (route) => false);
           },
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(

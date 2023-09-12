@@ -59,10 +59,10 @@ class _TourPlan extends ConsumerState<TourPlan> {
               margin: const EdgeInsets.only(bottom: 10),
               child: Text('나의 여행 일정',
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 18),
-                      ))),
+                    fontWeight: FontWeight.w600,
+                    fontSize: const AdaptiveTextSize()
+                        .getadaptiveTextSize(context, 18),
+                  ))),
           PlanStep(size: size, step: step),
           const SizedBox(height: 15),
           returnStep(step, size, teamInfoList, uid),
@@ -169,10 +169,10 @@ class _TourPlan extends ConsumerState<TourPlan> {
             alignment: Alignment.centerLeft,
             child: Text('내가 선택한 경기',
                 style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 16),
-                    ))),
+                  fontWeight: FontWeight.w600,
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 16),
+                ))),
         Container(
             margin: const EdgeInsets.symmetric(horizontal: 30),
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
@@ -268,11 +268,10 @@ class _TourPlan extends ConsumerState<TourPlan> {
                           child: ListTile(
                               leading: Image.network(selectedList[index].img,
                                   width: size.width * 0.18,
-                                  errorBuilder: (context, url, error) =>
-                                      SizedBox(
-                                          width: size.width * 0.18,
-                                          child: Image.asset(
-                                              'images/mainpage/logo.png'))),
+                                  errorBuilder: (context, url, error) => SizedBox(
+                                      width: size.width * 0.18,
+                                      child: Image.asset(
+                                          'assets/images/mainpage/logo.png'))),
                               title: Text(
                                   '${selectedList[index].title}  ${getType[selectedList[index].typeId]}',
                                   style: const TextStyle(fontSize: 12.5)),
@@ -358,20 +357,20 @@ class GetLocation extends StatelessWidget {
             const SizedBox(width: 5),
             Text(title,
                 style: TextStyle(
-                    color: const Color.fromRGBO(14, 32, 87, 1),
-                    fontWeight: FontWeight.w600,
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 16),
-                    ))
+                  color: const Color.fromRGBO(14, 32, 87, 1),
+                  fontWeight: FontWeight.w600,
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 16),
+                ))
           ]),
           const SizedBox(height: 5),
           Text(text,
               style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 14),
-                  color: const Color.fromRGBO(128, 122, 122, 1),
-                  ))
+                decoration: TextDecoration.underline,
+                fontSize:
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 14),
+                color: const Color.fromRGBO(128, 122, 122, 1),
+              ))
         ]);
   }
 }
@@ -570,7 +569,7 @@ class _LocationList extends State<LocationList> {
                   fit: BoxFit.fill,
                   errorBuilder: (context, url, error) => SizedBox(
                       width: widget.choose.size.width * 0.2,
-                      child: Image.asset('images/mainpage/logo.png'))),
+                      child: Image.asset('assets/images/mainpage/logo.png'))),
               const SizedBox(width: 10),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -585,11 +584,11 @@ class _LocationList extends State<LocationList> {
                                 text: TextSpan(
                                     text: widget.tourInfo[widget.index].title,
                                     style: TextStyle(
-                                        fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 14),
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.black,
-                                        ))))),
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 14),
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black,
+                                    ))))),
                     SizedBox(
                         width: widget.choose.size.width * 0.5,
                         child: Flexible(
@@ -599,11 +598,11 @@ class _LocationList extends State<LocationList> {
                                 text: TextSpan(
                                     text: widget.tourInfo[widget.index].addr,
                                     style: TextStyle(
-                                        fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 11),
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.black,
-                                        )))))
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 11),
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black,
+                                    )))))
                   ])
             ]),
             children: [
@@ -690,12 +689,12 @@ class _CategoryBtn extends State<CategoryBtn> {
                 width: widget.category == widget.id ? 0.0 : 2.0)),
         child: Text(widget.text,
             style: TextStyle(
-                fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-                color: widget.category == widget.id
-                    ? Colors.white
-                    : const Color.fromARGB(255, 125, 125, 125),
-                )));
+              fontSize:
+                  const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+              color: widget.category == widget.id
+                  ? Colors.white
+                  : const Color.fromARGB(255, 125, 125, 125),
+            )));
   }
 }
 
@@ -777,30 +776,30 @@ BoxDecoration unSelectedBox() {
 
 TextStyle selectedNum(BuildContext context) {
   return TextStyle(
-      fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 20),
-      fontWeight: FontWeight.w500,
-      color: Colors.white,
-      );
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 20),
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+  );
 }
 
 TextStyle unSelectedNum(BuildContext context) {
   return TextStyle(
-      fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 20),
-      fontWeight: FontWeight.w500,
-      color: const Color.fromRGBO(14, 32, 87, 1),
-      );
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 20),
+    fontWeight: FontWeight.w500,
+    color: const Color.fromRGBO(14, 32, 87, 1),
+  );
 }
 
 TextStyle selectedText(BuildContext context) {
   return TextStyle(
-      fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
-      fontWeight: FontWeight.w600,
-      );
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
+    fontWeight: FontWeight.w600,
+  );
 }
 
 TextStyle unSelectedText(BuildContext context) {
   return TextStyle(
-      fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 13),
-      fontWeight: FontWeight.w600,
-      );
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 13),
+    fontWeight: FontWeight.w600,
+  );
 }

@@ -262,7 +262,7 @@ class _PlaceListState extends State<PlaceList> {
                                           SizedBox(
                                               width: size.width * 0.15,
                                               child: Image.asset(
-                                                  'images/mainpage/logo.png')))),
+                                                  'assets/images/mainpage/logo.png')))),
                               SizedBox(width: size.width * 0.05),
                               Column(
                                   mainAxisAlignment:

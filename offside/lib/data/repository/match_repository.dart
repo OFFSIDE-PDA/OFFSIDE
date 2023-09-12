@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:offside/data/datasource/match_data_source.dart';
 import 'package:intl/intl.dart';
@@ -40,13 +38,13 @@ class MatchDataRepository {
 
     //TODO : 함수 호출할때 알맞은 리그값 넘겨받도록 호출부에서 변경
     List<RecordModel> recordData = [];
-    if (!result.isNull) {
+    if (result != null) {
       recordData.add(RecordModel.fromMap(result!["total"]));
       recordData.add(RecordModel.fromMap(result["recent"]));
     } else {
       Map<String, dynamic>? result1 =
           await _matchDataSource.getRecord(2, team1, team2);
-      if (!result1.isNull) {
+      if (result1 != null) {
         recordData.add(RecordModel.fromMap(result!["total"]));
         recordData.add(RecordModel.fromMap(result["recent"]));
       } else {

@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/app_user.dart';
 import 'package:offside/data/repository/auth_repository.dart';
 import 'package:offside/data/repository/user_info_repository.dart';
@@ -82,10 +81,12 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
+  //TODO : 웹 환경에서도 로그아웃 구현
   Future signOut() {
     return authRepositoryProvider.signOut().then((result) {
       _user = null;
       notifyListeners();
+      SystemNavigator.pop();
     });
   }
 

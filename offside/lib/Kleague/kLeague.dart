@@ -41,7 +41,7 @@ class Top extends StatelessWidget {
       width: double.infinity,
       height: 70,
       decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('images/mark2.png'))),
+          image: DecorationImage(image: AssetImage('assets/images/mark2.png'))),
     );
   }
 }

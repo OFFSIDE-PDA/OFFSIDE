@@ -53,7 +53,7 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
               leadingWidth: 0,
               titleSpacing: 0,
               title: Image.asset(
-                "/images/mainpage/logo.png",
+                "assets/images/mainpage/logo.png",
                 width: 120,
                 height: double.maxFinite,
               ),
@@ -91,7 +91,7 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
                 Tab(
                   text: 'K리그',
                   icon: Image.asset(
-                    'images/navigationbar/kLeague.png',
+                    'assets/images/navigationbar/kLeague.png',
                     width: 25,
                     height: 25,
                     color: _currentIndex == 0
@@ -102,7 +102,7 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
                 Tab(
                   text: '여행 일정',
                   icon: Image.asset(
-                    'images/navigationbar/tour_schedule.png',
+                    'assets/images/navigationbar/tour_schedule.png',
                     width: 25,
                     height: 25,
                     color: _currentIndex == 1
@@ -113,7 +113,7 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
                 Tab(
                   text: '홈',
                   icon: Image.asset(
-                    'images/navigationbar/home.png',
+                    'assets/images/navigationbar/home.png',
                     width: 25,
                     height: 25,
                     color: _currentIndex == 2
@@ -124,7 +124,7 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
                 Tab(
                   text: '경기일정',
                   icon: Image.asset(
-                    'images/navigationbar/match_schedule.png',
+                    'assets/images/navigationbar/match_schedule.png',
                     width: 25,
                     height: 25,
                     color: _currentIndex == 3
@@ -135,7 +135,7 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
                 Tab(
                   text: '마이페이지',
                   icon: Image.asset(
-                    'images/navigationbar/mypage.png',
+                    'assets/images/navigationbar/mypage.png',
                     width: 25,
                     height: 25,
                     color: _currentIndex == 4

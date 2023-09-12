@@ -159,7 +159,7 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                                   errorBuilder: (context, url, error) => SizedBox(
                                       width: size.width * 0.18,
                                       child: Image.asset(
-                                          'images/mainpage/logo.png'))),
+                                          'assets/images/mainpage/logo.png'))),
                               title: Text('${tour[index]['title']}  ${getType[tour[index]['typeId']]}',
                                   style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
