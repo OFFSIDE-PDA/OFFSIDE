@@ -10,7 +10,7 @@ class Edit extends ConsumerStatefulWidget {
 }
 
 class _EditState extends ConsumerState<Edit> {
-  TextStyle style = TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
+  TextStyle style = TextStyle( fontSize: 18.0);
   late TextEditingController _name;
   late TextEditingController _password;
   late TextEditingController _new_password;

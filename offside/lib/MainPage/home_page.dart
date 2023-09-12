@@ -81,8 +81,7 @@ class _HomePage extends ConsumerState {
               children: [
                 Text(
                   "경기 일정",
-                  style: TextStyle(
-                      fontFamily: 'NanumSquare',
+                  style: TextStyle(                      
                       fontSize: const AdaptiveTextSize()
                           .getadaptiveTextSize(context, 12)),
                 ),
@@ -101,7 +100,7 @@ class _HomePage extends ConsumerState {
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 12),
                           color: league == 1 ? Colors.white : Colors.grey,
-                          fontFamily: 'NanumSquare'),
+                          ),
                     )),
                 wSizedBox,
                 ElevatedButton(
@@ -121,7 +120,7 @@ class _HomePage extends ConsumerState {
                         fontSize: const AdaptiveTextSize()
                             .getadaptiveTextSize(context, 12),
                         color: league == 1 ? Colors.grey : Colors.white,
-                        fontFamily: 'NanumSquare'),
+                        ),
                   ),
                 )
               ],
@@ -249,8 +248,7 @@ class RandomMatch extends StatelessWidget {
   Widget build(BuildContext context) {
     var textStyle = TextStyle(
         fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 13),
-        color: const Color.fromRGBO(18, 32, 84, 1),
-        fontFamily: 'NanumSquare',
+        color: const Color.fromRGBO(18, 32, 84, 1),        
         fontWeight: FontWeight.w600);
     const sizedBox = SizedBox(
       width: 10,
@@ -302,7 +300,7 @@ class RandomMatch extends StatelessWidget {
                         .getadaptiveTextSize(context, 11),
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'NanumSquare'),
+                    ),
               ),
               const SizedBox(width: 2),
               Container(

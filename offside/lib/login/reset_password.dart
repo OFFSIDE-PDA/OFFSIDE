@@ -10,7 +10,7 @@ class resetPasswordPage extends ConsumerStatefulWidget {
 }
 
 class _resetPasswordPageState extends ConsumerState<resetPasswordPage> {
-  TextStyle style = TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
+  TextStyle style = TextStyle(fontSize: 18.0);
   late TextEditingController _email;
   FocusNode searchFocusNode = FocusNode();
   FocusNode textFieldFocusNode = FocusNode();

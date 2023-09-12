@@ -12,7 +12,7 @@ class SignUpPage extends ConsumerStatefulWidget {
 }
 
 class _SignUpPageState extends ConsumerState<SignUpPage> {
-  TextStyle style = const TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
+  TextStyle style = const TextStyle(fontSize: 18.0);
   late TextEditingController _name;
   late TextEditingController _id;
   late TextEditingController _password;

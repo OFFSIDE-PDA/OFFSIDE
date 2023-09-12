@@ -16,7 +16,7 @@ class CommunityPage extends ConsumerStatefulWidget {
 
 class Community extends ConsumerState<CommunityPage>
     with WidgetsBindingObserver {
-  TextStyle style = const TextStyle(fontFamily: 'NanumSquare');
+  TextStyle style = const TextStyle(fontSize: 18.0);
   late TextEditingController _text;
   final _formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();

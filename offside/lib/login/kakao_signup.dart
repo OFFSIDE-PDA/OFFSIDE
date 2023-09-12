@@ -12,7 +12,7 @@ class KaKaoSignUpPage extends ConsumerStatefulWidget {
 }
 
 class _KaKaoSignUpPageState extends ConsumerState<KaKaoSignUpPage> {
-  TextStyle style = const TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
+  TextStyle style = const TextStyle(fontSize: 18.0);
   FocusNode searchFocusNode = FocusNode();
   FocusNode textFieldFocusNode = FocusNode();
   late SingleValueDropDownController _cnt;

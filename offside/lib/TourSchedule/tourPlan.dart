@@ -62,7 +62,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                       fontWeight: FontWeight.w600,
                       fontSize: const AdaptiveTextSize()
                           .getadaptiveTextSize(context, 18),
-                      fontFamily: 'NanumSquare'))),
+                      ))),
           PlanStep(size: size, step: step),
           const SizedBox(height: 15),
           returnStep(step, size, teamInfoList, uid),
@@ -172,7 +172,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                     fontWeight: FontWeight.w600,
                     fontSize: const AdaptiveTextSize()
                         .getadaptiveTextSize(context, 16),
-                    fontFamily: 'NanumSquare'))),
+                    ))),
         Container(
             margin: const EdgeInsets.symmetric(horizontal: 30),
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
@@ -362,7 +362,7 @@ class GetLocation extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontSize: const AdaptiveTextSize()
                         .getadaptiveTextSize(context, 16),
-                    fontFamily: 'NanumSquare'))
+                    ))
           ]),
           const SizedBox(height: 5),
           Text(text,
@@ -371,7 +371,7 @@ class GetLocation extends StatelessWidget {
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 14),
                   color: const Color.fromRGBO(128, 122, 122, 1),
-                  fontFamily: 'NanumSquare'))
+                  ))
         ]);
   }
 }
@@ -589,7 +589,7 @@ class _LocationList extends State<LocationList> {
                                             .getadaptiveTextSize(context, 14),
                                         fontWeight: FontWeight.normal,
                                         color: Colors.black,
-                                        fontFamily: 'NanumSquare'))))),
+                                        ))))),
                     SizedBox(
                         width: widget.choose.size.width * 0.5,
                         child: Flexible(
@@ -603,7 +603,7 @@ class _LocationList extends State<LocationList> {
                                             .getadaptiveTextSize(context, 11),
                                         fontWeight: FontWeight.normal,
                                         color: Colors.black,
-                                        fontFamily: 'NanumSquare')))))
+                                        )))))
                   ])
             ]),
             children: [
@@ -695,7 +695,7 @@ class _CategoryBtn extends State<CategoryBtn> {
                 color: widget.category == widget.id
                     ? Colors.white
                     : const Color.fromARGB(255, 125, 125, 125),
-                fontFamily: 'NanumSquare')));
+                )));
   }
 }
 
@@ -780,7 +780,7 @@ TextStyle selectedNum(BuildContext context) {
       fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 20),
       fontWeight: FontWeight.w500,
       color: Colors.white,
-      fontFamily: 'NanumSquare');
+      );
 }
 
 TextStyle unSelectedNum(BuildContext context) {
@@ -788,19 +788,19 @@ TextStyle unSelectedNum(BuildContext context) {
       fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 20),
       fontWeight: FontWeight.w500,
       color: const Color.fromRGBO(14, 32, 87, 1),
-      fontFamily: 'NanumSquare');
+      );
 }
 
 TextStyle selectedText(BuildContext context) {
   return TextStyle(
       fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
       fontWeight: FontWeight.w600,
-      fontFamily: 'NanumSquare');
+      );
 }
 
 TextStyle unSelectedText(BuildContext context) {
   return TextStyle(
       fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 13),
       fontWeight: FontWeight.w600,
-      fontFamily: 'NanumSquare');
+      );
 }

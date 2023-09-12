@@ -51,6 +51,7 @@ class Offside extends ConsumerWidget {
           colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 255, 255, 255)),
           useMaterial3: true,
+          fontFamily: 'Pretendard'
         ),
         home: autoLogin == true ? const MainPage() : LoginPage());
   }

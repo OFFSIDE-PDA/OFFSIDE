@@ -15,7 +15,7 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> {
   //LoginPage  --> _LoginPageState 로 이동
-  TextStyle style = const TextStyle(fontFamily: 'NanumSquare', fontSize: 18.0);
+  TextStyle style = const TextStyle(fontSize: 18.0);
   late TextEditingController _email; //각각 변수들 지정
   late TextEditingController _password;
 
