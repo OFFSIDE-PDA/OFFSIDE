@@ -90,7 +90,8 @@ class Community extends ConsumerState<CommunityPage>
                             topLeft: Radius.circular(50),
                             topRight: Radius.circular(50)),
                         image: DecorationImage(
-                            image: NetworkImage(teaminfo[team].logoImg!))),
+                            image: NetworkImage(teaminfo[team].logoImg!),
+                            colorFilter: ColorFilter.mode(Color(teaminfo[team].color[0]).withOpacity(0.3), BlendMode.dstATop))),
                     child: Scrollbar(
                       controller: _scrollController, // 스크롤 컨트롤러
                       thickness: 4.0, // 스크롤 너비
