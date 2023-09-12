@@ -347,7 +347,7 @@ class MatchCarousel extends StatelessWidget {
               size: size, match: info[index], teaminfoList: teaminfoList);
         }),
         options: CarouselOptions(
-            height: 280.0,
+            height: size.height * 0.295,
             onPageChanged: (index, reason) {
               page(index);
             }));
