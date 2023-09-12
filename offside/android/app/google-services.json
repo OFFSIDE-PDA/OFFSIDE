@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "427516758522",
+    "project_id": "offside-d1a25",
+    "storage_bucket": "offside-d1a25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427516758522:android:f46df06bcf7768b5127c43",
+        "android_client_info": {
+          "package_name": "com.OFFSIDE.offside"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427516758522-04bs1fqitpcg69vd1q3hmu5c3gv7uakp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcZipES5kZ9pdjDKSVuzkwfa7XQ5NWReA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427516758522-04bs1fqitpcg69vd1q3hmu5c3gv7uakp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
