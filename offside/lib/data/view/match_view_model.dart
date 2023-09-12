@@ -249,4 +249,8 @@ class MatchViewModel extends ChangeNotifier {
     DateFormat formatter = DateFormat('yyMMdd');
     return int.parse(formatter.format(now));
   }
+
+  Future<List<RecordModel>> getRecord(int league, int team1, int team2) async {
+    return await matchDataRepositoryProvider.getRecord(league, team1, team2);
+  }
 }

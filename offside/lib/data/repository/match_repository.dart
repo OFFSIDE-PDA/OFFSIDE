@@ -1,6 +1,9 @@
+import 'dart:js_interop';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:offside/data/datasource/match_data_source.dart';
 import 'package:intl/intl.dart';
+import 'package:offside/data/model/match_model.dart';
 
 final matchDataRepositoryProvider = MatchDataRepository();
 
@@ -28,5 +31,30 @@ class MatchDataRepository {
       }
     }
     return result;
+  }
+
+  ///`year` 년도의 모든 k리그 1,2 경기 획득
+  Future<List<RecordModel>> getRecord(int league, int team1, int team2) async {
+    Map<String, dynamic>? result =
+        await _matchDataSource.getRecord(1, team1, team2);
+
+    //TODO : 함수 호출할때 알맞은 리그값 넘겨받도록 호출부에서 변경
+    List<RecordModel> recordData = [];
+    if (!result.isNull) {
+      recordData.add(RecordModel.fromMap(result!["total"]));
+      recordData.add(RecordModel.fromMap(result["recent"]));
+    } else {
+      Map<String, dynamic>? result1 =
+          await _matchDataSource.getRecord(2, team1, team2);
+      if (!result1.isNull) {
+        recordData.add(RecordModel.fromMap(result!["total"]));
+        recordData.add(RecordModel.fromMap(result["recent"]));
+      } else {
+        recordData.add(RecordModel(0, 0, 0));
+        recordData.add(RecordModel(0, 0, 0));
+      }
+    }
+
+    return recordData;
   }
 }

@@ -32,3 +32,18 @@ class MatchModel {
   int? location;
   int? score1;
 }
+
+class RecordModel {
+  RecordModel(this.score2, this.score1, this.draw);
+
+  RecordModel.fromMap(Map<String, dynamic> map) {
+    score1 = map["team1Win"];
+    score2 = map["team2Win"];
+    draw = map["draw"];
+  }
+
+  //todo : data, time을 Timestamp datetime;으로 변경
+  int score2 = 0;
+  int score1 = 0;
+  int draw = 0;
+}
