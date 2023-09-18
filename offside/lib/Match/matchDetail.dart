@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 
@@ -75,7 +73,7 @@ class Top extends ConsumerWidget {
       returnString = (tmp + 12).toString();
     }
 
-    return "${returnString}시 ${date[2]}${date[3]}분";
+    return "$returnString시 ${date[2]}${date[3]}분";
   }
 
   @override
@@ -117,7 +115,7 @@ class Top extends ConsumerWidget {
                         width: size.width * 0.12,
                         height: size.width * 0.12,
                         child: Image.network(teamInfoList[team1].logoImg)),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -131,7 +129,7 @@ class Top extends ConsumerWidget {
                 ),
                 getScore(date)
                     ? Text(
-                        ' $score1 : ${score2} ',
+                        ' $score1 : $score2 ',
                         style: TextStyle(
                             fontSize: const AdaptiveTextSize()
                                 .getadaptiveTextSize(context, 14),
@@ -150,7 +148,7 @@ class Top extends ConsumerWidget {
                         width: size.width * 0.12,
                         height: size.width * 0.12,
                         child: Image.network(teamInfoList[team2].logoImg)),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -165,13 +163,13 @@ class Top extends ConsumerWidget {
               ],
             ),
           ),
-          Divider(
+          const Divider(
             color: Colors.grey, // 색상 지정
             thickness: 1, // 두께 지정
             indent: 10, // 시작 여백 지정
             endIndent: 30, // 끝 여백 지정
           ),
-          Container(
+          SizedBox(
             width: double.infinity,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -193,13 +191,13 @@ class Top extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.location_on,
+                      const Icon(Icons.location_on,
                           size: 20, color: Color.fromRGBO(18, 32, 84, 1)),
                       SizedBox(
                         width: size.width * 0.01,
                       ),
                       Text(
-                        '${teamInfoList[team1].stadium}',
+                        teamInfoList[team1].stadium,
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: const AdaptiveTextSize()
@@ -227,7 +225,6 @@ class Bottom extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var size = MediaQuery.of(context).size;
     final teamInfoList = ref.read(teamInfoViewModelProvider).teamInfoList;
     final recordData =
         ref.read(matchViewModelProvider).getRecord(1, team1, team2);
@@ -235,15 +232,12 @@ class Bottom extends ConsumerWidget {
         future: recordData,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
-          if (snapshot.hasData == false) {
-            return const CircularProgressIndicator(); // CircularProgressIndicator : 로딩 에니메이션
-          }
           return Expanded(
             child: Container(
               color: const Color.fromRGBO(18, 32, 84, 1),
               width: double.infinity,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
+                padding: const EdgeInsets.fromLTRB(35, 30, 35, 30),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,106 +246,108 @@ class Bottom extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
-                            child: Text(
-                              "통산전적",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 14),
-                                  fontWeight: FontWeight.bold),
-                            ),
+                          Text(
+                            "통산전적",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 14),
+                                fontWeight: FontWeight.bold),
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.white, // 색상 지정
                             thickness: 2, // 두께 지정
-                            indent: 35, // 시작 여백 지정
-                            endIndent: 35, // 끝 여백 지정
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${teamInfoList[team1].middleName} ${snapshot.data[0].score1}승',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                '${snapshot.data[0].draw}무',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                '${teamInfoList[team2].middleName} ${snapshot.data[0].score2}승',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          )
+                          //통산전적을 아직 불러오지 못했다면 로딩 위젯 출력
+                          snapshot.hasData == false
+                              ? const CircularProgressIndicator(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${teamInfoList[team1].middleName} ${snapshot.data[0].score1}승',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 12),
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      '${snapshot.data[0].draw}무',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 12),
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      '${teamInfoList[team2].middleName} ${snapshot.data[0].score2}승',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 12),
+                                          fontWeight: FontWeight.w600),
+                                    )
+                                  ],
+                                )
                         ],
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
-                            child: Text(
-                              "최근 10경기 전적",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 14),
-                                  fontWeight: FontWeight.bold),
-                            ),
+                          Text(
+                            "최근 10경기 전적",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 14),
+                                fontWeight: FontWeight.bold),
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.white, // 색상 지정
                             thickness: 2, // 두께 지정
-                            indent: 35, // 시작 여백 지정
-                            endIndent: 35, // 끝 여백 지정
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${teamInfoList[team1].middleName} ${snapshot.data[1].score1}승',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                '${snapshot.data[1].draw}무',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                '${teamInfoList[team2].middleName} ${snapshot.data[1].score2}승',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          )
+                          //통산전적을 아직 불러오지 못했다면 로딩 위젯 출력
+                          snapshot.hasData == false
+                              ? const CircularProgressIndicator(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${teamInfoList[team1].middleName} ${snapshot.data[1].score1}승',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 12),
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      '${snapshot.data[1].draw}무',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 12),
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      '${teamInfoList[team2].middleName} ${snapshot.data[1].score2}승',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(context, 12),
+                                          fontWeight: FontWeight.w600),
+                                    )
+                                  ],
+                                )
                         ],
                       ),
                       Center(
