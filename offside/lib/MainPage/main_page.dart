@@ -48,23 +48,26 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
           initialIndex: 2,
           length: 5,
           child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-              leadingWidth: 0,
-              titleSpacing: 0,
-              title: Image.asset(
-                "assets/images/mainpage/logo.png",
-                width: 120,
-                height: double.maxFinite,
-              ),
-              shape: const Border(
-                bottom: BorderSide(
-                  color: Colors.grey,
-                  width: 1,
-                ),
-              ),
-            ),
+            appBar: _currentIndex == 2
+                ? AppBar(
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    leadingWidth: 0,
+                    titleSpacing: 0,
+                    title: Image.asset(
+                      "assets/images/mainpage/logo.png",
+                      width: 120,
+                      height: double.maxFinite,
+                    ),
+                    shape: const Border(
+                      bottom: BorderSide(
+                        color: Colors.grey,
+                        width: 1,
+                      ),
+                    ),
+                  )
+                : null,
             body: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
               children: _pages.map(
                 (page) {
                   int index = _pages.indexOf(page);
@@ -75,75 +78,83 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
                 },
               ).toList(),
             ),
-            bottomNavigationBar: TabBar(
-              indicatorColor: const Color.fromRGBO(14, 32, 87, 1),
-              labelColor: const Color.fromRGBO(14, 32, 87, 1),
-              unselectedLabelColor: Colors.grey,
-              labelStyle: const TextStyle(fontSize: 10),
-              labelPadding: EdgeInsets.zero,
-              automaticIndicatorColorAdjustment: true,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              tabs: [
-                Tab(
-                  text: 'K리그',
-                  icon: Image.asset(
-                    'assets/images/navigationbar/kLeague.png',
-                    width: 25,
-                    height: 25,
-                    color: _currentIndex == 0
-                        ? const Color.fromRGBO(14, 32, 87, 1)
-                        : Colors.grey,
+            bottomNavigationBar: SizedBox(
+              height: 50,
+              child: TabBar(
+                indicatorColor: const Color.fromRGBO(14, 32, 87, 1),
+                labelColor: const Color.fromRGBO(14, 32, 87, 1),
+                unselectedLabelColor: Colors.grey,
+                labelStyle: const TextStyle(fontSize: 10, letterSpacing: 1.5),
+                labelPadding: EdgeInsets.zero,
+                automaticIndicatorColorAdjustment: true,
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                tabs: [
+                  Tab(
+                    text: 'K리그',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/kLeague.png',
+                      width: 20,
+                      height: 20,
+                      color: _currentIndex == 0
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
                   ),
-                ),
-                Tab(
-                  text: '여행 일정',
-                  icon: Image.asset(
-                    'assets/images/navigationbar/tour_schedule.png',
-                    width: 25,
-                    height: 25,
-                    color: _currentIndex == 1
-                        ? const Color.fromRGBO(14, 32, 87, 1)
-                        : Colors.grey,
+                  Tab(
+                    text: '여행 일정',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/tour_schedule.png',
+                      width: 20,
+                      height: 20,
+                      color: _currentIndex == 1
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
                   ),
-                ),
-                Tab(
-                  text: '홈',
-                  icon: Image.asset(
-                    'assets/images/navigationbar/home.png',
-                    width: 25,
-                    height: 25,
-                    color: _currentIndex == 2
-                        ? const Color.fromRGBO(14, 32, 87, 1)
-                        : Colors.grey,
+                  Tab(
+                    text: '홈',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/home.png',
+                      width: 20,
+                      height: 20,
+                      color: _currentIndex == 2
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
                   ),
-                ),
-                Tab(
-                  text: '경기일정',
-                  icon: Image.asset(
-                    'assets/images/navigationbar/match_schedule.png',
-                    width: 25,
-                    height: 25,
-                    color: _currentIndex == 3
-                        ? const Color.fromRGBO(14, 32, 87, 1)
-                        : Colors.grey,
+                  Tab(
+                    text: '경기일정',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/match_schedule.png',
+                      width: 20,
+                      height: 20,
+                      color: _currentIndex == 3
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
                   ),
-                ),
-                Tab(
-                  text: '마이페이지',
-                  icon: Image.asset(
-                    'assets/images/navigationbar/mypage.png',
-                    width: 25,
-                    height: 25,
-                    color: _currentIndex == 4
-                        ? const Color.fromRGBO(14, 32, 87, 1)
-                        : Colors.grey,
+                  Tab(
+                    text: '마이페이지',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/mypage.png',
+                      width: 20,
+                      height: 20,
+                      color: _currentIndex == 4
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ));

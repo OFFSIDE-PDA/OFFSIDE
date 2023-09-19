@@ -73,23 +73,12 @@ class _TourSchedule extends ConsumerState {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('My Travel',
+                    Text('여행 일정',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: const AdaptiveTextSize()
                                 .getadaptiveTextSize(context, 14),
-                            color: Color.fromRGBO(33, 58, 135, 1))),
-                    SizedBox(
-                      width: size.width * 0.01,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                      child: Icon(
-                        Icons.card_travel,
-                        size: 22,
-                        color: Color.fromRGBO(91, 143, 255, 1),
-                      ),
-                    )
+                            color: Color.fromRGBO(33, 58, 135, 1)))
                   ],
                 )),
           ),

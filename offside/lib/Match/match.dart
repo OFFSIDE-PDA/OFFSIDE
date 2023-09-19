@@ -73,8 +73,13 @@ class _Match extends ConsumerState {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '경기 일정',
-                  style: textStyle,
+                  "경기 일정",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 14),
+                      fontWeight: FontWeight.w800,
+                      color: Color.fromRGBO(18, 32, 84, 1)),
                 ),
                 SizedBox(
                   height: size.height * 0.01,
