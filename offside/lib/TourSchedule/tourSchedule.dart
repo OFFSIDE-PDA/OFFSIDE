@@ -216,8 +216,8 @@ class _TourSchedule extends ConsumerState {
                                           style: TextStyle(
                                               fontSize: const AdaptiveTextSize()
                                                   .getadaptiveTextSize(
-                                                      context, 14),
-                                              fontWeight: FontWeight.w600),
+                                                      context, 13),
+                                              fontWeight: FontWeight.w500),
                                           textAlign: TextAlign.center,
                                         ),
                                         SizedBox(width: size.width * 0.02),
@@ -226,8 +226,8 @@ class _TourSchedule extends ConsumerState {
                                           style: TextStyle(
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
-                                                    context, 15),
-                                            fontWeight: FontWeight.w500,
+                                                    context, 14),
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                         SizedBox(width: size.width * 0.02),
@@ -238,8 +238,8 @@ class _TourSchedule extends ConsumerState {
                                           style: TextStyle(
                                               fontSize: const AdaptiveTextSize()
                                                   .getadaptiveTextSize(
-                                                      context, 14),
-                                              fontWeight: FontWeight.w600),
+                                                      context, 13),
+                                              fontWeight: FontWeight.w500),
                                           textAlign: TextAlign.center,
                                         ),
                                         SizedBox(width: size.width * 0.03),
