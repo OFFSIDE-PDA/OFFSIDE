@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:offside/MyPage/myTravelDetail.dart';
+import 'package:offside/TourSchedule/tourPlan.dart';
+import 'package:offside/TourSchedule/tourSchedule.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
@@ -19,39 +21,77 @@ class _MyTravel extends ConsumerState<MyTravel> {
     final user = ref.read(userViewModelProvider);
     final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
 
-    return FutureBuilder(
-        future: user.getMyTour(uid: user.user!.uid),
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            Map info = snapshot.data!;
-            // print(info);
-
-            return ListView(children: [
-              AppBar(),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                  child: Text("내 여행일정 확인",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 12)))),
-              SizedBox(
-                  height: size.height * 0.8,
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: info.keys.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return MatchBox(
-                            info: info[info.keys.elementAt(index)],
-                            teamInfo: teamInfoList,
-                            docUid: info.keys.elementAt(index));
-                      }))
-            ]);
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('error'));
-          }
-          return const Text('No data');
-        }));
+    return ListView(
+      children: [
+        AppBar(),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+            child: Text("내 여행일정 확인",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: const AdaptiveTextSize()
+                        .getadaptiveTextSize(context, 12)))),
+        FutureBuilder(
+            future: user.getMyTour(uid: user.user!.uid),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                Map info = snapshot.data!;
+                // print(info);
+                return SizedBox(
+                    height: size.height * 0.8,
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: info.keys.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return MatchBox(
+                              info: info[info.keys.elementAt(index)],
+                              teamInfo: teamInfoList,
+                              docUid: info.keys.elementAt(index));
+                        }));
+              } else if (snapshot.hasError) {
+                return const Center(child: Text('error'));
+              }
+              return Center(
+                child: Column(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Image.asset(
+                          'assets/images/mainpage/logo.png',
+                          height: 50,
+                          width: double.maxFinite,
+                        )),
+                    Text(
+                      "아직 여행 계획이 없으신가요?\nOFFSIDE와 함께 여행 계획해요",
+                      textAlign: TextAlign.center,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        margin: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Color.fromRGBO(18, 32, 84, 1)),
+                        child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TourSchedule()));
+                            },
+                            // 여행 일정으로 이동
+                            child: Text("여행 계획 하기",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 11),
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white))))
+                  ],
+                ),
+              );
+            })),
+      ],
+    );
   }
 }
 
@@ -68,6 +108,16 @@ class MatchBox extends StatelessWidget {
 
   getDate(date) =>
       '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
+
+  String convertTime(date) {
+    var tmp = int.parse(date[0] + date[1]);
+    var returnString = '';
+    if (tmp < 12) {
+      returnString = (tmp + 12).toString();
+    }
+
+    return "${returnString}:${date[2]}${date[3]}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +143,7 @@ class MatchBox extends StatelessWidget {
             children: [
               Text('20${getDate(matchDate)}',
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: const AdaptiveTextSize()
                           .getadaptiveTextSize(context, 12))),
               Container(
@@ -109,7 +159,7 @@ class MatchBox extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(info[matchDate]['match']['time'],
+                        Text(convertTime(info[matchDate]['match']['time']),
                             style: TextStyle(
                                 color: const Color.fromARGB(255, 68, 68, 68),
                                 fontSize: const AdaptiveTextSize()

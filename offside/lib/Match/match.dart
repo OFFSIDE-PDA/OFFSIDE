@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/Match/matchDetail.dart';
 import 'package:offside/MyPage/myteam.dart';
@@ -47,7 +46,7 @@ class _Match extends ConsumerState {
         Icon(Icons.expand_more, color: Color.fromARGB(255, 67, 67, 67));
     var textStyle = TextStyle(
         fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-        color: Color.fromARGB(255, 67, 67, 67));
+        color: const Color.fromARGB(255, 67, 67, 67));
     var elevatedStyle = ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         backgroundColor: Colors.white,
@@ -56,7 +55,7 @@ class _Match extends ConsumerState {
     final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
     final k1 = teamInfoList.where((element) => element.league == 1).toList();
     final k2 = teamInfoList.where((element) => element.league == 2).toList();
-    print(teamInfoList[4].id);
+
     final filteredTeam = matchData.getFilteredTeams(
         selectedLeague == 'K리그1' ? 1 : 2, selectedTeam);
     var leagueLen =
@@ -64,135 +63,131 @@ class _Match extends ConsumerState {
     var matchIdx =
         matchData.getMatchIndex('all', selectedLeague == 'K리그1' ? 1 : 2);
 
-    return SingleChildScrollView(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '경기 일정',
-                  style: textStyle,
-                ),
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          style: elevatedStyle, //Elevated Button Background
-                          onPressed: () {}, //make onPressed callback empty
-                          child: DropdownButton(
-                            isDense: true,
-                            style: textStyle, //Dropdown font color
-                            dropdownColor:
-                                Colors.white, //dropdown menu background color
-                            icon: iconStyle, //dropdown indicator icon
-                            value: selectedLeague,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedLeague = value.toString();
-                                selectedLeague == 'K리그1'
-                                    ? selectedTeam = k1[0].id
-                                    : selectedTeam = k2[0].id;
-                                filtering = false;
-                              });
-                            },
-                            items: league.map((item) {
-                              return DropdownMenuItem(
-                                  value: item, child: Text(item));
-                            }).toList(),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        ElevatedButton(
-                          style: elevatedStyle, //Elevated Button Background
-                          onPressed: () {}, //make onPressed callback empty
-                          child: DropdownButton(
-                              isDense: true,
-                              style: textStyle, //Dropdown font color
-                              dropdownColor:
-                                  Colors.white, //dropdown menu background color
-                              icon: iconStyle,
-                              value: selectedTeam,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedTeam = value!;
-                                  filtering = true;
-                                });
-                              },
-                              items: selectedLeague == 'K리그1'
-                                  ? k1.map((e) {
-                                      return DropdownMenuItem(
-                                          value: e.id, child: Text(e.fullName));
-                                    }).toList()
-                                  : k2.map((e) {
-                                      return DropdownMenuItem(
-                                          value: e.id, child: Text(e.fullName));
-                                    }).toList()),
-                        )
-                      ],
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (body) => const MyTeam()),
-                        );
+          Text(
+            "경기 일정",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                fontSize:
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 14),
+                fontWeight: FontWeight.w800,
+                color: const Color.fromRGBO(18, 32, 84, 1)),
+          ),
+          SizedBox(
+            height: size.height * 0.01,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  ElevatedButton(
+                    style: elevatedStyle, //Elevated Button Background
+                    onPressed: () {}, //make onPressed callback empty
+                    child: DropdownButton(
+                      isDense: true,
+                      style: textStyle, //Dropdown font color
+                      dropdownColor:
+                          Colors.white, //dropdown menu background color
+                      icon: iconStyle, //dropdown indicator icon
+                      value: selectedLeague,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedLeague = value.toString();
+                          selectedLeague == 'K리그1'
+                              ? selectedTeam = k1[0].id
+                              : selectedTeam = k2[0].id;
+                          filtering = false;
+                        });
                       },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: const Color.fromRGBO(14, 32, 87, 1),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          "MY팀",
-                          style: TextStyle(
-                              fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 10),
-                              color: Colors.white),
-                        ),
-                      ),
+                      items: league.map((item) {
+                        return DropdownMenuItem(value: item, child: Text(item));
+                      }).toList(),
                     ),
-                  ],
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ElevatedButton(
+                    style: elevatedStyle, //Elevated Button Background
+                    onPressed: () {}, //make onPressed callback empty
+                    child: DropdownButton(
+                        isDense: true,
+                        style: textStyle, //Dropdown font color
+                        dropdownColor:
+                            Colors.white, //dropdown menu background color
+                        icon: iconStyle,
+                        value: selectedTeam,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedTeam = value!;
+                            filtering = true;
+                          });
+                        },
+                        items: selectedLeague == 'K리그1'
+                            ? k1.map((e) {
+                                return DropdownMenuItem(
+                                    value: e.id, child: Text(e.fullName));
+                              }).toList()
+                            : k2.map((e) {
+                                return DropdownMenuItem(
+                                    value: e.id, child: Text(e.fullName));
+                              }).toList()),
+                  )
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (body) => const MyTeam()),
+                  );
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: const Color.fromRGBO(14, 32, 87, 1),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Text(
+                    "MY팀",
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 10),
+                        color: Colors.white),
+                  ),
                 ),
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
-                SizedBox(
-                  height: size.height,
-                  child: filtering
-                      ? ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: filteredTeam.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return FilteredBox(
-                                teamInfoList: teamInfoList,
-                                size: size,
-                                info: filteredTeam[index]);
-                          })
-                      : ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: leagueLen,
-                          itemBuilder: (BuildContext context, int index) {
-                            return MatchBox(
-                                teamInfoList: teamInfoList,
-                                size: size,
-                                info: matchIdx[index]);
-                          }),
-                )
-                // MatchBox(size: size)
-              ],
-            ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: size.height * 0.01,
+          ),
+          Expanded(
+            flex: 1,
+            child: filtering
+                ? ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: filteredTeam.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return FilteredBox(
+                          teamInfoList: teamInfoList,
+                          size: size,
+                          info: filteredTeam[index]);
+                    })
+                : ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: leagueLen,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MatchBox(
+                          teamInfoList: teamInfoList,
+                          size: size,
+                          info: matchIdx[index]);
+                    }),
           )
         ],
       ),
@@ -219,7 +214,7 @@ class MatchBox extends StatelessWidget {
       returnString = (tmp + 12).toString();
     }
 
-    return "${returnString}:${date[2]}${date[3]}";
+    return "$returnString:${date[2]}${date[3]}";
   }
 
   @override
@@ -242,7 +237,7 @@ class MatchBox extends StatelessWidget {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Text(
-            '${getDate(info.first.data)}',
+            getDate(info.first.data),
             style: TextStyle(
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 13)),
@@ -266,6 +261,7 @@ class MatchBox extends StatelessWidget {
                         fontWeight: FontWeight.w600)),
               ]),
           ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: info.length,
               itemBuilder: (BuildContext context, int index) {
@@ -456,30 +452,16 @@ class FilteredBox extends StatelessWidget {
                       width: size.width * 0.08,
                       height: size.width * 0.08,
                       child: Image.network(teamInfoList[info.team2!].logoImg)),
-                  InkWell(
-                    onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => MatchDetail(
-                      //             date: getDate(info.data),
-                      //             time: info.time!,
-                      //             team1: info.team1!,
-                      //             team2: info.team2!,
-                      //             score1: info.score1,
-                      //             score2: info.score2)));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      decoration: BoxDecoration(
-                          color: const Color.fromRGBO(14, 32, 87, 1),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Icon(
-                        CupertinoIcons.paperplane,
-                        color: Colors.white,
-                        size: 15,
-                      ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(14, 32, 87, 1),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: const Icon(
+                      CupertinoIcons.paperplane,
+                      color: Colors.white,
+                      size: 15,
                     ),
                   )
                 ],
@@ -498,7 +480,7 @@ class DefaultWidget extends StatelessWidget {
     );
     var textStyle = TextStyle(
         fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-        color: Color.fromARGB(255, 67, 67, 67));
+        color: const Color.fromARGB(255, 67, 67, 67));
     var elevatedStyle = ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         backgroundColor: Colors.white,

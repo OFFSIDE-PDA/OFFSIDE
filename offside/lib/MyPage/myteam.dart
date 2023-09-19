@@ -41,58 +41,55 @@ class _MyTeamState extends ConsumerState {
     int team = user.user!.team!;
     var myTeam = matchData.getMyTeam(team);
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          AppBar(),
-          Padding(
-            padding: const EdgeInsets.all(30),
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      width: size.width * 0.15,
-                      height: size.width * 0.15,
-                      child: Image.network(
-                          teamInfoList[user.user!.team!].logoImg)),
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    teamInfoList[user.user!.team!].fullName,
-                    style: TextStyle(
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 16),
-                        fontWeight: FontWeight.w600),
-                    textAlign: TextAlign.center,
-                  ),
-                ]),
+    return Column(
+      children: [
+        AppBar(),
+        Padding(
+          padding: const EdgeInsets.all(30),
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                    width: size.width * 0.15,
+                    height: size.width * 0.15,
+                    child:
+                        Image.network(teamInfoList[user.user!.team!].logoImg)),
+                SizedBox(
+                  width: size.width * 0.02,
+                ),
+                Text(
+                  teamInfoList[user.user!.team!].fullName,
+                  style: TextStyle(
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 16),
+                      fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.center,
+                ),
+              ]),
+        ),
+        Container(
+          width: size.width,
+          margin: const EdgeInsets.fromLTRB(10, 0, 20, 10),
+          child: Text(
+            '${myTeam['win']}승 ${myTeam['draw']}무 ${myTeam['lose']}패',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                fontSize:
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 13)),
           ),
-          Container(
-            width: size.width,
-            margin: const EdgeInsets.fromLTRB(10, 0, 20, 10),
-            child: Text(
-              '${myTeam['win']}승 ${myTeam['draw']}무 ${myTeam['lose']}패',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                  fontSize: const AdaptiveTextSize()
-                      .getadaptiveTextSize(context, 13)),
-            ),
-          ),
-          SizedBox(
-            height: size.height,
-            child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: myTeam['team'].length,
-                itemBuilder: (context, index) => ResultBox(
-                    teamInfoList: teamInfoList,
-                    size: size,
-                    info: myTeam['team'][index],
-                    team: teamInfoList[user.user!.team!].fullName)),
-          )
-        ],
-      ),
+        ),
+        Expanded(
+          child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: myTeam['team'].length,
+              itemBuilder: (context, index) => ResultBox(
+                  teamInfoList: teamInfoList,
+                  size: size,
+                  info: myTeam['team'][index],
+                  team: teamInfoList[user.user!.team!].fullName)),
+        )
+      ],
     );
   }
 }

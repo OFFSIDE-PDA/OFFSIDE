@@ -20,7 +20,7 @@ class MatchDataRepository {
     for (var i = 0; i < 2; i++) {
       for (var j = 0; j < result[i].length; j++) {
         Timestamp timestamp = result[i][j]["datetime"];
-        DateTime dt = timestamp.toDate().subtract(const Duration(hours: 9));
+        DateTime dt = timestamp.toDate();
         String data = DateFormat("yyMMdd").format(dt);
         String time = DateFormat("hhmm").format(dt);
 

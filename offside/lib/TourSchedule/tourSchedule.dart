@@ -65,202 +65,254 @@ class _TourSchedule extends ConsumerState {
     return (Column(
       children: [
         Container(
-            // height: size.height * 0.2,
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Text('나의 여행 일정',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 18)))),
-        Column(
-          children: [
-            Text('원하시는 경기를 선택해주세요!',
-                style: TextStyle(
-                  fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 15),
+          // height: size.height * 0.2,
+          alignment: Alignment.topLeft,
+          child: SizedBox(
+            child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('여행 일정',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 14),
+                            color: Color.fromRGBO(33, 58, 135, 1)))
+                  ],
                 )),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: elevatedStyle,
-                  child: DropdownButton(
-                    isDense: true,
-                    style: TextStyle(
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12),
-                        color: const Color.fromARGB(
-                            255, 67, 67, 67)), //Dropdown font color
-                    dropdownColor:
-                        Colors.white, //dropdown menu background color
-                    icon: iconStyle,
-                    value: selectedDate,
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedDate = value!;
-                      });
-                    },
-                    items: data['date']
-                        .map<DropdownMenuItem<String>>((dynamic value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(getDate(value)),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                ElevatedButton(
+          ),
+        ),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('관람할 경기를 선택해주세요!',
+                  style: TextStyle(
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 14),
+                      fontWeight: FontWeight.w600)),
+              SizedBox(height: size.height * 0.025),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ElevatedButton(
                     onPressed: () {},
                     style: elevatedStyle,
-                    child: matchList.isNotEmpty
-                        ? DropdownButton(
-                            isDense: true,
-                            style: TextStyle(
-                                fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 12),
-                                color: const Color.fromARGB(
-                                    255, 67, 67, 67)), //Dropdown font color
-                            dropdownColor:
-                                Colors.white, //dropdown menu background color
-                            icon: iconStyle,
-                            value: selectedMatch,
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                selectedMatch = value!;
-                                selectedIdx = matchList.indexOf(selectedMatch);
-                              });
-                            },
-                            items: matchList
-                                .map<DropdownMenuItem<String>>((dynamic value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          )
-                        : const SizedBox()),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 2,
-                      color: const Color.fromARGB(255, 54, 54, 54),
-                    ),
-                    borderRadius: BorderRadius.circular(15)),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '20${getDate(selectedDate)}',
-                        style: TextStyle(
+                    child: DropdownButton(
+                      isDense: true,
+                      style: TextStyle(
                           fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 15),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                    width: size.width * 0.08,
-                                    height: size.width * 0.08,
-                                    child: Image.network(
-                                        teamInfoList[matches[selectedIdx].team1]
-                                            .logoImg)),
-                                const SizedBox(width: 20),
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        teamInfoList[matches[selectedIdx].team1]
-                                            .name,
-                                        style: TextStyle(
-                                          fontSize: const AdaptiveTextSize()
-                                              .getadaptiveTextSize(context, 15),
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        ' vs ',
-                                        style: TextStyle(
-                                          fontSize: const AdaptiveTextSize()
-                                              .getadaptiveTextSize(context, 15),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        teamInfoList[matches[selectedIdx].team2]
-                                            .name,
-                                        style: TextStyle(
-                                          fontSize: const AdaptiveTextSize()
-                                              .getadaptiveTextSize(context, 15),
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const SizedBox(width: 20),
-                                      SizedBox(
-                                          width: size.width * 0.08,
-                                          height: size.width * 0.08,
-                                          child: Image.network(teamInfoList[
-                                                  matches[selectedIdx].team2]
-                                              .logoImg))
-                                    ])
-                              ])),
-                      const SizedBox(height: 5),
-                      Text(teamInfoList[matches[selectedIdx].team1].stadium,
-                          style: TextStyle(
-                            fontSize: const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 15),
-                          ))
-                    ])),
-            const SizedBox(height: 30),
-            Text(
-              '해당 경기로 여행계획 바로 시작하기',
-              style: TextStyle(
-                fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 15),
+                              .getadaptiveTextSize(context, 12),
+                          color: const Color.fromARGB(
+                              255, 67, 67, 67)), //Dropdown font color
+                      dropdownColor:
+                          Colors.white, //dropdown menu background color
+                      icon: iconStyle,
+                      value: selectedDate,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedDate = value!;
+                        });
+                      },
+                      items: data['date']
+                          .map<DropdownMenuItem<String>>((dynamic value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(getDate(value)),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {},
+                      style: elevatedStyle,
+                      child: matchList.isNotEmpty
+                          ? DropdownButton(
+                              isDense: true,
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 12),
+                                  color: const Color.fromARGB(
+                                      255, 67, 67, 67)), //Dropdown font color
+                              dropdownColor:
+                                  Colors.white, //dropdown menu background color
+                              icon: iconStyle,
+                              value: selectedMatch,
+                              onChanged: (String? value) {
+                                // This is called when the user selects an item.
+                                setState(() {
+                                  selectedMatch = value!;
+                                  selectedIdx =
+                                      matchList.indexOf(selectedMatch);
+                                });
+                              },
+                              items: matchList.map<DropdownMenuItem<String>>(
+                                  (dynamic value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            )
+                          : const SizedBox()),
+                ],
               ),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TourPlan(
-                              home: matches[selectedIdx].team1,
-                              away: matches[selectedIdx].team2,
-                              date: matches[selectedIdx].data,
-                              time: matches[selectedIdx].time)));
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(25),
-                  backgroundColor:
-                      const Color.fromRGBO(33, 58, 135, 1), // <-- Button color
-                  foregroundColor: Colors.white,
-                ),
-                child: const Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                  size: 25,
-                ))
-          ],
+              SizedBox(height: size.height * 0.025),
+              Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: Color.fromARGB(255, 27, 78, 145),
+                      ),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '20${getDate(selectedDate)}',
+                          style: TextStyle(
+                              fontSize: const AdaptiveTextSize()
+                                  .getadaptiveTextSize(context, 14),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 10),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                      width: size.width * 0.1,
+                                      height: size.width * 0.1,
+                                      child: Image.network(teamInfoList[
+                                              matches[selectedIdx].team1]
+                                          .logoImg)),
+                                  SizedBox(width: size.width * 0.03),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          teamInfoList[
+                                                  matches[selectedIdx].team1]
+                                              .middleName,
+                                          style: TextStyle(
+                                              fontSize: const AdaptiveTextSize()
+                                                  .getadaptiveTextSize(
+                                                      context, 13),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(width: size.width * 0.02),
+                                        Text(
+                                          ' vs ',
+                                          style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 14),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        SizedBox(width: size.width * 0.02),
+                                        Text(
+                                          teamInfoList[
+                                                  matches[selectedIdx].team2]
+                                              .middleName,
+                                          style: TextStyle(
+                                              fontSize: const AdaptiveTextSize()
+                                                  .getadaptiveTextSize(
+                                                      context, 13),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(width: size.width * 0.03),
+                                        SizedBox(
+                                            width: size.width * 0.1,
+                                            height: size.width * 0.1,
+                                            child: Image.network(teamInfoList[
+                                                    matches[selectedIdx].team2]
+                                                .logoImg))
+                                      ])
+                                ])),
+                        const SizedBox(height: 10),
+                        Opacity(
+                          opacity: 0.8,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: Image.network(
+                              teamInfoList[matches[selectedIdx].team1]
+                                  .stadiumImg,
+                              fit: BoxFit.fill,
+                              width: size.width * 0.75,
+                              height: size.height * 0.2,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              size: 23,
+                              color: Color.fromARGB(255, 27, 78, 145),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                                teamInfoList[matches[selectedIdx].team1]
+                                    .stadium,
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 14),
+                                    fontWeight: FontWeight.w600,
+                                    color: Color.fromRGBO(68, 68, 68, 1))),
+                          ],
+                        )
+                      ])),
+              SizedBox(height: size.height * 0.025),
+              Text(
+                'START TRAVEL',
+                style: TextStyle(
+                    fontSize: const AdaptiveTextSize()
+                        .getadaptiveTextSize(context, 14),
+                    fontWeight: FontWeight.w600,
+                    color: Color.fromRGBO(39, 176, 255, 1)),
+              ),
+              SizedBox(height: size.height * 0.025),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TourPlan(
+                                home: matches[selectedIdx].team1,
+                                away: matches[selectedIdx].team2,
+                                date: matches[selectedIdx].data,
+                                time: matches[selectedIdx].time)));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(20),
+                    backgroundColor: const Color.fromRGBO(
+                        33, 58, 135, 1), // <-- Button color
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                    size: 25,
+                  ))
+            ],
+          ),
         ),
       ],
     ));

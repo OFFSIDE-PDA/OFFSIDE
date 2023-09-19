@@ -79,13 +79,6 @@ class _HomePage extends ConsumerState {
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
             child: Row(
               children: [
-                Text(
-                  "경기 일정",
-                  style: TextStyle(                      
-                      fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 12)),
-                ),
-                wSizedBox,
                 ElevatedButton(
                     onPressed: chooseLeague,
                     style: ElevatedButton.styleFrom(
@@ -97,10 +90,10 @@ class _HomePage extends ConsumerState {
                     child: Text(
                       "K리그1",
                       style: TextStyle(
-                          fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 12),
-                          color: league == 1 ? Colors.white : Colors.grey,
-                          ),
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 12),
+                        color: league == 1 ? Colors.white : Colors.grey,
+                      ),
                     )),
                 wSizedBox,
                 ElevatedButton(
@@ -117,10 +110,10 @@ class _HomePage extends ConsumerState {
                   child: Text(
                     "K리그2",
                     style: TextStyle(
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12),
-                        color: league == 1 ? Colors.grey : Colors.white,
-                        ),
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 12),
+                      color: league == 1 ? Colors.grey : Colors.white,
+                    ),
                   ),
                 )
               ],
@@ -248,7 +241,7 @@ class RandomMatch extends StatelessWidget {
   Widget build(BuildContext context) {
     var textStyle = TextStyle(
         fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 13),
-        color: const Color.fromRGBO(18, 32, 84, 1),        
+        color: const Color.fromRGBO(18, 32, 84, 1),
         fontWeight: FontWeight.w600);
     const sizedBox = SizedBox(
       width: 10,
@@ -296,11 +289,11 @@ class RandomMatch extends StatelessWidget {
               Text(
                 "경기장 주변 관광 일정 보러가기",
                 style: TextStyle(
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 11),
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    ),
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 11),
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(width: 2),
               Container(

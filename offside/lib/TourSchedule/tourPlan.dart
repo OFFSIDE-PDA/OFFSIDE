@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
@@ -54,17 +53,27 @@ class _TourPlan extends ConsumerState<TourPlan> {
             child: Column(children: [
           // AppBar(),
           Container(
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              margin: const EdgeInsets.only(bottom: 10),
-              child: Text('나의 여행 일정',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 18),
-                  ))),
+            // height: size.height * 0.2,
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('여행 일정',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: const AdaptiveTextSize()
+                                  .getadaptiveTextSize(context, 14),
+                              color: const Color.fromRGBO(33, 58, 135, 1)))
+                    ],
+                  )),
+            ),
+          ),
+          SizedBox(height: size.height * 0.015),
           PlanStep(size: size, step: step),
-          const SizedBox(height: 15),
+          SizedBox(height: size.height * 0.025),
           returnStep(step, size, teamInfoList, uid),
         ])),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -97,6 +106,40 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   onPressed: () {
                     setState(() {
                       if (step == 3) {
+                        selectedList.isNotEmpty
+                            ? showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      title: Text('20${getDate(widget.date)}'),
+                                      content: const SingleChildScrollView(
+                                          child: ListBody(children: <Widget>[
+                                        Text('여행일정을 저장하시겠습니까?')
+                                      ])),
+                                      actions: [
+                                        TextButton(
+                                            child: const Text('취소'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            }),
+                                        TextButton(
+                                            child: const Text('확인'),
+                                            onPressed: () {
+                                              createTourPlan(
+                                                  uid,
+                                                  selectedList,
+                                                  widget.date,
+                                                  widget.home,
+                                                  widget.away,
+                                                  widget.time);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(saveSnackBar);
+                                              Navigator.of(context).pop();
+                                            })
+                                      ]);
+                                })
+                            : ScaffoldMessenger.of(context)
+                                .showSnackBar(emptySnackBar);
                       } else {
                         step += 1;
                       }
@@ -107,51 +150,62 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   foregroundColor: Colors.white,
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(100))),
-                  child: const Icon(Icons.arrow_forward,
-                      color: Colors.white, size: 25)))
+                  child: step == 3
+                      ? const Icon(Icons.check, color: Colors.white, size: 25)
+                      : const Icon(Icons.arrow_forward,
+                          color: Colors.white, size: 25)))
         ]));
   }
 
   returnStep(int step, Size size, List<TeamInfo> teamInfoList, String? uid) {
+    var size = MediaQuery.of(context).size;
     if (step == 1) {
       return Column(children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          GetLocation(context: context, title: '현재 위치', text: '충북대학교'),
-          GetLocation(
-              context: context,
-              title: '경기장 위치',
-              text: teamInfoList[widget.home].stadium)
-        ]),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GetLocation(context: context, title: 'NOW', text: '충북대학교'),
+              const Icon(
+                Icons.arrow_right_alt,
+                color: Color.fromRGBO(110, 110, 110, 1),
+                size: 25,
+              ),
+              GetLocation(
+                  context: context,
+                  title: 'STADIUM',
+                  text: teamInfoList[widget.home].stadium)
+            ]),
         Container(
           width: size.width,
           height: size.width,
           padding: const EdgeInsets.all(20),
-          // child: KakaoMap(
-          //   onMapCreated: ((controller) async {
-          //     mapController = controller;
+          child: KakaoMap(
+            onMapCreated: ((controller) async {
+              mapController = controller;
 
-          //     if (await Permission.location.isGranted) {
-          //       Position position = await Geolocator.getCurrentPosition(
-          //           desiredAccuracy: LocationAccuracy.high);
-          //       markers.add(Marker(
-          //           markerId: '현위치',
-          //           latLng: LatLng(position.latitude, position.longitude),
-          //           width: 17,
-          //           height: 21));
-          //     }
-          //     if (await Permission.location.isDenied) {}
-          //     markers.add(Marker(
-          //         markerId: teamInfoList[widget.home].stadium,
-          //         latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
-          //             teamInfoList[widget.home].stadiumGeo.longitude),
-          //         width: 17,
-          //         height: 21));
-          //     setState(() {});
-          //   }),
-          //   currentLevel: 8,
-          //   markers: markers.toList(),
-          //   center: LatLng(36.6284028, 127.4592136),
-          // ),
+              if (await Permission.location.isGranted) {
+                Position position = await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.high);
+                markers.add(Marker(
+                    markerId: '현위치',
+                    latLng: LatLng(position.latitude, position.longitude),
+                    width: 17,
+                    height: 21));
+              }
+              if (await Permission.location.isDenied) {}
+              markers.add(Marker(
+                  markerId: teamInfoList[widget.home].stadium,
+                  latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
+                      teamInfoList[widget.home].stadiumGeo.longitude),
+                  width: 17,
+                  height: 21));
+              setState(() {});
+            }),
+            currentLevel: 8,
+            markers: markers.toList(),
+            center: LatLng(36.6284028, 127.4592136),
+          ),
         ),
       ]);
     } else if (step == 2) {
@@ -164,61 +218,89 @@ class _TourPlan extends ConsumerState<TourPlan> {
     } else {
       return Column(children: [
         Container(
-            margin: const EdgeInsets.only(bottom: 15),
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            alignment: Alignment.centerLeft,
-            child: Text('내가 선택한 경기',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 16),
-                ))),
-        Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30),
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+            margin: EdgeInsets.symmetric(horizontal: size.width * 0.07),
+            padding: EdgeInsets.symmetric(
+                vertical: size.height * 0.01, horizontal: size.width * 0.035),
             decoration: BoxDecoration(
                 border: Border.all(
-                    color: const Color.fromRGBO(14, 32, 87, 1), width: 1),
+                    color: const Color.fromARGB(255, 48, 84, 190), width: 1),
                 borderRadius: BorderRadius.circular(10)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('20${getDate(widget.date)}'),
+                  Column(
+                    children: [
+                      Text(
+                        '20${getDate(widget.date)}',
+                        style: TextStyle(
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 12),
+                            fontWeight: FontWeight.w500,
+                            color: const Color.fromARGB(255, 83, 83, 83)),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        teamInfoList[widget.home].stadium,
+                        style: TextStyle(
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 11),
+                            fontWeight: FontWeight.w500,
+                            color: const Color.fromARGB(255, 121, 121, 121)),
+                      ),
+                    ],
+                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SizedBox(
-                            width: size.width * 0.08,
-                            height: size.width * 0.08,
-                            child: Image.network(
-                                teamInfoList[widget.home].logoImg)),
-                        const SizedBox(width: 10),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(teamInfoList[widget.home].name,
-                                  style: TextStyle(
-                                      fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 15)),
-                                  textAlign: TextAlign.center),
-                              const SizedBox(width: 5),
-                              Text(' vs ',
-                                  style: TextStyle(
-                                      fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 15))),
-                              const SizedBox(width: 5),
-                              Text(teamInfoList[widget.away].name,
-                                  style: TextStyle(
-                                      fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 15)),
-                                  textAlign: TextAlign.center),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                  width: size.width * 0.08,
-                                  height: size.width * 0.08,
-                                  child: Image.network(
-                                      teamInfoList[widget.away].logoImg))
-                            ])
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                width: size.width * 0.08,
+                                height: size.width * 0.08,
+                                child: Image.network(
+                                    teamInfoList[widget.home].logoImg)),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(teamInfoList[widget.home].middleName,
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 12),
+                                    fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center),
+                          ],
+                        ),
+                        const SizedBox(width: 15),
+                        Text(' vs ',
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 14),
+                                fontWeight: FontWeight.w600)),
+                        const SizedBox(width: 15),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                width: size.width * 0.08,
+                                height: size.width * 0.08,
+                                child: Image.network(
+                                    teamInfoList[widget.away].logoImg)),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(teamInfoList[widget.away].middleName,
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 12),
+                                    fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center),
+                          ],
+                        )
                       ])
                 ])),
         Container(
@@ -226,7 +308,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
             margin: const EdgeInsets.only(top: 15),
             child: ReorderableListView(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 children: <Widget>[
                   for (int index = 0; index < selectedList.length; index += 1)
                     InkWell(
@@ -239,8 +321,8 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                   title: Text(selectedList[index].title,
                                       style: TextStyle(
                                           fontSize: const AdaptiveTextSize()
-                                              .getadaptiveTextSize(
-                                                  context, 13))),
+                                              .getadaptiveTextSize(context, 13),
+                                          fontWeight: FontWeight.w600)),
                                   content: const SingleChildScrollView(
                                       child: ListBody(children: <Widget>[
                                     Text('해당 일정을 삭제하시겠습니까?')
@@ -264,19 +346,52 @@ class _TourPlan extends ConsumerState<TourPlan> {
                       },
                       child: Container(
                           decoration: const BoxDecoration(
-                              border: Border(top: BorderSide())),
+                              border: Border(
+                                  top: BorderSide(
+                                      width: 1,
+                                      color:
+                                          Color.fromARGB(255, 207, 207, 207)))),
                           child: ListTile(
-                              leading: Image.network(selectedList[index].img,
-                                  width: size.width * 0.18,
-                                  errorBuilder: (context, url, error) => SizedBox(
-                                      width: size.width * 0.18,
-                                      child: Image.asset(
-                                          'assets/images/mainpage/logo.png'))),
-                              title: Text(
-                                  '${selectedList[index].title}  ${getType[selectedList[index].typeId]}',
-                                  style: const TextStyle(fontSize: 12.5)),
+                              leading: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(selectedList[index].img,
+                                    width: size.width * 0.18,
+                                    errorBuilder: (context, url, error) => SizedBox(
+                                        width: size.width * 0.18,
+                                        child: Image.asset(
+                                            'assets/images/mainpage/logo.png'))),
+                              ),
+                              title: Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 4, right: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text('${selectedList[index].title}',
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 12),
+                                            fontWeight: FontWeight.w600)),
+                                    Text(
+                                        '${getType[selectedList[index].typeId]}',
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 11),
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.grey)),
+                                  ],
+                                ),
+                              ),
                               subtitle: Text(selectedList[index].addr,
-                                  style: const TextStyle(fontSize: 11.5)))),
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 11),
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey)))),
                     )
                 ],
                 onReorder: (int oldIndex, int newIndex) {
@@ -288,47 +403,6 @@ class _TourPlan extends ConsumerState<TourPlan> {
                     selectedList.insert(newIndex, item);
                   });
                 })),
-        ElevatedButton(
-            onPressed: () {
-              selectedList.isNotEmpty
-                  ? showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                            title: Text('20${getDate(widget.date)}'),
-                            content: const SingleChildScrollView(
-                                child: ListBody(children: <Widget>[
-                              Text('여행일정을 저장하시겠습니까?')
-                            ])),
-                            actions: [
-                              TextButton(
-                                  child: const Text('취소'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  }),
-                              TextButton(
-                                  child: const Text('확인'),
-                                  onPressed: () {
-                                    createTourPlan(
-                                        uid,
-                                        selectedList,
-                                        widget.date,
-                                        widget.home,
-                                        widget.away,
-                                        widget.time);
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(saveSnackBar);
-                                    Navigator.of(context).pop();
-                                  })
-                            ]);
-                      })
-                  : ScaffoldMessenger.of(context).showSnackBar(emptySnackBar);
-            },
-            style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(), //<-- SEE HERE
-                padding: const EdgeInsets.all(20),
-                backgroundColor: const Color.fromRGBO(33, 58, 135, 1)),
-            child: const Icon(Icons.check, color: Colors.white))
       ]);
     }
   }
@@ -349,28 +423,37 @@ class GetLocation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(children: [
-            title == "현재 위치"
-                ? const Icon(Icons.location_on_outlined)
-                : const Icon(Icons.location_on,
-                    color: Color.fromRGBO(14, 32, 87, 1)),
-            const SizedBox(width: 5),
-            Text(title,
-                style: TextStyle(
-                  color: const Color.fromRGBO(14, 32, 87, 1),
-                  fontWeight: FontWeight.w600,
-                  fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 16),
-                ))
-          ]),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                title == "NOW"
+                    ? const Icon(
+                        Icons.location_on_outlined,
+                        size: 22,
+                      )
+                    : const Icon(Icons.location_on,
+                        size: 22, color: Color.fromRGBO(14, 32, 87, 1)),
+                const SizedBox(width: 5),
+                Text(title,
+                    style: TextStyle(
+                      color: const Color.fromRGBO(14, 32, 87, 1),
+                      fontWeight: FontWeight.w600,
+                      fontSize: const AdaptiveTextSize()
+                          .getadaptiveTextSize(context, 13),
+                    )),
+              ]),
           const SizedBox(height: 5),
-          Text(text,
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 14),
-                color: const Color.fromRGBO(128, 122, 122, 1),
-              ))
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+            child: Text(text,
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+                  color: const Color.fromRGBO(128, 122, 122, 1),
+                )),
+          )
         ]);
   }
 }
@@ -420,6 +503,7 @@ class _ChooseCategory extends State<ChooseCategory> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     futureTourData = getTourData(widget.lat, widget.lng, category);
 
     search(string) {
@@ -443,13 +527,13 @@ class _ChooseCategory extends State<ChooseCategory> {
 
     return Column(children: [
       Container(
-          height: 30,
-          width: widget.size.width * 0.7,
+          height: size.height * 0.04,
+          width: size.width * 0.85,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               border: Border.all(
-                  color: const Color.fromRGBO(14, 32, 87, 1), width: 1),
-              borderRadius: BorderRadius.circular(10)),
+                  color: const Color.fromARGB(255, 55, 91, 199), width: 1),
+              borderRadius: BorderRadius.circular(15)),
           child: Container(
               padding: const EdgeInsets.only(bottom: 5),
               child: TextFormField(
@@ -457,21 +541,24 @@ class _ChooseCategory extends State<ChooseCategory> {
                 decoration: InputDecoration(
                     fillColor: Colors.white,
                     hintText: '검색어를 입력하세요',
-                    hintStyle: const TextStyle(color: Colors.grey),
+                    hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 12)),
                     filled: true,
                     prefixIcon:
-                        const Icon(Icons.search, color: Colors.grey, size: 25),
+                        const Icon(Icons.search, color: Colors.grey, size: 21),
                     suffixIcon: InkWell(
                       onTap: textFieldClear,
                       child:
-                          const Icon(Icons.clear, color: Colors.grey, size: 25),
+                          const Icon(Icons.clear, color: Colors.grey, size: 21),
                     )),
                 style: TextStyle(
                     fontSize: const AdaptiveTextSize()
                         .getadaptiveTextSize(context, 12)),
                 onFieldSubmitted: search,
               ))),
-      const SizedBox(height: 15),
+      SizedBox(height: size.height * 0.02),
       Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child:
@@ -501,7 +588,7 @@ class _ChooseCategory extends State<ChooseCategory> {
                 text: "음식점",
                 choose: chooseCategory)
           ])),
-      const SizedBox(height: 15),
+      SizedBox(height: size.height * 0.02),
       FutureBuilder<List<TourModel>>(
           future: futureTourData,
           builder: (context, snapshot) {
@@ -524,7 +611,7 @@ class _ChooseCategory extends State<ChooseCategory> {
             }
             return const Center(child: CupertinoActivityIndicator());
           }),
-      const SizedBox(height: 10)
+      SizedBox(height: size.height * 0.02)
     ]);
   }
 }
@@ -553,7 +640,9 @@ class _LocationList extends State<LocationList> {
   Widget build(BuildContext context) {
     return Container(
         decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: Colors.grey, width: 1))),
+            border: Border(
+                top: BorderSide(
+                    color: Color.fromARGB(255, 194, 194, 194), width: 1))),
         child: ExpansionTile(
             backgroundColor: const Color.fromRGBO(239, 239, 239, 1),
             tilePadding: const EdgeInsets.only(left: 10),
@@ -564,19 +653,25 @@ class _LocationList extends State<LocationList> {
                     child: Icon(
                         size: 25, Icons.expand_more, color: Colors.white))),
             title: Row(children: [
-              Image.network(widget.tourInfo[widget.index].img,
-                  width: widget.choose.size.width * 0.2,
-                  fit: BoxFit.fill,
-                  errorBuilder: (context, url, error) => SizedBox(
-                      width: widget.choose.size.width * 0.2,
-                      child: Image.asset('assets/images/mainpage/logo.png'))),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(widget.tourInfo[widget.index].img,
+                    width: widget.choose.size.width * 0.2,
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, url, error) => SizedBox(
+                        width: widget.choose.size.width * 0.2,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.asset(
+                                'assets/images/mainpage/logo.png')))),
+              ),
               const SizedBox(width: 10),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
-                        width: widget.choose.size.width * 0.5,
+                        width: widget.choose.size.width * 0.55,
                         child: Flexible(
                             child: RichText(
                                 overflow: TextOverflow.ellipsis,
@@ -585,12 +680,15 @@ class _LocationList extends State<LocationList> {
                                     text: widget.tourInfo[widget.index].title,
                                     style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 14),
-                                      fontWeight: FontWeight.normal,
+                                          .getadaptiveTextSize(context, 12),
+                                      fontWeight: FontWeight.w600,
                                       color: Colors.black,
                                     ))))),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     SizedBox(
-                        width: widget.choose.size.width * 0.5,
+                        width: widget.choose.size.width * 0.55,
                         child: Flexible(
                             child: RichText(
                                 overflow: TextOverflow.ellipsis,
@@ -600,8 +698,9 @@ class _LocationList extends State<LocationList> {
                                     style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
                                           .getadaptiveTextSize(context, 11),
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          const Color.fromARGB(255, 80, 80, 80),
                                     )))))
                   ])
             ]),
@@ -615,41 +714,63 @@ class _LocationList extends State<LocationList> {
                         vertical: 20, horizontal: 40),
                     width: widget.choose.size.width * 0.3,
                     height: widget.choose.size.width * 0.25,
-                    // child: KakaoMap(
-                    //   onMapCreated: ((controller) async {
-                    //     mapController = controller;
-                    //     Position position = await Geolocator.getCurrentPosition(
-                    //         desiredAccuracy: LocationAccuracy.high);
-                    //     markers.add(Marker(
-                    //         markerId: '현위치',
-                    //         latLng:
-                    //             LatLng(position.latitude, position.longitude),
-                    //         width: 17,
-                    //         height: 21));
-                    //     markers.add(Marker(
-                    //         markerId: widget.tourInfo[widget.index].title,
-                    //         latLng: LatLng(widget.tourInfo[widget.index].lat,
-                    //             widget.tourInfo[widget.index].lng),
-                    //         width: 17,
-                    //         height: 21));
-                    //     setState(() {});
-                    //   }),
-                    //   currentLevel: 8,
-                    //   markers: markers.toList(),
-                    //   center: LatLng(
-                    //       double.parse(widget.tourInfo[widget.index].lat),
-                    //       double.parse(widget.tourInfo[widget.index].lng)),
-                    // ),
+                    child: KakaoMap(
+                      onMapCreated: ((controller) async {
+                        mapController = controller;
+                        Position position = await Geolocator.getCurrentPosition(
+                            desiredAccuracy: LocationAccuracy.high);
+                        markers.add(Marker(
+                            markerId: '현위치',
+                            latLng:
+                                LatLng(position.latitude, position.longitude),
+                            width: 17,
+                            height: 21));
+                        markers.add(Marker(
+                            markerId: widget.tourInfo[widget.index].title,
+                            latLng: LatLng(widget.tourInfo[widget.index].lat,
+                                widget.tourInfo[widget.index].lng),
+                            width: 17,
+                            height: 21));
+                        setState(() {});
+                      }),
+                      currentLevel: 8,
+                      markers: markers.toList(),
+                      center: LatLng(
+                          double.parse(widget.tourInfo[widget.index].lat),
+                          double.parse(widget.tourInfo[widget.index].lng)),
+                    ),
                   )),
               Container(
                 alignment: Alignment.centerRight,
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: ElevatedButton(
                     onPressed: () {
                       setState(() {
                         selectedList.add(widget.tourInfo[widget.index]);
                       });
                     },
-                    child: const Text('추가하기')),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.add_location_alt_outlined,
+                          size: 23,
+                          color: Color.fromRGBO(57, 142, 223, 1),
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          '추가하기',
+                          style: TextStyle(
+                              fontSize: const AdaptiveTextSize()
+                                  .getadaptiveTextSize(context, 11),
+                              fontWeight: FontWeight.w500,
+                              color: const Color.fromRGBO(57, 142, 223, 1)),
+                        ),
+                      ],
+                    )),
               )
             ]));
   }
@@ -706,19 +827,32 @@ class PlanStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: size.width,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        decoration: const BoxDecoration(
-            border: Border(
-                top: BorderSide(color: Colors.black, width: 1.5),
-                bottom: BorderSide(color: Colors.black, width: 1.5))),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Step(step: step, num: 1, text: '이동 수단 결정'),
-          const Icon(Icons.more_horiz, color: Color.fromRGBO(14, 32, 87, 1)),
-          Step(step: step, num: 2, text: '방문지 선택'),
-          const Icon(Icons.more_horiz, color: Color.fromRGBO(14, 32, 87, 1)),
-          Step(step: step, num: 3, text: '여행 일정 확인')
-        ]));
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 245, 245, 245),
+          borderRadius: BorderRadius.circular(20),
+          // border: Border(
+          //     top: BorderSide(
+          //         color: Color.fromARGB(255, 138, 138, 138), width: 1.3),
+          //     bottom: BorderSide(
+          //         color: Color.fromARGB(255, 138, 138, 138), width: 1.3))
+        ),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Step(step: step, num: 1, text: '지도 확인'),
+              const Icon(
+                Icons.more_horiz,
+                color: Color.fromRGBO(14, 32, 87, 1),
+                size: 23,
+              ),
+              Step(step: step, num: 2, text: '방문지 선택'),
+              const Icon(Icons.more_horiz,
+                  color: Color.fromRGBO(14, 32, 87, 1), size: 23),
+              Step(step: step, num: 3, text: '일정 확인')
+            ]));
   }
 }
 
@@ -730,10 +864,11 @@ class Step extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Container(
-          width: 40,
-          height: 40,
+          width: size.width * 0.1,
+          height: size.width * 0.1,
           alignment: Alignment.center,
           decoration: step == num ? selectedBox() : unSelectedBox(),
           child: Text('$num',
@@ -770,36 +905,36 @@ BoxDecoration selectedBox() {
 
 BoxDecoration unSelectedBox() {
   return BoxDecoration(
-      border: Border.all(color: const Color.fromRGBO(14, 32, 87, 1), width: 3),
+      border: Border.all(color: const Color.fromRGBO(14, 32, 87, 1), width: 2),
       borderRadius: BorderRadius.circular(10));
 }
 
 TextStyle selectedNum(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 20),
-    fontWeight: FontWeight.w500,
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
+    fontWeight: FontWeight.w600,
     color: Colors.white,
   );
 }
 
 TextStyle unSelectedNum(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 20),
-    fontWeight: FontWeight.w500,
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
+    fontWeight: FontWeight.w600,
     color: const Color.fromRGBO(14, 32, 87, 1),
   );
 }
 
 TextStyle selectedText(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
     fontWeight: FontWeight.w600,
   );
 }
 
 TextStyle unSelectedText(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 13),
-    fontWeight: FontWeight.w600,
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+    fontWeight: FontWeight.w500,
   );
 }

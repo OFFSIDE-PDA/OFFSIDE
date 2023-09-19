@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/login/login.dart';
 import 'myteam.dart';
 import '../community/community.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
@@ -24,7 +22,7 @@ class MyPage extends StatelessWidget {
             SizedBox(
               height: 50,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
+                padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                 child: Text(
                   "마이페이지",
                   textAlign: TextAlign.left,
@@ -32,7 +30,7 @@ class MyPage extends StatelessWidget {
                       fontSize: const AdaptiveTextSize()
                           .getadaptiveTextSize(context, 14),
                       fontWeight: FontWeight.w800,
-                      color: Color.fromRGBO(18, 32, 84, 1)),
+                      color: const Color.fromRGBO(18, 32, 84, 1)),
                 ),
               ),
             ),
@@ -104,7 +102,7 @@ class _ProfileState extends ConsumerState {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.network(
-                  teaminfo.teamInfoList[user.user!.team!].logoImg!,
+                  teaminfo.teamInfoList[user.user!.team!].logoImg,
                   width: 80,
                   height: 80,
                 ),
@@ -118,7 +116,7 @@ class _ProfileState extends ConsumerState {
                         style: TextStyle(
                             fontSize: const AdaptiveTextSize()
                                 .getadaptiveTextSize(context, 13),
-                            color: Color.fromRGBO(18, 32, 84, 1),
+                            color: const Color.fromRGBO(18, 32, 84, 1),
                             fontWeight: FontWeight.w700),
                       ),
                       Container(height: 10),
@@ -137,7 +135,7 @@ class _ProfileState extends ConsumerState {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            teaminfo.teamInfoList[user.user!.team!].fullName!,
+                            teaminfo.teamInfoList[user.user!.team!].fullName,
                             style: TextStyle(
                                 fontSize: const AdaptiveTextSize()
                                     .getadaptiveTextSize(context, 13),
@@ -231,7 +229,7 @@ class Second extends StatelessWidget {
                             .getadaptiveTextSize(context, 11),
                         fontWeight: FontWeight.w600),
                   ),
-                  Icon(Icons.event_available,
+                  const Icon(Icons.event_available,
                       color: Color.fromRGBO(18, 32, 84, 1))
                 ],
               ),
@@ -266,7 +264,8 @@ class Second extends StatelessWidget {
                             .getadaptiveTextSize(context, 11),
                         fontWeight: FontWeight.w600),
                   ),
-                  Icon(Icons.card_travel, color: Color.fromRGBO(18, 32, 84, 1))
+                  const Icon(Icons.card_travel,
+                      color: Color.fromRGBO(18, 32, 84, 1))
                 ],
               ),
             ),
@@ -278,14 +277,16 @@ class Second extends StatelessWidget {
 }
 
 class Third extends StatelessWidget {
+  const Third({super.key});
+
   void onPressed() {}
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var wSize = size.width;
-    // TODO: implement build
-    return (Container(
+
+    return Container(
         margin: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02,
             size.width * 0.05, size.height * 0.02),
         child: Container(
@@ -313,15 +314,16 @@ class Third extends StatelessWidget {
                   "팀 커뮤니티",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: Color.fromARGB(255, 67, 67, 67),
+                      color: const Color.fromARGB(255, 67, 67, 67),
                       fontSize: const AdaptiveTextSize()
                           .getadaptiveTextSize(context, 12)),
                 ),
-                Icon(Icons.forum_outlined, color: Color.fromRGBO(18, 32, 84, 1))
+                const Icon(Icons.forum_outlined,
+                    color: Color.fromRGBO(18, 32, 84, 1))
               ],
             ),
           ),
-        )));
+        ));
   }
 }
 
@@ -362,10 +364,6 @@ class Under extends ConsumerWidget {
         ElevatedButton(
           onPressed: () {
             ref.watch(userViewModelProvider).signOut();
-            // Navigator.pushAndRemoveUntil(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => LoginPage()),
-            //     (route) => false);
           },
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(

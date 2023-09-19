@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+4
+version: 1.0.0+6
 
 environment:
   sdk: ">=3.0.3 <4.0.0"
@@ -102,25 +102,42 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
 fonts:
-  - family: Pretendard
+  # - family: Pretendard
+  #   fonts:
+  #     - asset: assets/fonts/Pretendard-Thin.ttf
+  #       weight: 100
+  #     - asset: assets/fonts/Pretendard-ExtraLight.ttf
+  #       weight: 200
+  #     - asset: assets/fonts/Pretendard-Light.ttf
+  #       weight: 300
+  #     - asset: assets/fonts/Pretendard-Regular.ttf
+  #       weight: 400
+  #     - asset: assets/fonts/Pretendard-Medium.ttf
+  #       weight: 500
+  #     - asset: assets/fonts/Pretendard-SemiBold.ttf
+  #       weight: 600
+  #     - asset: assets/fonts/Pretendard-Bold.ttf
+  #       weight: 700
+  #     - asset: assets/fonts/Pretendard-ExtraBold.ttf
+  #       weight: 800
+  #     - asset: fonts/Pretendard-Black.ttf
+  #       weight: 900
+  - family: SUITE
     fonts:
-      - asset: assets/fonts/Pretendard-Thin.ttf
-        weight: 100
-      - asset: assets/fonts/Pretendard-ExtraLight.ttf
-        weight: 200
-      - asset: assets/fonts/Pretendard-Light.ttf
+      - asset: assets/fonts/SUITE-Light.ttf
         weight: 300
-      - asset: assets/fonts/Pretendard-Regular.ttf
+      - asset: assets/fonts/SUITE-Regular.ttf
         weight: 400
-      - asset: assets/fonts/Pretendard-Medium.ttf
+      - asset: assets/fonts/SUITE-Medium.ttf
         weight: 500
-      - asset: assets/fonts/Pretendard-SemiBold.ttf
+      - asset: assets/fonts/SUITE-SemiBold.ttf
         weight: 600
-      - asset: assets/fonts/Pretendard-Bold.ttf
+      - asset: assets/fonts/SUITE-Bold.ttf
         weight: 700
-      - asset: assets/fonts/Pretendard-ExtraBold.ttf
+      - asset: assets/fonts/SUITE-ExtraBold.ttf
         weight: 800
-      - asset: fonts/Pretendard-Black.ttf
+      - asset: assets/fonts/SUITE-Heavy.ttf
         weight: 900
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
