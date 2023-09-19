@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
@@ -58,7 +57,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
             alignment: Alignment.topLeft,
             child: SizedBox(
               child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -67,7 +66,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                               fontWeight: FontWeight.w600,
                               fontSize: const AdaptiveTextSize()
                                   .getadaptiveTextSize(context, 14),
-                              color: Color.fromRGBO(33, 58, 135, 1)))
+                              color: const Color.fromRGBO(33, 58, 135, 1)))
                     ],
                   )),
             ),
@@ -152,8 +151,8 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(100))),
                   child: step == 3
-                      ? Icon(Icons.check, color: Colors.white, size: 25)
-                      : Icon(Icons.arrow_forward,
+                      ? const Icon(Icons.check, color: Colors.white, size: 25)
+                      : const Icon(Icons.arrow_forward,
                           color: Colors.white, size: 25)))
         ]));
   }
@@ -181,32 +180,32 @@ class _TourPlan extends ConsumerState<TourPlan> {
           width: size.width,
           height: size.width,
           padding: const EdgeInsets.all(20),
-          // child: KakaoMap(
-          //   onMapCreated: ((controller) async {
-          //     mapController = controller;
+          child: KakaoMap(
+            onMapCreated: ((controller) async {
+              mapController = controller;
 
-          //     if (await Permission.location.isGranted) {
-          //       Position position = await Geolocator.getCurrentPosition(
-          //           desiredAccuracy: LocationAccuracy.high);
-          //       markers.add(Marker(
-          //           markerId: '현위치',
-          //           latLng: LatLng(position.latitude, position.longitude),
-          //           width: 17,
-          //           height: 21));
-          //     }
-          //     if (await Permission.location.isDenied) {}
-          //     markers.add(Marker(
-          //         markerId: teamInfoList[widget.home].stadium,
-          //         latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
-          //             teamInfoList[widget.home].stadiumGeo.longitude),
-          //         width: 17,
-          //         height: 21));
-          //     setState(() {});
-          //   }),
-          //   currentLevel: 8,
-          //   markers: markers.toList(),
-          //   center: LatLng(36.6284028, 127.4592136),
-          // ),
+              if (await Permission.location.isGranted) {
+                Position position = await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.high);
+                markers.add(Marker(
+                    markerId: '현위치',
+                    latLng: LatLng(position.latitude, position.longitude),
+                    width: 17,
+                    height: 21));
+              }
+              if (await Permission.location.isDenied) {}
+              markers.add(Marker(
+                  markerId: teamInfoList[widget.home].stadium,
+                  latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
+                      teamInfoList[widget.home].stadiumGeo.longitude),
+                  width: 17,
+                  height: 21));
+              setState(() {});
+            }),
+            currentLevel: 8,
+            markers: markers.toList(),
+            center: LatLng(36.6284028, 127.4592136),
+          ),
         ),
       ]);
     } else if (step == 2) {
@@ -224,7 +223,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                 vertical: size.height * 0.01, horizontal: size.width * 0.035),
             decoration: BoxDecoration(
                 border: Border.all(
-                    color: Color.fromARGB(255, 48, 84, 190), width: 1),
+                    color: const Color.fromARGB(255, 48, 84, 190), width: 1),
                 borderRadius: BorderRadius.circular(10)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,7 +247,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                             fontSize: const AdaptiveTextSize()
                                 .getadaptiveTextSize(context, 11),
                             fontWeight: FontWeight.w500,
-                            color: Color.fromARGB(255, 121, 121, 121)),
+                            color: const Color.fromARGB(255, 121, 121, 121)),
                       ),
                     ],
                   ),
@@ -532,8 +531,8 @@ class _ChooseCategory extends State<ChooseCategory> {
           width: size.width * 0.85,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-              border:
-                  Border.all(color: Color.fromARGB(255, 55, 91, 199), width: 1),
+              border: Border.all(
+                  color: const Color.fromARGB(255, 55, 91, 199), width: 1),
               borderRadius: BorderRadius.circular(15)),
           child: Container(
               padding: const EdgeInsets.only(bottom: 5),
@@ -639,7 +638,6 @@ class _LocationList extends State<LocationList> {
   late KakaoMapController mapController;
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Container(
         decoration: const BoxDecoration(
             border: Border(
@@ -716,35 +714,35 @@ class _LocationList extends State<LocationList> {
                         vertical: 20, horizontal: 40),
                     width: widget.choose.size.width * 0.3,
                     height: widget.choose.size.width * 0.25,
-                    // child: KakaoMap(
-                    //   onMapCreated: ((controller) async {
-                    //     mapController = controller;
-                    //     Position position = await Geolocator.getCurrentPosition(
-                    //         desiredAccuracy: LocationAccuracy.high);
-                    //     markers.add(Marker(
-                    //         markerId: '현위치',
-                    //         latLng:
-                    //             LatLng(position.latitude, position.longitude),
-                    //         width: 17,
-                    //         height: 21));
-                    //     markers.add(Marker(
-                    //         markerId: widget.tourInfo[widget.index].title,
-                    //         latLng: LatLng(widget.tourInfo[widget.index].lat,
-                    //             widget.tourInfo[widget.index].lng),
-                    //         width: 17,
-                    //         height: 21));
-                    //     setState(() {});
-                    //   }),
-                    //   currentLevel: 8,
-                    //   markers: markers.toList(),
-                    //   center: LatLng(
-                    //       double.parse(widget.tourInfo[widget.index].lat),
-                    //       double.parse(widget.tourInfo[widget.index].lng)),
-                    // ),
+                    child: KakaoMap(
+                      onMapCreated: ((controller) async {
+                        mapController = controller;
+                        Position position = await Geolocator.getCurrentPosition(
+                            desiredAccuracy: LocationAccuracy.high);
+                        markers.add(Marker(
+                            markerId: '현위치',
+                            latLng:
+                                LatLng(position.latitude, position.longitude),
+                            width: 17,
+                            height: 21));
+                        markers.add(Marker(
+                            markerId: widget.tourInfo[widget.index].title,
+                            latLng: LatLng(widget.tourInfo[widget.index].lat,
+                                widget.tourInfo[widget.index].lng),
+                            width: 17,
+                            height: 21));
+                        setState(() {});
+                      }),
+                      currentLevel: 8,
+                      markers: markers.toList(),
+                      center: LatLng(
+                          double.parse(widget.tourInfo[widget.index].lat),
+                          double.parse(widget.tourInfo[widget.index].lng)),
+                    ),
                   )),
               Container(
                 alignment: Alignment.centerRight,
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -769,7 +767,7 @@ class _LocationList extends State<LocationList> {
                               fontSize: const AdaptiveTextSize()
                                   .getadaptiveTextSize(context, 11),
                               fontWeight: FontWeight.w500,
-                              color: Color.fromRGBO(57, 142, 223, 1)),
+                              color: const Color.fromRGBO(57, 142, 223, 1)),
                         ),
                       ],
                     )),
@@ -832,7 +830,7 @@ class PlanStep extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         margin: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 245, 245, 245),
+          color: const Color.fromARGB(255, 245, 245, 245),
           borderRadius: BorderRadius.circular(20),
           // border: Border(
           //     top: BorderSide(
