@@ -175,6 +175,7 @@ class StadiumTour extends StatelessWidget {
               height: info.length / 4 * 100,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: info.length, //item 개수
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4, //1 개의 행에 보여줄 item 개수
