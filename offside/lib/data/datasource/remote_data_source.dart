@@ -177,16 +177,11 @@ class UserInfoDataSource {
       await db.collection("users").doc(uid).collection("tour").get().then(
         (querySnapshot) {
           for (var docSnapshot in querySnapshot.docs) {
-            // var tmp = [];
-            // docSnapshot.data().forEach((key, value) {
-            //   tmp.add({key: value});
-            // });
             tourList[docSnapshot.id] = docSnapshot.data();
           }
         },
         onError: (e) => print("Error completing: $e"),
       );
-      // print(tourList);
       return tourList;
     } catch (e) {
       return {};
