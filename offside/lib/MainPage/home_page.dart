@@ -157,6 +157,7 @@ class StadiumTour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -167,60 +168,65 @@ class StadiumTour extends StatelessWidget {
               style: TextStyle(
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+                  fontWeight: FontWeight.w600,
                   color: const Color.fromARGB(255, 67, 67, 67)),
             ),
           ),
           hSizedBox,
           Container(
-              height: info.length / 4 * 100,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: GridView.builder(
-                  itemCount: info.length, //item 개수
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, //1 개의 행에 보여줄 item 개수
-                    childAspectRatio: 1 / 1, //item 의 가로 1, 세로 2 의 비율
-                    mainAxisSpacing: 20, //수평 Padding
-                    crossAxisSpacing: 20, //수직 Padding
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return FloatingActionButton(
-                        heroTag: index,
-                        onPressed: () async {
-                          await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TeamInfoPage(
-                                      team: teaminfoList[info[index]])));
-                        },
-                        elevation: 10,
-                        highlightElevation: 20,
-                        backgroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
-                        shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              width: 1,
-                              color: Color.fromRGBO(33, 58, 135, 1),
+            height: size.height * 0.52,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: GridView.builder(
+                physics: new NeverScrollableScrollPhysics(),
+                itemCount:
+                    info.length > 20 ? 20 : info.length, //item 개수 -> 20개까지만
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, //1 개의 행에 보여줄 item 개수
+                  childAspectRatio: 1 / 1, //item 의 가로 1, 세로 2 의 비율
+                  mainAxisSpacing: 20, //수평 Padding
+                  crossAxisSpacing: 20, //수직 Padding
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return FloatingActionButton(
+                      heroTag: index,
+                      onPressed: () async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TeamInfoPage(
+                                    team: teaminfoList[info[index]])));
+                      },
+                      elevation: 7,
+                      highlightElevation: 15,
+                      backgroundColor: Color.fromARGB(255, 241, 241, 241),
+                      shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                            width: 0.1,
+                            color: Color.fromARGB(255, 241, 241, 241),
+                          ),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.transparent,
+                              child: Image.network(
+                                  teaminfoList[info[index]].logoImg),
                             ),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Colors.transparent,
-                                child: Image.network(
-                                    teaminfoList[info[index]].logoImg),
-                              ),
-                              Text(
-                                convertedName(
-                                    teaminfoList[info[index]].middleName),
-                                style: TextStyle(
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 11)),
-                              )
-                            ]));
-                  })),
+                            Text(
+                              convertedName(
+                                  teaminfoList[info[index]].middleName),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 11),
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ]));
+                }),
+          ),
           hSizedBox,
         ]));
   }
