@@ -51,6 +51,7 @@ class Community extends ConsumerState<CommunityPage>
 
     void toBottom() {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+
       setState(() {
         showToBottom = false;
       });
@@ -64,7 +65,8 @@ class Community extends ConsumerState<CommunityPage>
         if (_scrollController.position.pixels <=
                 _scrollController.position.maxScrollExtent.toInt() &&
             _scrollController.position.pixels >=
-                _scrollController.position.maxScrollExtent - size.height) {
+                _scrollController.position.maxScrollExtent.toInt() -
+                    size.height * 0.8) {
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         } else {
           setState(() {
@@ -73,6 +75,16 @@ class Community extends ConsumerState<CommunityPage>
         }
       }
     });
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        setState(() {
+          showToBottom = false;
+        });
+      }
+    });
+
     return chatmodel.when(
         loading: () => const CircularProgressIndicator(),
         error: (err, stack) => Text('Error: $err'),
@@ -90,8 +102,10 @@ class Community extends ConsumerState<CommunityPage>
                             topLeft: Radius.circular(50),
                             topRight: Radius.circular(50)),
                         image: DecorationImage(
-                            image: NetworkImage(teaminfo[team].logoImg!),
-                            colorFilter: ColorFilter.mode(Color(teaminfo[team].color[0]).withOpacity(0.3), BlendMode.dstATop))),
+                            image: NetworkImage(teaminfo[team].logoImg),
+                            colorFilter: ColorFilter.mode(
+                                Color(teaminfo[team].color[0]).withOpacity(0.3),
+                                BlendMode.dstATop))),
                     child: Scrollbar(
                       controller: _scrollController, // 스크롤 컨트롤러
                       thickness: 4.0, // 스크롤 너비
@@ -199,8 +213,8 @@ class Community extends ConsumerState<CommunityPage>
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.only(
-                            left: 10, bottom: 10, top: 10),
+                        padding:
+                            const EdgeInsets.only(left: 3, bottom: 3, top: 3),
                         margin: const EdgeInsets.only(bottom: 5),
                         height: 50,
                         width: size.width * 0.97,
@@ -213,16 +227,15 @@ class Community extends ConsumerState<CommunityPage>
                               ),
                               Expanded(
                                 child: TextField(
+                                  style: const TextStyle(
+                                      color: Colors.black54, fontSize: 15),
                                   controller: _text,
                                   decoration: const InputDecoration(
                                       hintText: "팀을 응원하는 메세지를 적어주세요!",
-                                      hintStyle:
-                                          TextStyle(color: Colors.black54),
+                                      hintStyle: TextStyle(
+                                          color: Colors.black54, fontSize: 15),
                                       border: InputBorder.none),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 15,
                               ),
                               FloatingActionButton(
                                 onPressed: () async {
@@ -233,6 +246,7 @@ class Community extends ConsumerState<CommunityPage>
                                           text: _text.text,
                                           uid: uid,
                                           writer: nickname);
+                                      _text.clear();
                                     } catch (e) {
                                       print("$e 데이터 저장 실패");
                                     }
