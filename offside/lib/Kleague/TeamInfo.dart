@@ -282,9 +282,9 @@ class _PlaceListState extends State<PlaceList> {
                                                             const AdaptiveTextSize()
                                                                 .getadaptiveTextSize(
                                                                     context,
-                                                                    13),
+                                                                    11),
                                                         fontWeight:
-                                                            FontWeight.normal,
+                                                            FontWeight.w600,
                                                         color:
                                                             Colors.black))))),
                                     const SizedBox(height: 5),
@@ -303,7 +303,7 @@ class _PlaceListState extends State<PlaceList> {
                                                                     context,
                                                                     11),
                                                         fontWeight:
-                                                            FontWeight.normal,
+                                                            FontWeight.w500,
                                                         color: const Color
                                                                 .fromARGB(255,
                                                             67, 67, 67))))))

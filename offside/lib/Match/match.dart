@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/Match/matchDetail.dart';
 import 'package:offside/MyPage/myteam.dart';
@@ -29,10 +30,27 @@ class _Match extends ConsumerState {
   String selectedLeague = 'K리그1';
   int selectedTeam = 1;
   bool filtering = false;
+  String today = "";
+  int scrollIdx = 0;
+  final ScrollController _scrollController = ScrollController();
+
+  getToday() {
+    DateTime now = DateTime.now();
+    DateFormat formatter = DateFormat('yyMMdd');
+    formatter.format(now);
+    return formatter.format(now);
+  }
 
   @override
   void initState() {
     super.initState();
+    today = getToday();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -63,133 +81,152 @@ class _Match extends ConsumerState {
     var matchIdx =
         matchData.getMatchIndex('all', selectedLeague == 'K리그1' ? 1 : 2);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "경기 일정",
-            textAlign: TextAlign.left,
-            style: TextStyle(
+    for (int i = 0; i < leagueLen; i++) {
+      bool flag = true;
+      for (var item in matchIdx[i]) {
+        if (int.parse(today) <= int.parse(item.data)) {
+          flag = false;
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            _scrollController.jumpTo((size.height * .27 + 30) * i);
+          });
+          break;
+        }
+      }
+      if (!flag) {
+        break;
+      }
+    }
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "경기 일정",
+              textAlign: TextAlign.left,
+              style: TextStyle(
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 14),
-                fontWeight: FontWeight.w800,
-                color: const Color.fromRGBO(18, 32, 84, 1)),
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  ElevatedButton(
-                    style: elevatedStyle, //Elevated Button Background
-                    onPressed: () {}, //make onPressed callback empty
-                    child: DropdownButton(
-                      isDense: true,
-                      style: textStyle, //Dropdown font color
-                      dropdownColor:
-                          Colors.white, //dropdown menu background color
-                      icon: iconStyle, //dropdown indicator icon
-                      value: selectedLeague,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedLeague = value.toString();
-                          selectedLeague == 'K리그1'
-                              ? selectedTeam = k1[0].id
-                              : selectedTeam = k2[0].id;
-                          filtering = false;
-                        });
-                      },
-                      items: league.map((item) {
-                        return DropdownMenuItem(value: item, child: Text(item));
-                      }).toList(),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  ElevatedButton(
-                    style: elevatedStyle, //Elevated Button Background
-                    onPressed: () {}, //make onPressed callback empty
-                    child: DropdownButton(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    ElevatedButton(
+                      style: elevatedStyle, //Elevated Button Background
+                      onPressed: () {}, //make onPressed callback empty
+                      child: DropdownButton(
                         isDense: true,
                         style: textStyle, //Dropdown font color
                         dropdownColor:
                             Colors.white, //dropdown menu background color
-                        icon: iconStyle,
-                        value: selectedTeam,
+                        icon: iconStyle, //dropdown indicator icon
+                        value: selectedLeague,
                         onChanged: (value) {
                           setState(() {
-                            selectedTeam = value!;
-                            filtering = true;
+                            selectedLeague = value.toString();
+                            selectedLeague == 'K리그1'
+                                ? selectedTeam = k1[0].id
+                                : selectedTeam = k2[0].id;
+                            filtering = false;
                           });
                         },
-                        items: selectedLeague == 'K리그1'
-                            ? k1.map((e) {
-                                return DropdownMenuItem(
-                                    value: e.id, child: Text(e.fullName));
-                              }).toList()
-                            : k2.map((e) {
-                                return DropdownMenuItem(
-                                    value: e.id, child: Text(e.fullName));
-                              }).toList()),
-                  )
-                ],
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (body) => const MyTeam()),
-                  );
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: const Color.fromRGBO(14, 32, 87, 1),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Text(
-                    "MY팀",
-                    style: TextStyle(
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 10),
-                        color: Colors.white),
+                        items: league.map((item) {
+                          return DropdownMenuItem(
+                              value: item, child: Text(item));
+                        }).toList(),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(
+                      style: elevatedStyle, //Elevated Button Background
+                      onPressed: () {}, //make onPressed callback empty
+                      child: DropdownButton(
+                          isDense: true,
+                          style: textStyle, //Dropdown font color
+                          dropdownColor:
+                              Colors.white, //dropdown menu background color
+                          icon: iconStyle,
+                          value: selectedTeam,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedTeam = value!;
+                              filtering = true;
+                            });
+                          },
+                          items: selectedLeague == 'K리그1'
+                              ? k1.map((e) {
+                                  return DropdownMenuItem(
+                                      value: e.id, child: Text(e.fullName));
+                                }).toList()
+                              : k2.map((e) {
+                                  return DropdownMenuItem(
+                                      value: e.id, child: Text(e.fullName));
+                                }).toList()),
+                    )
+                  ],
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (body) => const MyTeam()),
+                    );
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(14, 32, 87, 1),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Text(
+                      "MY팀",
+                      style: TextStyle(
+                          fontSize: const AdaptiveTextSize()
+                              .getadaptiveTextSize(context, 10),
+                          color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          Expanded(
-            flex: 1,
-            child: filtering
-                ? ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: filteredTeam.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return FilteredBox(
-                          teamInfoList: teamInfoList,
-                          size: size,
-                          info: filteredTeam[index]);
-                    })
-                : ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: leagueLen,
-                    itemBuilder: (BuildContext context, int index) {
-                      return MatchBox(
-                          teamInfoList: teamInfoList,
-                          size: size,
-                          info: matchIdx[index]);
-                    }),
-          )
-        ],
+              ],
+            ),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            Expanded(
+              flex: 1,
+              child: filtering
+                  ? ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: filteredTeam.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return FilteredBox(
+                            teamInfoList: teamInfoList,
+                            size: size,
+                            info: filteredTeam[index]);
+                      })
+                  : ListView.builder(
+                      controller: _scrollController,
+                      scrollDirection: Axis.vertical,
+                      itemCount: leagueLen,
+                      itemBuilder: (BuildContext context, int index) {
+                        return MatchBox(
+                            teamInfoList: teamInfoList,
+                            size: size,
+                            info: matchIdx[index]);
+                      }),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -220,133 +257,151 @@ class MatchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        // width: size.width,
-        padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-        margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(5, 5), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Text(
-            getDate(info.first.data),
-            style: TextStyle(
-                fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 13)),
+      height: size.height * 0.27,
+      padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+      margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(5, 5), // changes position of shadow
           ),
-          const SizedBox(height: 5),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('H',
+        ],
+      ),
+      child: ListView.builder(
+          shrinkWrap: true, // ListView가 자식 위젯의 크기에 맞게 축소될 수 있도록 설정
+          physics: const ClampingScrollPhysics(),
+          itemCount: 1,
+          itemBuilder: (context, index) {
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    getDate(info.first.data),
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12),
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w600)),
-                Text('A',
-                    style: TextStyle(
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12),
-                        color: Colors.red,
-                        fontWeight: FontWeight.w600)),
-              ]),
-          ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: info.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            .getadaptiveTextSize(context, 13)),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          convertTime(info[index].time),
-                          style: TextStyle(
-                              fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 11)),
-                        ),
-                        SizedBox(
-                            width: size.width * 0.08,
-                            height: size.width * 0.08,
-                            child: Image.network(
-                                teamInfoList[info[index].team1].logoImg)),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                teamInfoList[info[index].team1].name,
-                                style: TextStyle(
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12)),
-                                textAlign: TextAlign.center,
-                              ),
-                              getScore(info.first.data)
-                                  ? Text(
-                                      ' ${info[index].score1} : ${info[index].score2} ',
-                                      style: TextStyle(
-                                          fontSize: const AdaptiveTextSize()
-                                              .getadaptiveTextSize(
-                                                  context, 13)))
-                                  : Text(' vs ',
-                                      style: TextStyle(
-                                          fontSize: const AdaptiveTextSize()
-                                              .getadaptiveTextSize(
-                                                  context, 13))),
-                              Text(
-                                teamInfoList[info[index].team2].name,
-                                style: TextStyle(
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12)),
-                                textAlign: TextAlign.center,
-                              ),
-                            ]),
-                        SizedBox(
-                            width: size.width * 0.08,
-                            height: size.width * 0.08,
-                            child: Image.network(
-                                teamInfoList[info[index].team2].logoImg)),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MatchDetail(
-                                        date: getDate(info.first.data),
-                                        time: info[index].time,
-                                        team1: info[index].team1,
-                                        team2: info[index].team2,
-                                        score1: info[index].score1,
-                                        score2: info[index].score2)));
-                            // 회원정보 수정 페이지로 이동
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: const Color.fromRGBO(33, 58, 135, 1),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: const Icon(
-                              CupertinoIcons.paperplane,
-                              color: Colors.white,
-                              size: 15,
-                            ),
-                          ),
-                        )
-                      ],
-                    ));
-              }),
-        ]));
+                        Text('H',
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 12),
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w600)),
+                        Text('A',
+                            style: TextStyle(
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 12),
+                                color: Colors.red,
+                                fontWeight: FontWeight.w600)),
+                      ]),
+                  ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: info.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  convertTime(info[index].time),
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 11)),
+                                ),
+                                SizedBox(
+                                    width: size.width * 0.08,
+                                    height: size.width * 0.08,
+                                    child: Image.network(
+                                        teamInfoList[info[index].team1]
+                                            .logoImg)),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        teamInfoList[info[index].team1].name,
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 12)),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      getScore(info.first.data)
+                                          ? Text(
+                                              ' ${info[index].score1} : ${info[index].score2} ',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      const AdaptiveTextSize()
+                                                          .getadaptiveTextSize(
+                                                              context, 13)))
+                                          : Text(' vs ',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      const AdaptiveTextSize()
+                                                          .getadaptiveTextSize(
+                                                              context, 13))),
+                                      Text(
+                                        teamInfoList[info[index].team2].name,
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 12)),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ]),
+                                SizedBox(
+                                    width: size.width * 0.08,
+                                    height: size.width * 0.08,
+                                    child: Image.network(
+                                        teamInfoList[info[index].team2]
+                                            .logoImg)),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MatchDetail(
+                                                date: getDate(info.first.data),
+                                                time: info[index].time,
+                                                team1: info[index].team1,
+                                                team2: info[index].team2,
+                                                score1: info[index].score1,
+                                                score2: info[index].score2)));
+                                    // 회원정보 수정 페이지로 이동
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                            33, 58, 135, 1),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: const Icon(
+                                      CupertinoIcons.paperplane,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ));
+                      }),
+                ]);
+          }),
+    );
   }
 }
 

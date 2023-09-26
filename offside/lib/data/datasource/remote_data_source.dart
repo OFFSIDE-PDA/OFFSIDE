@@ -141,7 +141,10 @@ class AuthDataSource extends remoteDataSource {
   ///유저 정보 업데이트
   Future<void> updateUserInfo(
       {required String email, required String nickname}) async {
-    await FirebaseAuth.instance.currentUser?.updateEmail(email);
+    if (email.isNotEmpty) {
+      await FirebaseAuth.instance.currentUser?.updateEmail(email);
+    }
+
     await FirebaseAuth.instance.currentUser?.updateDisplayName(nickname);
   }
 }
@@ -177,16 +180,11 @@ class UserInfoDataSource {
       await db.collection("users").doc(uid).collection("tour").get().then(
         (querySnapshot) {
           for (var docSnapshot in querySnapshot.docs) {
-            // var tmp = [];
-            // docSnapshot.data().forEach((key, value) {
-            //   tmp.add({key: value});
-            // });
             tourList[docSnapshot.id] = docSnapshot.data();
           }
         },
         onError: (e) => print("Error completing: $e"),
       );
-      // print(tourList);
       return tourList;
     } catch (e) {
       return {};

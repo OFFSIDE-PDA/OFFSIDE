@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:offside/MyPage/myTravelDetail.dart';
-import 'package:offside/TourSchedule/tourPlan.dart';
 import 'package:offside/TourSchedule/tourSchedule.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
@@ -25,7 +24,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
       children: [
         AppBar(),
         Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: Text("내 여행일정 확인",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -36,59 +35,62 @@ class _MyTravel extends ConsumerState<MyTravel> {
             builder: ((context, snapshot) {
               if (snapshot.hasData) {
                 Map info = snapshot.data!;
-                // print(info);
-                return SizedBox(
-                    height: size.height * 0.8,
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: info.keys.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return MatchBox(
-                              info: info[info.keys.elementAt(index)],
-                              teamInfo: teamInfoList,
-                              docUid: info.keys.elementAt(index));
-                        }));
+                return info.isNotEmpty
+                    ? SizedBox(
+                        height: size.height * 0.8,
+                        child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: info.keys.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return MatchBox(
+                                  info: info[info.keys.elementAt(index)],
+                                  teamInfo: teamInfoList,
+                                  docUid: info.keys.elementAt(index));
+                            }))
+                    : Center(
+                        child: Column(
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Image.asset(
+                                  'assets/images/mainpage/logo.png',
+                                  height: 50,
+                                  width: double.maxFinite,
+                                )),
+                            const Text(
+                              "아직 여행 계획이 없으신가요?\nOFFSIDE와 함께 여행 계획해요",
+                              textAlign: TextAlign.center,
+                            ),
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                margin: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    color: const Color.fromRGBO(18, 32, 84, 1)),
+                                child: InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const TourSchedule()));
+                                    },
+                                    // 여행 일정으로 이동
+                                    child: Text("여행 계획 하기",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 11),
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white))))
+                          ],
+                        ),
+                      );
               } else if (snapshot.hasError) {
                 return const Center(child: Text('error'));
               }
-              return Center(
-                child: Column(
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Image.asset(
-                          'assets/images/mainpage/logo.png',
-                          height: 50,
-                          width: double.maxFinite,
-                        )),
-                    Text(
-                      "아직 여행 계획이 없으신가요?\nOFFSIDE와 함께 여행 계획해요",
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: Color.fromRGBO(18, 32, 84, 1)),
-                        child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TourSchedule()));
-                            },
-                            // 여행 일정으로 이동
-                            child: Text("여행 계획 하기",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 11),
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white))))
-                  ],
-                ),
-              );
+              return const Center(child: Text('No data'));
             })),
       ],
     );
@@ -116,7 +118,7 @@ class MatchBox extends StatelessWidget {
       returnString = (tmp + 12).toString();
     }
 
-    return "${returnString}:${date[2]}${date[3]}";
+    return "$returnString:${date[2]}${date[3]}";
   }
 
   @override
