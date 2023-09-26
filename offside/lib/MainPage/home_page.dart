@@ -174,6 +174,7 @@ class StadiumTour extends StatelessWidget {
           ),
           hSizedBox,
           Container(
+
             height: size.height * 0.52,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GridView.builder(
@@ -214,6 +215,7 @@ class StadiumTour extends StatelessWidget {
                               backgroundColor: Colors.transparent,
                               child: Image.network(
                                   teaminfoList[info[index]].logoImg),
+
                             ),
                             Text(
                               convertedName(
