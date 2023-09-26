@@ -10,7 +10,7 @@ class Edit extends ConsumerStatefulWidget {
 }
 
 class _EditState extends ConsumerState<Edit> {
-  TextStyle style = TextStyle( fontSize: 18.0);
+  TextStyle style = const TextStyle(fontSize: 18.0);
   late TextEditingController _name;
   late TextEditingController _password;
   late TextEditingController _new_password;
@@ -55,9 +55,6 @@ class _EditState extends ConsumerState<Edit> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    var size = MediaQuery.of(context).size;
-    void onPressed() {}
     final user = ref.watch(userViewModelProvider);
     List teamInfoList = ref.read(teamInfoViewModelProvider).teamInfoList;
     List<DropDownValueModel> dropDownValueList = [];
@@ -73,15 +70,16 @@ class _EditState extends ConsumerState<Edit> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Text('회원정보 수정',
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
-              SizedBox(height: 10),
-              user.user!.email != null
-                  ? Padding(
+              const SizedBox(height: 10),
+              user.user!.email == null || user.user?.email == ""
+                  ? const SizedBox()
+                  : Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 30),
                       child: TextFormField(
@@ -90,18 +88,17 @@ class _EditState extends ConsumerState<Edit> {
                             (value!.isEmpty) ? "이메일을 입력 해 주세요" : null,
                         style: style,
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.email),
+                          prefixIcon: const Icon(Icons.email),
                           labelText: "이메일 변경",
                           filled: true,
-                          fillColor: Color(0xffF6F6F6),
+                          fillColor: const Color(0xffF6F6F6),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide.none,
                           ),
                         ),
                       ),
-                    )
-                  : SizedBox(),
+                    ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
@@ -111,10 +108,10 @@ class _EditState extends ConsumerState<Edit> {
                       (value!.isEmpty) ? "닉네임 입력 해 주세요" : null,
                   style: style,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: const Icon(Icons.person),
                     labelText: "닉네임 변경",
                     filled: true,
-                    fillColor: Color(0xffF6F6F6),
+                    fillColor: const Color(0xffF6F6F6),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide.none,
@@ -126,59 +123,30 @@ class _EditState extends ConsumerState<Edit> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
                 child: DropDownTextField(
-                  controller: _cnt,
-                  clearOption: false,
-                  textFieldFocusNode: textFieldFocusNode,
-                  searchFocusNode: searchFocusNode,
-                  // searchAutofocus: true,
-                  dropDownItemCount: 25,
-                  searchShowCursor: false,
-                  enableSearch: true,
-                  searchKeyboardType: TextInputType.number,
-                  textFieldDecoration: InputDecoration(
-                      prefixIcon: Icon(Icons.favorite),
-                      labelText: "응원 팀 변경",
-                      filled: true,
-                      fillColor: Color(0xffF6F6F6),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      )),
-                  dropDownList: dropDownValueList,
-                  //const [
-                  //   DropDownValueModel(name: '강원 FC', value: "value1"),
-                  //   DropDownValueModel(name: '경남 FC', value: "value2"),
-                  //   DropDownValueModel(name: '김천 상무 FC', value: "value3"),
-                  //   DropDownValueModel(name: '김포 FC', value: "value4"),
-                  //   DropDownValueModel(name: '광주 FC', value: "value5"),
-                  //   DropDownValueModel(name: '대구 FC', value: "value6"),
-                  //   DropDownValueModel(name: '대전 하나 시티즌', value: "value7"),
-                  //   DropDownValueModel(name: '부산 아이파크', value: "value8"),
-                  //   DropDownValueModel(name: '부천 FC 1995', value: "value9"),
-                  //   DropDownValueModel(name: 'FC 서울', value: "value10"),
-                  //   DropDownValueModel(name: '서울 이랜드 FC', value: "value11"),
-                  //   DropDownValueModel(name: '성남 FC', value: "value12"),
-                  //   DropDownValueModel(name: '수원 삼성 블루윙즈', value: "value13"),
-                  //   DropDownValueModel(name: '수원 FC', value: "value14"),
-                  //   DropDownValueModel(name: '안산 그리너스 FC', value: "value15"),
-                  //   DropDownValueModel(name: 'FC 안양', value: "value16"),
-                  //   DropDownValueModel(name: '울산 현대', value: "value17"),
-                  //   DropDownValueModel(name: '인천 유나이티드 FC', value: "value18"),
-                  //   DropDownValueModel(name: '전남 드래곤즈', value: "value19"),
-                  //   DropDownValueModel(name: '전북 현대 모터스', value: "value20"),
-                  //   DropDownValueModel(name: '재주 유나이티드 FC', value: "value21"),
-                  //   DropDownValueModel(name: '천안 시티 FC', value: "value22"),
-                  //   DropDownValueModel(name: '충남 아산 FC', value: "value23"),
-                  //   DropDownValueModel(name: '충북 청주 FC', value: "value24"),
-                  //   DropDownValueModel(name: '포항 스틸러스', value: "value25"),
-                  // ],
-                  onChanged: (val) {},
-                ),
+                    listPadding: ListPadding(top: 1, bottom: 1),
+                    controller: _cnt,
+                    clearOption: false,
+                    textFieldFocusNode: textFieldFocusNode,
+                    searchFocusNode: searchFocusNode,
+                    dropDownItemCount: 25,
+                    searchShowCursor: false,
+                    enableSearch: true,
+                    searchKeyboardType: TextInputType.text,
+                    textFieldDecoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.favorite),
+                        labelText: "응원 팀 변경",
+                        filled: true,
+                        fillColor: const Color(0xffF6F6F6),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        )),
+                    dropDownList: dropDownValueList),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Center(
+              const Center(
                 child: Text(
                   "비밀번호 변경을 원하시면 새로운 비밀번호를 입력하세요.",
                   style: TextStyle(
@@ -231,7 +199,7 @@ class _EditState extends ConsumerState<Edit> {
               //   ),
               // ),
               Container(
-                padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                 child: ElevatedButton(
                   onPressed: () {
                     user.updateUserInfo(
@@ -239,6 +207,24 @@ class _EditState extends ConsumerState<Edit> {
                         email: _email.value.text,
                         nickname: _name.value.text,
                         team: _cnt.dropDownValue!.value);
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
+                      builder: ((context) {
+                        return AlertDialog(
+                          title: const Text("회원정보 수정"),
+                          content: const Text("회원 정보가 수정되었습니다."),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); //창 닫기
+                              },
+                              child: const Text("X"),
+                            )
+                          ],
+                        );
+                      }),
+                    );
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
