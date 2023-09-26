@@ -174,8 +174,8 @@ class StadiumTour extends StatelessWidget {
           ),
           hSizedBox,
           Container(
-
             height: size.height * 0.52,
+            //여기 Media로 화면 크기 받아서 height 나눠주기 -------------------------------------- 민수
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GridView.builder(
                 physics: new NeverScrollableScrollPhysics(),
@@ -215,7 +215,6 @@ class StadiumTour extends StatelessWidget {
                               backgroundColor: Colors.transparent,
                               child: Image.network(
                                   teaminfoList[info[index]].logoImg),
-
                             ),
                             Text(
                               convertedName(
