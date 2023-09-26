@@ -97,7 +97,7 @@ class _Match extends ConsumerState {
       }
     }
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -107,8 +107,7 @@ class _Match extends ConsumerState {
             style: TextStyle(
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 14),
-                fontWeight: FontWeight.w800,
-                color: const Color.fromRGBO(18, 32, 84, 1)),
+                fontWeight: FontWeight.w600,),
           ),
           SizedBox(
             height: size.height * 0.01,

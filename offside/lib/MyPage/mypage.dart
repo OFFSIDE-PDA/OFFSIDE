@@ -22,15 +22,14 @@ class MyPage extends StatelessWidget {
             SizedBox(
               height: 50,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
                 child: Text(
                   "마이페이지",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontSize: const AdaptiveTextSize()
                           .getadaptiveTextSize(context, 14),
-                      fontWeight: FontWeight.w800,
-                      color: const Color.fromRGBO(18, 32, 84, 1)),
+                      fontWeight: FontWeight.w800,),
                 ),
               ),
             ),

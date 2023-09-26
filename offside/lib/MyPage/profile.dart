@@ -9,6 +9,14 @@ class Edit extends ConsumerStatefulWidget {
   _EditState createState() => _EditState();
 }
 
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
+  }
+}
+
 class _EditState extends ConsumerState<Edit> {
   TextStyle style = const TextStyle(fontSize: 18.0);
   late TextEditingController _name;
@@ -74,7 +82,8 @@ class _EditState extends ConsumerState<Edit> {
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Text('회원정보 수정',
                     style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize:  const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 14), fontWeight: FontWeight.w600)),
               ),
               const SizedBox(height: 10),
               user.user!.email == null || user.user?.email == ""

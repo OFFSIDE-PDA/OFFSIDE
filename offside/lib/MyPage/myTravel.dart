@@ -24,7 +24,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
       children: [
         AppBar(),
         Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: Text("내 여행일정 확인",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
