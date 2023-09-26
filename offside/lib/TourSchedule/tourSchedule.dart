@@ -72,7 +72,7 @@ class _TourSchedule extends ConsumerState {
           child: SizedBox(
             child: SafeArea(
               child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, statusBarSize, 20, 10),
+                  padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

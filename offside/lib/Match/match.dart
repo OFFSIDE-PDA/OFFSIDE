@@ -96,133 +96,137 @@ class _Match extends ConsumerState {
         break;
       }
     }
-    return Padding(
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "경기 일정",
-            textAlign: TextAlign.left,
-            style: TextStyle(
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "경기 일정",
+              textAlign: TextAlign.left,
+              style: TextStyle(
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 14),
-                fontWeight: FontWeight.w600,),
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  ElevatedButton(
-                    style: elevatedStyle, //Elevated Button Background
-                    onPressed: () {}, //make onPressed callback empty
-                    child: DropdownButton(
-                      isDense: true,
-                      style: textStyle, //Dropdown font color
-                      dropdownColor:
-                          Colors.white, //dropdown menu background color
-                      icon: iconStyle, //dropdown indicator icon
-                      value: selectedLeague,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedLeague = value.toString();
-                          selectedLeague == 'K리그1'
-                              ? selectedTeam = k1[0].id
-                              : selectedTeam = k2[0].id;
-                          filtering = false;
-                        });
-                      },
-                      items: league.map((item) {
-                        return DropdownMenuItem(value: item, child: Text(item));
-                      }).toList(),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  ElevatedButton(
-                    style: elevatedStyle, //Elevated Button Background
-                    onPressed: () {}, //make onPressed callback empty
-                    child: DropdownButton(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    ElevatedButton(
+                      style: elevatedStyle, //Elevated Button Background
+                      onPressed: () {}, //make onPressed callback empty
+                      child: DropdownButton(
                         isDense: true,
                         style: textStyle, //Dropdown font color
                         dropdownColor:
                             Colors.white, //dropdown menu background color
-                        icon: iconStyle,
-                        value: selectedTeam,
+                        icon: iconStyle, //dropdown indicator icon
+                        value: selectedLeague,
                         onChanged: (value) {
                           setState(() {
-                            selectedTeam = value!;
-                            filtering = true;
+                            selectedLeague = value.toString();
+                            selectedLeague == 'K리그1'
+                                ? selectedTeam = k1[0].id
+                                : selectedTeam = k2[0].id;
+                            filtering = false;
                           });
                         },
-                        items: selectedLeague == 'K리그1'
-                            ? k1.map((e) {
-                                return DropdownMenuItem(
-                                    value: e.id, child: Text(e.fullName));
-                              }).toList()
-                            : k2.map((e) {
-                                return DropdownMenuItem(
-                                    value: e.id, child: Text(e.fullName));
-                              }).toList()),
-                  )
-                ],
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (body) => const MyTeam()),
-                  );
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: const Color.fromRGBO(14, 32, 87, 1),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Text(
-                    "MY팀",
-                    style: TextStyle(
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 10),
-                        color: Colors.white),
+                        items: league.map((item) {
+                          return DropdownMenuItem(
+                              value: item, child: Text(item));
+                        }).toList(),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(
+                      style: elevatedStyle, //Elevated Button Background
+                      onPressed: () {}, //make onPressed callback empty
+                      child: DropdownButton(
+                          isDense: true,
+                          style: textStyle, //Dropdown font color
+                          dropdownColor:
+                              Colors.white, //dropdown menu background color
+                          icon: iconStyle,
+                          value: selectedTeam,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedTeam = value!;
+                              filtering = true;
+                            });
+                          },
+                          items: selectedLeague == 'K리그1'
+                              ? k1.map((e) {
+                                  return DropdownMenuItem(
+                                      value: e.id, child: Text(e.fullName));
+                                }).toList()
+                              : k2.map((e) {
+                                  return DropdownMenuItem(
+                                      value: e.id, child: Text(e.fullName));
+                                }).toList()),
+                    )
+                  ],
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (body) => const MyTeam()),
+                    );
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(14, 32, 87, 1),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Text(
+                      "MY팀",
+                      style: TextStyle(
+                          fontSize: const AdaptiveTextSize()
+                              .getadaptiveTextSize(context, 10),
+                          color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
-          Expanded(
-            flex: 1,
-            child: filtering
-                ? ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: filteredTeam.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return FilteredBox(
-                          teamInfoList: teamInfoList,
-                          size: size,
-                          info: filteredTeam[index]);
-                    })
-                : ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.vertical,
-                    itemCount: leagueLen,
-                    itemBuilder: (BuildContext context, int index) {
-                      return MatchBox(
-                          teamInfoList: teamInfoList,
-                          size: size,
-                          info: matchIdx[index]);
-                    }),
-          )
-        ],
+              ],
+            ),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            Expanded(
+              flex: 1,
+              child: filtering
+                  ? ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: filteredTeam.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return FilteredBox(
+                            teamInfoList: teamInfoList,
+                            size: size,
+                            info: filteredTeam[index]);
+                      })
+                  : ListView.builder(
+                      controller: _scrollController,
+                      scrollDirection: Axis.vertical,
+                      itemCount: leagueLen,
+                      itemBuilder: (BuildContext context, int index) {
+                        return MatchBox(
+                            teamInfoList: teamInfoList,
+                            size: size,
+                            info: matchIdx[index]);
+                      }),
+            )
+          ],
+        ),
       ),
     );
   }

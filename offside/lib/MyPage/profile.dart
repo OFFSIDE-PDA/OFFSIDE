@@ -78,12 +78,13 @@ class _EditState extends ConsumerState<Edit> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Text('회원정보 수정',
-                    style:
-                        TextStyle(fontSize:  const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 14), fontWeight: FontWeight.w600)),
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 13),
+                        fontWeight: FontWeight.w600)),
               ),
               const SizedBox(height: 10),
               user.user!.email == null || user.user?.email == ""
