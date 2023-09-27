@@ -148,8 +148,8 @@ class StadiumTour extends StatelessWidget {
   final List<TeamInfo> teaminfoList;
 
   String convertedName(name) {
-    if (name.length >= 7) {
-      return name.replaceFirst(' ', '\n');
+    if (name == "전남 드래곤즈") {
+      return "전남";
     }
 
     return name;
@@ -174,13 +174,12 @@ class StadiumTour extends StatelessWidget {
           ),
           hSizedBox,
           Container(
-            height: size.height * 0.52,
+            height: size.height * 0.68,
             //여기 Media로 화면 크기 받아서 height 나눠주기 -------------------------------------- 민수
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GridView.builder(
                 physics: new NeverScrollableScrollPhysics(),
-                itemCount:
-                    info.length > 20 ? 20 : info.length, //item 개수 -> 20개까지만
+                itemCount: info.length, //item 개수 -> 20개까지만
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4, //1 개의 행에 보여줄 item 개수
                   childAspectRatio: 1 / 1, //item 의 가로 1, 세로 2 의 비율
