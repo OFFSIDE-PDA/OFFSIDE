@@ -158,15 +158,33 @@ class MatchViewModel extends ChangeNotifier {
     }
   }
 
+  getLatestDay() {
+    var data = getMatchDate();
+    var date = data['date'];
+
+    var today = getToday();
+    var tmp = [];
+    for (var element in date) {
+      if (int.parse(element) >= today) {
+        tmp.add(element);
+      }
+    }
+
+    print("여기 날짜 들어있나 ${tmp[0]}");
+    return tmp[0];
+  }
+
   getRandomMatch() {
     return _allMatchViewModel?['random'];
   }
 
   homeTeams(List matches) {
     List<dynamic> tmp = [];
+
     for (var element in matches) {
-      tmp.add(element[0]);
+      if (element[2] == 1) tmp.add(element[0]);
     }
+
     return tmp.toSet().toList();
   }
 
