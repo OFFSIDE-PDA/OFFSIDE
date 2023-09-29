@@ -129,6 +129,7 @@ class _HomePage extends ConsumerState {
             teaminfoList: teamInfoList),
         StadiumTour(
             hSizedBox: hSizedBox,
+            date: matchData.getLatestDay(),
             info: matchData.getHomeTeams(),
             teaminfoList: teamInfoList)
       ]),
@@ -141,11 +142,13 @@ class StadiumTour extends StatelessWidget {
       {super.key,
       required this.hSizedBox,
       required this.info,
-      required this.teaminfoList});
+      required this.teaminfoList,
+      required this.date});
 
   final SizedBox hSizedBox;
   final List info;
   final List<TeamInfo> teaminfoList;
+  final String date;
 
   String convertedName(name) {
     if (name == "전남 드래곤즈") {
@@ -158,13 +161,18 @@ class StadiumTour extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    String convertTime(date) {
+      return "${date[2]}${date[3]}월 ${date[4]}${date[5]}일";
+    }
+
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.fromLTRB(0, 15, 0, 5),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 22),
             child: Text(
-              "경기장 주변 관광 정보 확인하기",
+              "${convertTime(date)} 홈경기 관광 정보",
               style: TextStyle(
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 12),
@@ -174,7 +182,7 @@ class StadiumTour extends StatelessWidget {
           ),
           hSizedBox,
           Container(
-            height: size.height * 0.68,
+            height: info.length >= 9 ? size.height * 0.32 : size.height * 0.22,
             //여기 Media로 화면 크기 받아서 height 나눠주기 -------------------------------------- 민수
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GridView.builder(
