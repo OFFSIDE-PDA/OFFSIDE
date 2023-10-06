@@ -4,23 +4,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/TourSchedule/first.dart';
 import 'package:offside/TourSchedule/second.dart';
 import 'package:offside/TourSchedule/third.dart';
+import 'package:offside/data/api/map_api.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
-import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:offside/data/view/user_view_model.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:kakaomap_webview/kakaomap_webview.dart';
 
 List selectedList = [];
 
 class TourPlan extends ConsumerStatefulWidget {
   const TourPlan(
       {super.key,
-      required this.home,
+      // required this.home,
       required this.away,
       required this.date,
-      required this.time});
+      required this.time,
+      required this.home});
   final int home;
   final int away;
   final String date;
@@ -29,18 +29,11 @@ class TourPlan extends ConsumerStatefulWidget {
   _TourPlan createState() => _TourPlan();
 }
 
-class AdaptiveTextSize {
-  const AdaptiveTextSize();
-  getadaptiveTextSize(BuildContext context, dynamic value) {
-    // 720 is medium screen height
-    return (value / 720) * MediaQuery.of(context).size.height;
-  }
-}
-
 class _TourPlan extends ConsumerState<TourPlan> {
   int step = 1;
-  Set<Marker> markers = {}; // 마커 변수
-  late KakaoMapController mapController;
+  late Future<List> points;
+  var starty = 36.6284028, startx = 127.4592136;
+  var idx = 0;
 
   getDate(date) =>
       '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
@@ -52,6 +45,11 @@ class _TourPlan extends ConsumerState<TourPlan> {
     final user = ref.watch(userViewModelProvider);
     var uid = user.user!.uid;
     final double statusBarSize = MediaQuery.of(context).padding.top;
+    points = getRoute(
+        startx,
+        starty,
+        teamInfoList[widget.home].stadiumGeo.longitude,
+        teamInfoList[widget.home].stadiumGeo.latitude);
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -63,7 +61,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 3.0),
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
                       child: Icon(
                         Icons.card_travel,
                         size: 22,
@@ -78,7 +76,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                             fontWeight: FontWeight.w600,
                             fontSize: const AdaptiveTextSize()
                                 .getadaptiveTextSize(context, 14),
-                            color: Color.fromRGBO(33, 58, 135, 1))),
+                            color: const Color.fromRGBO(33, 58, 135, 1))),
                   ],
                 )),
           ),
@@ -187,37 +185,62 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   title: 'STADIUM',
                   text: teamInfoList[widget.home].stadium)
             ]),
-        Container(
-          width: size.width,
-          height: size.width,
-          padding: const EdgeInsets.all(20),
-          child: KakaoMap(
-            onMapCreated: ((controller) async {
-              mapController = controller;
+        FutureBuilder<List>(
+          future: points,
+          builder: ((context, snapshot) {
+            if (snapshot.hasData) {
+              List info = snapshot.data!;
+              return Container(
+                  width: size.width,
+                  height: size.width,
+                  padding: const EdgeInsets.all(20),
+                  child: KakaoMapView(
+                    width: size.width,
+                    height: size.width,
+                    kakaoMapKey: 'a8bd91fccbb230b5011148456b3cd404',
+                    zoomLevel: 10,
+                    lat: info[0]['y'],
+                    lng: info[0]['x'],
+                    mapController: (controller) {},
+                    customScript: '''
+    var markers = [];
 
-              if (await Permission.location.isGranted) {
-                Position position = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.high);
-                markers.add(Marker(
-                    markerId: '현위치',
-                    latLng: LatLng(position.latitude, position.longitude),
-                    width: 17,
-                    height: 21));
-              }
-              if (await Permission.location.isDenied) {}
-              markers.add(Marker(
-                  markerId: teamInfoList[widget.home].stadium,
-                  latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
-                      teamInfoList[widget.home].stadiumGeo.longitude),
-                  width: 17,
-                  height: 21));
-              setState(() {});
-            }),
-            currentLevel: 8,
-            markers: markers.toList(),
-            center: LatLng(36.6284028, 127.4592136),
-          ),
-        ),
+    function addMarker(position) {
+      var marker = new kakao.maps.Marker({position: position});
+      marker.setMap(map);
+      markers.push(marker);
+    }
+
+    addMarker(new kakao.maps.LatLng(${info.first['y']}, ${info.first['x']}));
+    addMarker(new kakao.maps.LatLng(${info.last['y']}, ${info.last['x']}));
+
+
+    var linePath = [];
+    $info.map((item) => {
+      linePath.push(new kakao.maps.LatLng(item.y, item.x));
+    });
+
+    const polyline = new kakao.maps.Polyline({
+        map: map,
+        path: linePath,
+        strokeWeight: 3, 
+        strokeColor: '#0e2057',
+        strokeOpacity: 0.7, 
+        strokeStyle: 'solid' 
+      });
+      polyline.setMap(map); 
+              ''',
+                  ));
+            } else if (snapshot.hasError) {
+              return const Text('error');
+            }
+            return Container(
+                width: size.width,
+                height: size.width,
+                padding: const EdgeInsets.all(20),
+                child: const Center(child: CupertinoActivityIndicator()));
+          }),
+        )
       ]);
     } else if (step == 2) {
       return ChooseCategory(
@@ -225,7 +248,9 @@ class _TourPlan extends ConsumerState<TourPlan> {
           size: size,
           home: teamInfoList[widget.home].fullName,
           lat: teamInfoList[widget.home].stadiumGeo.latitude,
-          lng: teamInfoList[widget.home].stadiumGeo.longitude);
+          lng: teamInfoList[widget.home].stadiumGeo.longitude,
+          starty: starty,
+          startx: startx);
     } else {
       return Column(children: [
         MatchDate(
@@ -352,4 +377,12 @@ TextStyle unSelectedText(BuildContext context) {
     fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
     fontWeight: FontWeight.w500,
   );
+}
+
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
+  }
 }

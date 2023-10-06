@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/Match/match.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
@@ -63,7 +62,6 @@ class _TourSchedule extends ConsumerState {
         backgroundColor: Colors.white,
         side: borderSide);
 
-    final double statusBarSize = MediaQuery.of(context).padding.top;
     return (Column(
       children: [
         Container(
@@ -72,12 +70,12 @@ class _TourSchedule extends ConsumerState {
           child: SizedBox(
             child: SafeArea(
               child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 3.0),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
                         child: Icon(
                           Icons.card_travel,
                           size: 22,
@@ -92,7 +90,7 @@ class _TourSchedule extends ConsumerState {
                               fontWeight: FontWeight.w600,
                               fontSize: const AdaptiveTextSize()
                                   .getadaptiveTextSize(context, 14),
-                              color: Color.fromRGBO(33, 58, 135, 1))),
+                              color: const Color.fromRGBO(33, 58, 135, 1))),
                     ],
                   )),
             ),
@@ -182,7 +180,7 @@ class _TourSchedule extends ConsumerState {
                   decoration: BoxDecoration(
                       border: Border.all(
                         width: 1,
-                        color: Color.fromARGB(255, 27, 78, 145),
+                        color: const Color.fromARGB(255, 27, 78, 145),
                       ),
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(
@@ -274,7 +272,7 @@ class _TourSchedule extends ConsumerState {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_on,
                               size: 23,
                               color: Color.fromARGB(255, 27, 78, 145),
@@ -289,7 +287,8 @@ class _TourSchedule extends ConsumerState {
                                     fontSize: const AdaptiveTextSize()
                                         .getadaptiveTextSize(context, 14),
                                     fontWeight: FontWeight.w600,
-                                    color: Color.fromRGBO(68, 68, 68, 1))),
+                                    color:
+                                        const Color.fromRGBO(68, 68, 68, 1))),
                           ],
                         )
                       ])),
@@ -300,7 +299,7 @@ class _TourSchedule extends ConsumerState {
                     fontSize: const AdaptiveTextSize()
                         .getadaptiveTextSize(context, 14),
                     fontWeight: FontWeight.w600,
-                    color: Color.fromRGBO(39, 176, 255, 1)),
+                    color: const Color.fromRGBO(39, 176, 255, 1)),
               ),
               SizedBox(height: size.height * 0.025),
               ElevatedButton(
