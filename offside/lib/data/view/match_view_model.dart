@@ -134,6 +134,40 @@ class MatchViewModel extends ChangeNotifier {
     return {'date': date, 'k1': k1, 'k2': k2};
   }
 
+  getMatchDateFromToday() {
+    int today = getToday();
+    var data1 = _allMatchViewModel?['all']?[0];
+    var data2 = _allMatchViewModel?['all']?[1];
+    Map<String, dynamic> k1 = {};
+    Map<String, dynamic> k2 = {};
+    var date = [];
+    for (var item in data1) {
+      if (today > int.parse(item[0].data)) {
+        continue;
+      }
+      var tmp = [];
+      for (var element in item) {
+        tmp.add(element);
+      }
+      k1[item[0].data] = tmp;
+      date.add(item[0].data);
+    }
+    for (var item in data2) {
+      if (today > int.parse(item[0].data)) {
+        continue;
+      }
+      var tmp = [];
+      for (var element in item) {
+        tmp.add(element);
+      }
+      k2[item[0].data] = tmp;
+      date.add(item[0].data);
+    }
+    date = date.toSet().toList();
+    date.sort();
+    return {'date': date, 'k1': k1, 'k2': k2};
+  }
+
   getWeekMatches(int league) {
     return _allMatchViewModel?['week']?[league - 1];
   }
@@ -170,7 +204,6 @@ class MatchViewModel extends ChangeNotifier {
       }
     }
 
-    print("여기 날짜 들어있나 ${tmp[0]}");
     return tmp[0];
   }
 

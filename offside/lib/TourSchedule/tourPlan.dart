@@ -16,11 +16,10 @@ List selectedList = [];
 class TourPlan extends ConsumerStatefulWidget {
   const TourPlan(
       {super.key,
-      // required this.home,
+      required this.home,
       required this.away,
       required this.date,
-      required this.time,
-      required this.home});
+      required this.time});
   final int home;
   final int away;
   final String date;
@@ -61,16 +60,10 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                      child: Icon(
-                        Icons.card_travel,
-                        size: 22,
-                        color: Color.fromRGBO(91, 143, 255, 1),
-                      ),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.01,
-                    ),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
+                        child: Icon(Icons.card_travel,
+                            size: 22, color: Color.fromRGBO(91, 143, 255, 1))),
+                    SizedBox(width: size.width * 0.01),
                     Text('My Travel',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -144,6 +137,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(saveSnackBar);
                                               Navigator.of(context).pop();
+                                              selectedList.clear();
                                             })
                                       ]);
                                 })
