@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MatchDetail extends StatelessWidget {
   const MatchDetail(
@@ -11,16 +12,20 @@ class MatchDetail extends StatelessWidget {
       required this.time,
       required this.team1,
       required this.team2,
+      this.matchId,
       this.score1,
-      this.score2})
+      this.score2,
+      this.league})
       : super(key: key);
 
   final String date;
   final String time;
   final int team1;
   final int team2;
+  final int? matchId;
   final int? score1;
   final int? score2;
+  final int? league;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,7 +40,7 @@ class MatchDetail extends StatelessWidget {
             team2: team2,
             score1: score1,
             score2: score2),
-        Bottom(team1: team1, team2: team2)
+        Bottom(team1: team1, team2: team2, matchId: matchId!, league: league!)
       ],
     );
   }
@@ -214,20 +219,23 @@ class Top extends ConsumerWidget {
 }
 
 class Bottom extends ConsumerWidget {
-  const Bottom({
-    super.key,
-    required this.team1,
-    required this.team2,
-  });
+  const Bottom(
+      {super.key,
+      required this.team1,
+      required this.team2,
+      required this.matchId,
+      required this.league});
 
   final int team1;
   final int team2;
+  final int matchId;
+  final int league;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final teamInfoList = ref.read(teamInfoViewModelProvider).teamInfoList;
     final recordData =
-        ref.read(matchViewModelProvider).getRecord(1, team1, team2);
+        ref.read(matchViewModelProvider).getRecord(league, team1, team2);
     return (FutureBuilder(
         future: recordData,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -352,7 +360,12 @@ class Bottom extends ConsumerWidget {
                       ),
                       Center(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            launchUrl(
+                              Uri.parse(
+                                  "https://www.kleague.com/match.do?year=2023&leagueId=$league&gameId=$matchId&meetSeq=$league&startTabNum=1"),
+                            );
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Colors.white), // 배경색 설정

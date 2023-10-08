@@ -26,6 +26,7 @@ class MatchDataRepository {
 
         result[i][j]["data"] = data;
         result[i][j]["time"] = time;
+        result[i][j]["league"] = i + 1;
       }
     }
     return result;

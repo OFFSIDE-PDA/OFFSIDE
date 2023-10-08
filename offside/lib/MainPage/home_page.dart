@@ -511,6 +511,14 @@ class MatchBox extends StatelessWidget {
                                                             match[index].team1!,
                                                         team2:
                                                             match[index].team2!,
+                                                        score1:
+                                                            match[index].score1,
+                                                        score2:
+                                                            match[index].score2,
+                                                        matchId:
+                                                            match[index].id,
+                                                        league:
+                                                            match[index].league,
                                                       )));
                                         },
                                         child: Container(
