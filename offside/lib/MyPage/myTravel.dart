@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:offside/Match/match.dart';
 import 'package:offside/MyPage/myTravelDetail.dart';
 import 'package:offside/TourSchedule/tourSchedule.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
+import 'package:offside/data/model/tour_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +17,9 @@ class MyTravel extends ConsumerStatefulWidget {
 }
 
 class _MyTravel extends ConsumerState<MyTravel> {
+  getDate(date) =>
+      '${date[1]}${date[2]}.${date[3]}${date[4]}.${date[5]}${date[6]}';
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -25,7 +30,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
       children: [
         AppBar(),
         Padding(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: Text("내 여행일정 확인",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -43,10 +48,56 @@ class _MyTravel extends ConsumerState<MyTravel> {
                             scrollDirection: Axis.vertical,
                             itemCount: info.keys.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return MatchBox(
-                                  info: info[info.keys.elementAt(index)],
-                                  teamInfo: teamInfoList,
-                                  docUid: info.keys.elementAt(index));
+                              return InkWell(
+                                onDoubleTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                            backgroundColor: Colors.white,
+                                            surfaceTintColor: Colors.white,
+                                            title: Text(
+                                                '20${getDate(info[info.keys.elementAt(index)].keys.toString())}',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        const AdaptiveTextSize()
+                                                            .getadaptiveTextSize(
+                                                                context, 13))),
+                                            content:
+                                                const Text('여행일정을 삭제하시겠습니까?'),
+                                            actions: [
+                                              TextButton(
+                                                  child: const Text('취소'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  }),
+                                              TextButton(
+                                                  child: const Text('확인'),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      deleteTourPlan(
+                                                              user.user!.uid,
+                                                              info.keys
+                                                                  .elementAt(
+                                                                      index))
+                                                          .then((value) {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                deleteSnackBar);
+                                                      });
+                                                    });
+                                                  })
+                                            ]);
+                                      });
+                                },
+                                child: MatchBox(
+                                    info: info[info.keys.elementAt(index)],
+                                    teamInfo: teamInfoList,
+                                    docUid: info.keys.elementAt(index)),
+                              );
                             }))
                     : Center(
                         child: Column(
@@ -117,7 +168,6 @@ class MatchBox extends StatelessWidget {
     if (tmp < 12) {
       returnString = (tmp + 12).toString();
     }
-
     return "$returnString:${date[2]}${date[3]}";
   }
 

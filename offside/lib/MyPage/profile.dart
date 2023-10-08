@@ -222,6 +222,8 @@ class _EditState extends ConsumerState<Edit> {
                       barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
                       builder: ((context) {
                         return AlertDialog(
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
                           title: const Text("회원정보 수정"),
                           content: const Text("회원 정보가 수정되었습니다."),
                           actions: <Widget>[

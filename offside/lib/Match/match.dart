@@ -56,10 +56,8 @@ class _Match extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    const borderSide = BorderSide(
-      color: Color.fromARGB(255, 67, 67, 67),
-      width: 1.0,
-    );
+    const borderSide =
+        BorderSide(color: Color.fromARGB(255, 67, 67, 67), width: 1.0);
     const iconStyle =
         Icon(Icons.expand_more, color: Color.fromARGB(255, 67, 67, 67));
     var textStyle = TextStyle(
@@ -81,6 +79,10 @@ class _Match extends ConsumerState {
     var matchIdx =
         matchData.getMatchIndex('all', selectedLeague == 'K리그1' ? 1 : 2);
 
+    for (var item in matchIdx) {
+      print(item[0].data);
+    }
+
     for (int i = 0; i < leagueLen; i++) {
       bool flag = true;
       for (var item in matchIdx[i]) {
@@ -98,7 +100,7 @@ class _Match extends ConsumerState {
     }
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+        padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
