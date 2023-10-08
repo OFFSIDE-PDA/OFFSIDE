@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
 import 'package:offside/data/api/map_api.dart';
-import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
+import 'package:offside/data/model/tour_model.dart';
 
 class MatchDate extends StatelessWidget {
   MatchDate(

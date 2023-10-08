@@ -3,6 +3,7 @@ import 'package:offside/MyPage/myTravelDetail.dart';
 import 'package:offside/TourSchedule/tourSchedule.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
+import 'package:offside/data/model/tour_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

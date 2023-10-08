@@ -4,6 +4,7 @@ import 'package:offside/TourSchedule/tourPlan.dart';
 import 'package:offside/data/api/map_api.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
+import 'package:offside/data/model/tour_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ChooseCategory extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/TourSchedule/first.dart';
 import 'package:offside/TourSchedule/second.dart';
 import 'package:offside/TourSchedule/third.dart';
@@ -10,6 +11,7 @@ import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
+import 'package:offside/TourSchedule/tourSchedule.dart';
 
 List selectedList = [];
 
@@ -128,16 +130,24 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                             child: const Text('확인'),
                                             onPressed: () {
                                               createTourPlan(
-                                                  uid,
-                                                  selectedList,
-                                                  widget.date,
-                                                  widget.home,
-                                                  widget.away,
-                                                  widget.time);
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(saveSnackBar);
-                                              Navigator.of(context).pop();
-                                              selectedList.clear();
+                                                      uid,
+                                                      selectedList,
+                                                      widget.date,
+                                                      widget.home,
+                                                      widget.away,
+                                                      widget.time)
+                                                  .then((value) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(saveSnackBar);
+                                                Navigator.of(context).pop();
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (body) =>
+                                                          const TourSchedule()),
+                                                );
+                                                selectedList.clear();
+                                              });
                                             })
                                       ]);
                                 })
@@ -168,7 +178,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              GetLocation(context: context, title: 'NOW', text: '충북대학교'),
+              GetLocation(context: context, title: 'NOW', text: '현위치'),
               const Icon(
                 Icons.arrow_right_alt,
                 color: Color.fromRGBO(110, 110, 110, 1),

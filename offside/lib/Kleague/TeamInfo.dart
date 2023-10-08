@@ -5,6 +5,7 @@ import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:offside/data/model/tour_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TeamInfoPage extends ConsumerStatefulWidget {

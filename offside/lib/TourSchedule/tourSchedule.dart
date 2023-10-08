@@ -20,8 +20,6 @@ class AdaptiveTextSize {
   }
 }
 
-List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-
 class _TourSchedule extends ConsumerState {
   String selectedDate = '230825';
   String selectedMatch = 'One';
