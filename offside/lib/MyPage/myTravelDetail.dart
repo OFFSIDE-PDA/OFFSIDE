@@ -165,6 +165,8 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  surfaceTintColor: Colors.white,
                                   title: Text(tour[index]['title'],
                                       style: TextStyle(
                                           fontSize: const AdaptiveTextSize()
@@ -265,6 +267,8 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
                           title: Text('20${getDate(matchDate)}',
                               style: TextStyle(
                                   fontSize: const AdaptiveTextSize()

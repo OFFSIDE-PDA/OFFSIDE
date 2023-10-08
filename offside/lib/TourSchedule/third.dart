@@ -189,6 +189,8 @@ class _TourList extends State<TourList> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
+                              backgroundColor: Colors.white,
+                              surfaceTintColor: Colors.white,
                               title: Text(selectedList[index].title,
                                   style: TextStyle(
                                       fontSize: const AdaptiveTextSize()

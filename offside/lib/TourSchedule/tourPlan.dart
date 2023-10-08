@@ -115,6 +115,8 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      surfaceTintColor: Colors.white,
                                       title: Text('20${getDate(widget.date)}'),
                                       content: const SingleChildScrollView(
                                           child: ListBody(children: <Widget>[
