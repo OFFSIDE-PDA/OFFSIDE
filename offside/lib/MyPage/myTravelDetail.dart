@@ -154,9 +154,10 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
               ],
             )),
         Container(
-            height: tour.length * 80,
+            height: (tour.length * 80).toDouble(),
             margin: const EdgeInsets.only(top: 5),
             child: ReorderableListView(
+                physics: const NeverScrollableScrollPhysics(),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 children: <Widget>[
