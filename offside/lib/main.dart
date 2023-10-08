@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+// import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:offside/MainPage/main_page.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
@@ -22,7 +22,7 @@ void main() async {
     nativeAppKey: '3b301db0810e0f8f0caa883c9c7b43ba',
     javaScriptAppKey: 'a8bd91fccbb230b5011148456b3cd404',
   );
-  AuthRepository.initialize(appKey: 'a8bd91fccbb230b5011148456b3cd404');
+  // AuthRepository.initialize(appKey: 'a8bd91fccbb230b5011148456b3cd404');
 
   runApp(const ProviderScope(
     child: Offside(),
@@ -48,11 +48,10 @@ class Offside extends ConsumerWidget {
         initialRoute: '/',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 255, 255, 255)),
-          useMaterial3: true,
-          fontFamily: 'SUITE'
-        ),
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromARGB(255, 255, 255, 255)),
+            useMaterial3: true,
+            fontFamily: 'SUITE'),
         home: autoLogin == true ? const MainPage() : LoginPage());
   }
 }
