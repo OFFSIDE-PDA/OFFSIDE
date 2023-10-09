@@ -3,6 +3,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/login/reset_password.dart';
 
 class Edit extends ConsumerStatefulWidget {
   @override
@@ -35,19 +36,19 @@ class _EditState extends ConsumerState<Edit> {
   @override
   void initState() {
     super.initState();
-    final read_user = ref.read(userViewModelProvider);
+    final readUser = ref.read(userViewModelProvider);
     List teamInfo = ref.read(teamInfoViewModelProvider).teamInfoList;
-    _name = TextEditingController(text: read_user.user!.nickname);
+    _name = TextEditingController(text: readUser.user!.nickname);
 
     _password = TextEditingController(text: "");
     _new_password = TextEditingController(text: "");
     _confirm_new_password = TextEditingController(text: "");
     _email = TextEditingController(
-        text: read_user.user?.nickname != null ? read_user.user?.email : "");
+        text: readUser.user?.nickname != null ? readUser.user?.email : "");
     _cnt = SingleValueDropDownController(
         data: DropDownValueModel(
-            name: teamInfo[read_user.user!.team!].fullName,
-            value: read_user.user!.team!));
+            name: teamInfo[readUser.user!.team!].fullName,
+            value: readUser.user!.team!));
   }
 
   @override
@@ -79,7 +80,7 @@ class _EditState extends ConsumerState<Edit> {
             shrinkWrap: true,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Text('회원정보 수정',
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
@@ -156,14 +157,21 @@ class _EditState extends ConsumerState<Edit> {
               const SizedBox(
                 height: 10,
               ),
-              const Center(
-                child: Text(
-                  "비밀번호 변경을 원하시면 새로운 비밀번호를 입력하세요.",
-                  style: TextStyle(
-                      color: Color.fromRGBO(18, 32, 84, 1),
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold),
-                ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
+                child: OutlinedButton(
+                    onPressed: () {
+                      user
+                          .sendPasswordResetEmail(
+                              email: user.user!.email.toString())
+                          .then((value) =>
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('비밀번호 재설정 메일을 전송합니다')),
+                              ));
+                    },
+                    child: const Text(' 비밀번호 재설정하기')),
               ),
               // Padding(
               //   padding:

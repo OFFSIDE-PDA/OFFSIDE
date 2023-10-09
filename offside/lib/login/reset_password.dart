@@ -1,21 +1,37 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/data/view/user_view_model.dart';
 
 /// 회원가입 화면
-class resetPasswordPage extends ConsumerStatefulWidget {
+class ResetPasswordPage extends ConsumerStatefulWidget {
+  const ResetPasswordPage({super.key});
+
   @override
-  _resetPasswordPageState createState() => _resetPasswordPageState();
+  _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
 
-class _resetPasswordPageState extends ConsumerState<resetPasswordPage> {
-  TextStyle style = TextStyle(fontSize: 18.0);
+class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: const ResetPassword(),
+    );
+  }
+}
+
+class ResetPassword extends StatefulWidget {
+  const ResetPassword({super.key});
+
+  @override
+  State<ResetPassword> createState() => _ResetPasswordState();
+}
+
+class _ResetPasswordState extends State<ResetPassword> {
+  final firebaseAuth = FirebaseAuth.instance;
+  TextStyle style = const TextStyle(fontSize: 18.0);
   late TextEditingController _email;
-  FocusNode searchFocusNode = FocusNode();
-  FocusNode textFieldFocusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
-  final _key = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -31,71 +47,64 @@ class _resetPasswordPageState extends ConsumerState<resetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userViewModelProvider);
-    return Scaffold(
-      key: _key,
-      appBar: AppBar(),
-      body: Form(
-        key: _formKey,
-        child: Center(
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Text('비밀번호 재설정',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: 30),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-                child: TextFormField(
+    // Build a Form widget using the _formKey created above.
+    return Form(
+      key: _formKey,
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Text('비밀번호 재설정',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ),
+            const SizedBox(height: 5),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
+              child: TextFormField(
                   controller: _email,
-                  validator: (value) =>
-                      (value!.isEmpty) ? "이메일을 입력 해 주세요" : null,
+                  // The validator receives the text that the user has entered.
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '이메일을 입력해주세요';
+                    }
+                    return null;
+                  },
                   style: style,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    labelText: "이메일",
-                    filled: true,
-                    fillColor: Color(0xffF6F6F6),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
+                      prefixIcon: const Icon(Icons.email),
+                      labelText: "이메일",
+                      filled: true,
+                      fillColor: const Color(0xffF6F6F6),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ))),
+            ),
+            const SizedBox(height: 5),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
+              child: OutlinedButton(
+                onPressed: () async {
+                  // Validate returns true if the form is valid, or false otherwise.
+                  if (_formKey.currentState!.validate()) {
+                    await firebaseAuth
+                        .sendPasswordResetEmail(email: _email.text)
+                        .then((value) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('비밀번호 재설정 메일을 전송합니다')),
+                      );
+                    });
+                  }
+                },
+                child: const Text('비밀번호 재설정하기'),
               ),
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 180.0),
-                child: Material(
-                  elevation: 5.0,
-                  borderRadius: BorderRadius.circular(5.0), //둥근효과
-                  color: Color(0xff0E2057),
-                  child: MaterialButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        try {
-                          await user.sendPasswordResetEmail(
-                              email: _email.value.text);
-                        } catch (e) {
-                          print("$e 비밀번호 재설정 이메일 전송 실패");
-                        }
-                      }
-                    },
-                    height: 65,
-                    child: Text(
-                      "재설정 이메일 전송",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

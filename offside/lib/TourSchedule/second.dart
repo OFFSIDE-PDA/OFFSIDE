@@ -237,8 +237,7 @@ class _LocationList extends State<LocationList> {
                         width: widget.choose.size.width * 0.2,
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: Image.asset(
-                                'assets/images/mainpage/logo.png')))),
+                            child: Image.asset('images/mainpage/logo.png')))),
               ),
               const SizedBox(width: 10),
               Column(
