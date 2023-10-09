@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/MainPage/home_page.dart';
 import 'package:offside/MyPage/myTravel.dart';
+import 'package:offside/MyPage/mypage.dart';
 import 'package:offside/TourSchedule/first.dart';
 import 'package:offside/TourSchedule/second.dart';
 import 'package:offside/TourSchedule/third.dart';
@@ -35,6 +37,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
   late Future<List> points;
   var starty = 36.6284028, startx = 127.4592136;
   var idx = 0;
+  bool flag = false;
 
   getDate(date) =>
       '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
@@ -110,51 +113,45 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   onPressed: () async {
                     setState(() {
                       if (step == 3) {
-                        selectedList.isNotEmpty
-                            ? showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                      backgroundColor: Colors.white,
-                                      surfaceTintColor: Colors.white,
-                                      title: Text('20${getDate(widget.date)}'),
-                                      content: const SingleChildScrollView(
-                                          child: ListBody(children: <Widget>[
-                                        Text('여행일정을 저장하시겠습니까?')
-                                      ])),
-                                      actions: [
-                                        TextButton(
-                                            child: const Text('취소'),
-                                            onPressed: () {
+                        if (selectedList.isNotEmpty) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    surfaceTintColor: Colors.white,
+                                    title: Text('20${getDate(widget.date)}'),
+                                    content: const SingleChildScrollView(
+                                        child: ListBody(children: <Widget>[
+                                      Text('여행일정을 저장하시겠습니까?')
+                                    ])),
+                                    actions: [
+                                      TextButton(
+                                          child: const Text('취소'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          }),
+                                      TextButton(
+                                          child: const Text('확인'),
+                                          onPressed: () async {
+                                            await createTourPlan(
+                                                    uid,
+                                                    selectedList,
+                                                    widget.date,
+                                                    widget.home,
+                                                    widget.away,
+                                                    widget.time)
+                                                .then((value) {
+                                              selectedList.clear();
                                               Navigator.of(context).pop();
-                                            }),
-                                        TextButton(
-                                            child: const Text('확인'),
-                                            onPressed: () {
-                                              createTourPlan(
-                                                      uid,
-                                                      selectedList,
-                                                      widget.date,
-                                                      widget.home,
-                                                      widget.away,
-                                                      widget.time)
-                                                  .then((value) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(saveSnackBar);
-                                                Navigator.of(context).pop();
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (body) =>
-                                                          const TourSchedule()),
-                                                );
-                                                selectedList.clear();
-                                              });
-                                            })
-                                      ]);
-                                })
-                            : ScaffoldMessenger.of(context)
-                                .showSnackBar(emptySnackBar);
+                                            });
+                                          })
+                                    ]);
+                              }).then((value) => Navigator.of(context).pop());
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(emptySnackBar);
+                        }
                       } else {
                         step += 1;
                       }

@@ -181,7 +181,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               ),
               const SizedBox(height: 30),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 180.0),
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(5.0), //둥근효과

@@ -345,17 +345,35 @@ class MatchCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider.builder(
-        itemCount: info.length,
-        itemBuilder: ((BuildContext context, int index, int realIndex) {
-          return MatchBox(
-              size: size, match: info[index], teaminfoList: teaminfoList);
-        }),
-        options: CarouselOptions(
-            height: size.height * 0.295,
-            onPageChanged: (index, reason) {
-              page(index);
-            }));
+    return info.isNotEmpty
+        ? CarouselSlider.builder(
+            itemCount: info.length,
+            itemBuilder: ((BuildContext context, int index, int realIndex) {
+              return MatchBox(
+                  size: size, match: info[index], teaminfoList: teaminfoList);
+            }),
+            options: CarouselOptions(
+                height: size.height * 0.295,
+                onPageChanged: (index, reason) {
+                  page(index);
+                }))
+        : Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(5, 5), // changes position of shadow
+                ),
+              ],
+            ),
+            margin: const EdgeInsets.fromLTRB(40, 30, 40, 30),
+            width: size.width,
+            height: size.height * 0.22,
+            child: const Center(child: Text('경기가 없습니다')));
   }
 }
 
@@ -381,7 +399,7 @@ class MatchBox extends StatelessWidget {
       returnString = (tmp + 12).toString();
     }
 
-    return "${returnString}:${date[2]}${date[3]}";
+    return "$returnString:${date[2]}${date[3]}";
   }
 
   @override
@@ -405,7 +423,7 @@ class MatchBox extends StatelessWidget {
         child: ListView.builder(
             shrinkWrap: true, // ListView가 자식 위젯의 크기에 맞게 축소될 수 있도록 설정
             physics:
-                ClampingScrollPhysics(), // 스크롤 물리학을 ClampingScrollPhysics로 설정하여 스크롤 효과를 줍니다.
+                const ClampingScrollPhysics(), // 스크롤 물리학을 ClampingScrollPhysics로 설정하여 스크롤 효과를 줍니다.
             itemCount: 1,
             itemBuilder: (context, index) {
               return (Column(
