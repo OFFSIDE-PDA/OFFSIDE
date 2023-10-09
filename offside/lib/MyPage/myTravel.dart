@@ -8,6 +8,7 @@ import 'package:offside/data/model/tour_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/page_view_model.dart';
 
 class MyTravel extends ConsumerStatefulWidget {
   const MyTravel({super.key});
@@ -120,11 +121,10 @@ class _MyTravel extends ConsumerState<MyTravel> {
                                     color: const Color.fromRGBO(18, 32, 84, 1)),
                                 child: InkWell(
                                     onTap: () async {
-                                      await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const TourSchedule()));
+                                      ref
+                                          .read(counterPageProvider.notifier)
+                                          .update((state) => 1);
+                                      Navigator.pop(context);
                                     },
                                     // 여행 일정으로 이동
                                     child: Text("여행 계획 하기",

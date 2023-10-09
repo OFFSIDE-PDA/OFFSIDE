@@ -380,7 +380,9 @@ class MatchBox extends StatelessWidget {
                                                 team1: info[index].team1,
                                                 team2: info[index].team2,
                                                 score1: info[index].score1,
-                                                score2: info[index].score2)));
+                                                score2: info[index].score2,
+                                                matchId: info[index].id,
+                                                league: info[index].league)));
                                     // 회원정보 수정 페이지로 이동
                                   },
                                   child: Container(
