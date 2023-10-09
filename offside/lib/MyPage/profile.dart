@@ -156,13 +156,45 @@ class _EditState extends ConsumerState<Edit> {
               const SizedBox(
                 height: 10,
               ),
-              const Center(
-                child: Text(
-                  "비밀번호 변경을 원하시면 새로운 비밀번호를 입력하세요.",
-                  style: TextStyle(
-                      color: Color.fromRGBO(18, 32, 84, 1),
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold),
+
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
+                      builder: ((context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
+                          title: const Text("회원 탈퇴"),
+                          content: const Text("정말 회원 탈퇴 하시겠습니까?"),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              onPressed: () {
+                                user.accountCancellation();
+                              },
+                              child: const Text("O"),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); //창 닫기
+                              },
+                              child: const Text("X"),
+                            )
+                          ],
+                        );
+                      }),
+                    );
+                  },
+                  child: Text(
+                    "회원 탈퇴",
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11),
+                        color: Colors.grey),
+                  ),
                 ),
               ),
               // Padding(
