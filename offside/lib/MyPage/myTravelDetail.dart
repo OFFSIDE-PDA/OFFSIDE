@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/tour_model.dart';
@@ -20,7 +21,6 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.info);
     var size = MediaQuery.of(context).size;
     final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
     final user = ref.read(userViewModelProvider);
@@ -286,29 +286,42 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                                 }),
                             TextButton(
                                 child: const Text('확인'),
-                                onPressed: () {
-                                  tour.isNotEmpty
-                                      ? updateTourPlan(
-                                              user.user!.uid,
-                                              tour,
-                                              matchDate,
-                                              match['home'],
-                                              match['away'],
-                                              match['time'],
-                                              widget.docUid)
-                                          .then((value) =>
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(saveSnackBar))
-                                      : deleteTourPlan(
-                                              user.user!.uid, widget.docUid)
-                                          .then((value) => ScaffoldMessenger.of(
-                                                  context)
-                                              .showSnackBar(deleteSnackBar));
-
-                                  Navigator.of(context).pop();
+                                onPressed: () async {
+                                  if (tour.isNotEmpty) {
+                                    await updateTourPlan(
+                                            user.user!.uid,
+                                            tour,
+                                            matchDate,
+                                            match['home'],
+                                            match['away'],
+                                            match['time'],
+                                            widget.docUid)
+                                        .then((value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(saveSnackBar);
+                                      Navigator.of(context).pop();
+                                    });
+                                  } else {
+                                    await deleteTourPlan(
+                                            user.user!.uid, widget.docUid)
+                                        .then((value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(deleteSnackBar);
+                                      Navigator.of(context).pop();
+                                    });
+                                  }
                                 })
                           ]);
-                    });
+                    }).then((value) {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyTravel()))
+                      .then((value) {
+                    setState(() {});
+                  });
+                });
               },
               style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(), //<-- SEE HERE
