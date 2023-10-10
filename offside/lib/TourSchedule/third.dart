@@ -184,7 +184,7 @@ class _TourList extends State<TourList> {
               for (int index = 0; index < selectedList.length; index += 1)
                 InkWell(
                   key: Key('$index'),
-                  onDoubleTap: () {
+                  onLongPress: () {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {

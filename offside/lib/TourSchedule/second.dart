@@ -254,11 +254,11 @@ class _LocationList extends State<LocationList> {
                                     text: widget.tourInfo[widget.index].title,
                                     style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 12),
-                                      fontWeight: FontWeight.w600,
+                                          .getadaptiveTextSize(context, 10),
+                                      fontWeight: FontWeight.w500,
                                       color: Colors.black,
                                     ))))),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 8),
                     SizedBox(
                         width: widget.choose.size.width * 0.55,
                         child: Flexible(
@@ -269,10 +269,10 @@ class _LocationList extends State<LocationList> {
                                     text: widget.tourInfo[widget.index].addr,
                                     style: TextStyle(
                                         fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 11),
+                                            .getadaptiveTextSize(context, 9),
                                         fontWeight: FontWeight.w500,
-                                        color: const Color.fromARGB(
-                                            255, 80, 80, 80))))))
+                                        color: Color.fromARGB(
+                                            255, 163, 163, 163))))))
                   ])
             ]),
             children: [

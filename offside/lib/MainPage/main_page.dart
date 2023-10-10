@@ -67,18 +67,23 @@ class _Root extends ConsumerState with SingleTickerProviderStateMixin {
                     ),
                   )
                 : null,
-            body: TabBarView(
-              controller: _tabController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: _pages.map(
-                (page) {
-                  int index = _pages.indexOf(page);
-                  return CustomNavigator(
-                    page: page,
-                    navigatorKey: _navigatorKeyList[index],
-                  );
-                },
-              ).toList(),
+            body: Container(
+              color: Colors.transparent,
+              child: SafeArea(
+                child: TabBarView(
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: _pages.map(
+                    (page) {
+                      int index = _pages.indexOf(page);
+                      return CustomNavigator(
+                        page: page,
+                        navigatorKey: _navigatorKeyList[index],
+                      );
+                    },
+                  ).toList(),
+                ),
+              ),
             ),
             bottomNavigationBar: SizedBox(
               height: 50,

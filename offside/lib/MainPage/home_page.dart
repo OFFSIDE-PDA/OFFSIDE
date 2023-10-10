@@ -306,7 +306,7 @@ class RandomMatch extends StatelessWidget {
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 11),
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(width: 2),
