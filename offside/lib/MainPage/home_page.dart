@@ -294,7 +294,7 @@ class RandomMatch extends StatelessWidget {
             width: size.width,
             child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               Text(
-                "경기장 주변 관광 일정 보러가기",
+                "경기 관련 상세정보 보러가기",
                 style: TextStyle(
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 11),
@@ -316,7 +316,14 @@ class RandomMatch extends StatelessWidget {
                         Icons.chevron_right,
                       ),
                       onPressed: () {
-                        // do something
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MatchDetail(
+                                    date: info[2],
+                                    time: info[3],
+                                    team1: info[0],
+                                    team2: info[1],)));
                       }))
             ]))
       ])

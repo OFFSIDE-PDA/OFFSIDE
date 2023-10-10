@@ -95,7 +95,7 @@ class MatchViewModel extends ChangeNotifier {
           week2.add([MatchModel.fromMap(e)]);
         }
       }
-      matches.add([e['team1'], e['team2'], week2.length]);
+      matches.add([e['team1'], e['team2'], e['data'], e['time'], e['score1'], e['score2'], week2.length]);
     }
 
     _allMatchViewModel = {
