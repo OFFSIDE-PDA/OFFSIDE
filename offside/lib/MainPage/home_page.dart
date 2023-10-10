@@ -93,7 +93,7 @@ class _HomePage extends ConsumerState {
                       "K리그1",
                       style: TextStyle(
                         fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12),
+                            .getadaptiveTextSize(context, 11),
                         color: league == 1 ? Colors.white : Colors.grey,
                       ),
                     )),
@@ -106,14 +106,14 @@ class _HomePage extends ConsumerState {
                         : const Color.fromRGBO(14, 32, 87, 1),
                     side: const BorderSide(
                       color: Colors.grey,
-                      width: 2.0,
+                      width: 1.0,
                     ), // Background color
                   ),
                   child: Text(
                     "K리그2",
                     style: TextStyle(
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 12),
+                          .getadaptiveTextSize(context, 11),
                       color: league == 1 ? Colors.grey : Colors.white,
                     ),
                   ),
@@ -437,7 +437,7 @@ class MatchBox extends StatelessWidget {
                       getDate(match.first.data),
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 12)),
+                              .getadaptiveTextSize(context, 11)),
                     ),
                     const SizedBox(height: 5),
                     Row(
@@ -473,7 +473,7 @@ class MatchBox extends StatelessWidget {
                                       style: TextStyle(
                                           fontSize: const AdaptiveTextSize()
                                               .getadaptiveTextSize(
-                                                  context, 12)),
+                                                  context, 10)),
                                     ),
                                     SizedBox(
                                         width: size.width * 0.08,
@@ -483,28 +483,43 @@ class MatchBox extends StatelessWidget {
                                                 .logoImg)),
                                     Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceAround,
                                         children: [
                                           Text(
                                             teaminfoList[match[index].team1]
                                                 .name,
                                             style: TextStyle(
+                                                color: Color(teaminfoList[
+                                                        match[index].team1]
+                                                    .color[0]),
                                                 fontSize:
                                                     const AdaptiveTextSize()
                                                         .getadaptiveTextSize(
                                                             context, 11)),
                                             textAlign: TextAlign.center,
                                           ),
-                                          const Text(
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text(
                                             ' vs ',
                                             style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600),
+                                                fontSize:
+                                                    const AdaptiveTextSize()
+                                                        .getadaptiveTextSize(
+                                                            context, 12),
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.01,
                                           ),
                                           Text(
                                             teaminfoList[match[index].team2]
                                                 .name,
                                             style: TextStyle(
+                                                color: Color(teaminfoList[
+                                                        match[index].team2]
+                                                    .color[0]),
                                                 fontSize:
                                                     const AdaptiveTextSize()
                                                         .getadaptiveTextSize(

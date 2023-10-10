@@ -248,6 +248,15 @@ class _TourPlan extends ConsumerState<TourPlan> {
             home: widget.home,
             away: widget.away,
             info: teamInfoList),
+        Text(
+          "(길게 눌러서 삭제)",
+          textAlign: TextAlign.end,
+          style: TextStyle(
+              color: Colors.grey,
+              fontSize:
+                  const AdaptiveTextSize().getadaptiveTextSize(context, 9),
+              fontWeight: FontWeight.w500),
+        ),
         TourList(size: size)
       ]);
     }
