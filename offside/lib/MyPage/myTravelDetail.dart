@@ -204,6 +204,10 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                                       color:
                                           Color.fromARGB(255, 207, 207, 207)))),
                           child: ListTile(
+                              trailing: ReorderableDragStartListener(
+                                index: index,
+                                child: const Icon(Icons.drag_handle),
+                              ),
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.network(tour[index]['img'],

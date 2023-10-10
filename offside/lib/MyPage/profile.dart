@@ -213,49 +213,6 @@ class _EditState extends ConsumerState<Edit> {
                   ),
                 ),
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-              //   child: TextFormField(
-              //     obscureText: true,
-              //     controller: _new_password,
-              //     validator: (value) => (value!.isEmpty || value == _password)
-              //         ? "패스워드를 확인해 주세요"
-              //         : null,
-              //     style: style,
-              //     decoration: InputDecoration(
-              //       prefixIcon: Icon(Icons.lock),
-              //       labelText: "신규 비밀번호",
-              //       filled: true,
-              //       fillColor: Color(0xffF6F6F6),
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(8),
-              //         borderSide: BorderSide.none,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-              //   child: TextFormField(
-              //     obscureText: true,
-              //     controller: _confirm_new_password,
-              //     validator: (value) =>
-              //         (value != _new_password) ? "패스워드가 올바르지 않습니다." : null,
-              //     style: style,
-              //     decoration: InputDecoration(
-              //       prefixIcon: Icon(Icons.lock),
-              //       labelText: "신규 비밀번호 확인",
-              //       filled: true,
-              //       fillColor: Color(0xffF6F6F6),
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(8),
-              //         borderSide: BorderSide.none,
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Container(
                 padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                 child: ElevatedButton(
