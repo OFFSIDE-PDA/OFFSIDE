@@ -96,7 +96,7 @@ class Community extends ConsumerState<CommunityPage>
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(top: 70),
+                      margin: const EdgeInsets.only(top: 120),
                       decoration: BoxDecoration(
                           color: Color(teaminfo[team].color[0]), // 배경 색상
                           borderRadius: const BorderRadius.only(
@@ -169,7 +169,7 @@ class Community extends ConsumerState<CommunityPage>
                     child: Container(
                         padding: const EdgeInsets.all(10),
                         color: const Color(0xffffffff),
-                        height: 70,
+                        height: 120,
                         width: double.infinity,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

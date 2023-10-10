@@ -59,7 +59,8 @@ class _TourPlan extends ConsumerState<TourPlan> {
         startx,
         starty,
         teamInfoList[widget.home].stadiumGeo.longitude,
-        teamInfoList[widget.home].stadiumGeo.latitude);
+        teamInfoList[widget.home].stadiumGeo.latitude,
+        context);
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -218,7 +219,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
         map: map,
         path: linePath,
         strokeWeight: 3, 
-        strokeColor: '#0e2057',
+        strokeColor: '#ff0000',
         strokeOpacity: 0.7, 
         strokeStyle: 'solid' 
       });
