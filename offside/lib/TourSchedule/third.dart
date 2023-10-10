@@ -40,14 +40,14 @@ class MatchDate extends StatelessWidget {
                     color: const Color.fromARGB(255, 48, 84, 190), width: 1),
                 borderRadius: BorderRadius.circular(10)),
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(children: [
                     Text(
                       '20${getDate(date)}',
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 12),
+                              .getadaptiveTextSize(context, 11),
                           fontWeight: FontWeight.w500,
                           color: const Color.fromARGB(255, 83, 83, 83)),
                     ),
@@ -58,7 +58,7 @@ class MatchDate extends StatelessWidget {
                       info[home].stadium,
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 11),
+                              .getadaptiveTextSize(context, 10),
                           fontWeight: FontWeight.w500,
                           color: const Color.fromARGB(255, 121, 121, 121)),
                     )
@@ -79,8 +79,9 @@ class MatchDate extends StatelessWidget {
                             ),
                             Text(info[home].middleName,
                                 style: TextStyle(
+                                    color: Color(info[home].color[0]),
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
+                                        .getadaptiveTextSize(context, 11),
                                     fontWeight: FontWeight.w500),
                                 textAlign: TextAlign.center),
                           ],
@@ -89,7 +90,7 @@ class MatchDate extends StatelessWidget {
                         Text(' vs ',
                             style: TextStyle(
                                 fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 14),
+                                    .getadaptiveTextSize(context, 12),
                                 fontWeight: FontWeight.w600)),
                         const SizedBox(width: 15),
                         Column(
@@ -105,8 +106,9 @@ class MatchDate extends StatelessWidget {
                               ),
                               Text(info[away].middleName,
                                   style: TextStyle(
+                                      color: Color(info[away].color[0]),
                                       fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 12),
+                                          .getadaptiveTextSize(context, 11),
                                       fontWeight: FontWeight.w500),
                                   textAlign: TextAlign.center)
                             ])
@@ -120,39 +122,63 @@ class MatchDate extends StatelessWidget {
               return Container(
                   margin: EdgeInsets.symmetric(
                       horizontal: size.width * 0.07,
-                      vertical: size.width * 0.07),
-                  child: Row(children: [
-                    const Text("예상 소요시간"),
-                    const SizedBox(width: 10),
-                    Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey, width: 1.5),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(children: [
+                      vertical: size.height * 0.03),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.schedule,
+                                size: 18, color: Colors.grey),
+                            const SizedBox(width: 5),
+                            Text(
+                              "예상 소요시간",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey,
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 10),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 10),
+                        Row(children: [
                           Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(14, 32, 87, 1),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: const Row(
+                              child: Row(
                                 children: [
-                                  Icon(Icons.directions_car,
-                                      color: Colors.white),
+                                  Icon(
+                                    Icons.directions_car,
+                                    color: Color.fromRGBO(14, 32, 87, 1),
+                                  ),
+                                  SizedBox(width: 7),
                                   Text("자동차",
-                                      style: TextStyle(color: Colors.white))
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(14, 32, 87, 1),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(
+                                                  context, 11)))
                                 ],
                               )),
                           Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(info[0]))
-                        ]))
-                  ]));
+                              child: Text(
+                                info[0],
+                                style: TextStyle(
+                                    color: Color.fromRGBO(14, 32, 87, 1),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 11)),
+                              ))
+                        ])
+                      ]));
             } else if (snapshot.hasError) {
               return const Text('error');
             }
@@ -177,7 +203,7 @@ class _TourList extends State<TourList> {
   Widget build(BuildContext context) {
     return Container(
         height: selectedList.length * 80,
-        margin: const EdgeInsets.only(top: 15),
+        margin: const EdgeInsets.only(top: 2),
         child: ReorderableListView(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             children: <Widget>[
@@ -238,8 +264,7 @@ class _TourList extends State<TourList> {
                                         'images/mainpage/logo.png'))),
                           ),
                           title: Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: 4, right: 10),
+                            padding: const EdgeInsets.only(bottom: 7, right: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -247,7 +272,7 @@ class _TourList extends State<TourList> {
                                 Text('${selectedList[index].title}',
                                     style: TextStyle(
                                         fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 12),
+                                            .getadaptiveTextSize(context, 11),
                                         fontWeight: FontWeight.w600)),
                                 Text('${getType[selectedList[index].typeId]}',
                                     style: TextStyle(
@@ -261,7 +286,7 @@ class _TourList extends State<TourList> {
                           subtitle: Text(selectedList[index].addr,
                               style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 11),
+                                      .getadaptiveTextSize(context, 10),
                                   fontWeight: FontWeight.w500,
                                   color: Colors.grey)))),
                 )
@@ -275,5 +300,13 @@ class _TourList extends State<TourList> {
                 selectedList.insert(newIndex, item);
               });
             }));
+  }
+}
+
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
   }
 }

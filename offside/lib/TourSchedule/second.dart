@@ -206,7 +206,8 @@ class _LocationList extends State<LocationList> {
           widget.startx,
           widget.starty,
           widget.tourInfo[widget.index].mapx,
-          widget.tourInfo[widget.index].mapy);
+          widget.tourInfo[widget.index].mapy,
+          context);
     }
     return Container(
         decoration: const BoxDecoration(
@@ -271,7 +272,7 @@ class _LocationList extends State<LocationList> {
                                         fontSize: const AdaptiveTextSize()
                                             .getadaptiveTextSize(context, 9),
                                         fontWeight: FontWeight.w500,
-                                        color: Color.fromARGB(
+                                        color: const Color.fromARGB(
                                             255, 163, 163, 163))))))
                   ])
             ]),
@@ -285,8 +286,8 @@ class _LocationList extends State<LocationList> {
                             if (snapshot.hasData) {
                               List info = snapshot.data!;
                               return KakaoMapView(
-                                width: widget.choose.size.width * 0.7,
-                                height: widget.choose.size.width * 0.7,
+                                width: widget.choose.size.width * 0.95,
+                                height: widget.choose.size.width * 0.8,
                                 kakaoMapKey: 'a8bd91fccbb230b5011148456b3cd404',
                                 zoomLevel: 10,
                                 lat: info[0]['y'],
@@ -315,12 +316,12 @@ class _LocationList extends State<LocationList> {
                                   map: map,
                                   path: linePath,
                                   strokeWeight: 3,
-                                  strokeColor: '#0e2057',
+                                  strokeColor: '#ff0000',
                                   strokeOpacity: 0.7,
                                   strokeStyle: 'solid'
                                 });
                                 polyline.setMap(map);
-                                        ''',
+                              ''',
                               );
                             } else if (snapshot.hasError) {
                               return const Text('error');
@@ -333,11 +334,11 @@ class _LocationList extends State<LocationList> {
                       padding: EdgeInsets.only(bottom: 10),
                       child: Text('not open'),
                     ),
-              Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  child: ElevatedButton(
-                      onPressed: () {
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                      onTap: () {
                         setState(() {
                           selectedList.add(widget.tourInfo[widget.index]);
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -355,22 +356,66 @@ class _LocationList extends State<LocationList> {
                                   ))); //버튼 눌렀을때.
                         });
                       },
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.add_location_alt_outlined,
-                                size: 23,
-                                color: Color.fromRGBO(57, 142, 223, 1)),
-                            const SizedBox(height: 3),
-                            Text('추가하기',
-                                style: TextStyle(
-                                    fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 11),
-                                    fontWeight: FontWeight.w500,
-                                    color:
-                                        const Color.fromRGBO(57, 142, 223, 1)))
-                          ])))
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        margin: const EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: const Color.fromARGB(255, 27, 78, 145),
+                            ),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.near_me_outlined,
+                                  size: 23,
+                                  color: Color.fromRGBO(57, 142, 223, 1)),
+                              const SizedBox(height: 3),
+                              Text('Kakao Navi',
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 11),
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color.fromRGBO(
+                                          57, 142, 223, 1)))
+                            ]),
+                      )),
+                  InkWell(
+                      onTap: () {
+                        setState(() {
+                          selectedList.add(widget.tourInfo[widget.index]);
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        margin: const EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: const Color.fromARGB(255, 27, 78, 145),
+                            ),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.add_location_alt_outlined,
+                                  size: 23,
+                                  color: Color.fromRGBO(57, 142, 223, 1)),
+                              const SizedBox(height: 3),
+                              Text('추가하기',
+                                  style: TextStyle(
+                                      fontSize: const AdaptiveTextSize()
+                                          .getadaptiveTextSize(context, 11),
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color.fromRGBO(
+                                          57, 142, 223, 1)))
+                            ]),
+                      ))
+                ],
+              ),
             ]));
   }
 }
@@ -415,5 +460,13 @@ class _CategoryBtn extends State<CategoryBtn> {
                   ? Colors.white
                   : const Color.fromARGB(255, 125, 125, 125),
             )));
+  }
+}
+
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
   }
 }

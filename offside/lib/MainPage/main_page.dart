@@ -34,7 +34,7 @@ class _Root extends ConsumerState with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    _tabController.index = ref.watch(counterPageProvider);
+    _tabController.index = ref.watch(counterPageProvider)[0];
     return WillPopScope(
         onWillPop: () async {
           return !(await _navigatorKeyList[_tabController.index]
@@ -96,10 +96,9 @@ class _Root extends ConsumerState with SingleTickerProviderStateMixin {
                 labelPadding: EdgeInsets.zero,
                 automaticIndicatorColorAdjustment: true,
                 onTap: (index) {
-                  // _tabController.index = 1;
                   ref
                       .read(counterPageProvider.notifier)
-                      .update((state) => index);
+                      .update((state) => [index, null]);
                 },
                 tabs: [
                   Tab(

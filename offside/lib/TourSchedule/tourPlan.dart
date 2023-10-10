@@ -14,6 +14,7 @@ import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 import 'package:offside/TourSchedule/tourSchedule.dart';
+import 'package:offside/page_view_model.dart';
 
 List selectedList = [];
 
@@ -53,7 +54,8 @@ class _TourPlan extends ConsumerState<TourPlan> {
         startx,
         starty,
         teamInfoList[widget.home].stadiumGeo.longitude,
-        teamInfoList[widget.home].stadiumGeo.latitude);
+        teamInfoList[widget.home].stadiumGeo.latitude,
+        context);
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
@@ -126,6 +128,10 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                               selectedList.clear();
                                               Navigator.of(context).pop();
                                             });
+                                            ref
+                                                .read(counterPageProvider
+                                                    .notifier)
+                                                .update((state) => [4, 1]);
                                           })
                                     ]);
                               }).then((value) => Navigator.of(context).pop());
@@ -208,7 +214,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
         map: map,
         path: linePath,
         strokeWeight: 3, 
-        strokeColor: '#0e2057',
+        strokeColor: '#ff0000',
         strokeOpacity: 0.7, 
         strokeStyle: 'solid' 
       });
@@ -243,6 +249,15 @@ class _TourPlan extends ConsumerState<TourPlan> {
             home: widget.home,
             away: widget.away,
             info: teamInfoList),
+        Text(
+          "(길게 눌러서 삭제)",
+          textAlign: TextAlign.end,
+          style: TextStyle(
+              color: Colors.grey,
+              fontSize:
+                  const AdaptiveTextSize().getadaptiveTextSize(context, 9),
+              fontWeight: FontWeight.w500),
+        ),
         TourList(size: size)
       ]);
     }

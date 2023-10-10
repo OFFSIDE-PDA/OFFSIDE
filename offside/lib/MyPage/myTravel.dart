@@ -60,7 +60,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
                             itemCount: info.keys.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
-                                onDoubleTap: () {
+                                onLongPress: () {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -134,7 +134,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
                                     onTap: () async {
                                       ref
                                           .read(counterPageProvider.notifier)
-                                          .update((state) => 1);
+                                          .update((state) => [1, null]);
                                       Navigator.pop(context);
                                     },
                                     // 여행 일정으로 이동

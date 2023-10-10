@@ -174,8 +174,10 @@ class ResultBox extends StatelessWidget {
                               child: Image.network(
                                   teamInfoList[info[0].team1].logoImg)),
                           Text(
-                            teamInfoList[info[0].team1].name,
+                            teamInfoList[info[0].team1].middleName,
                             style: TextStyle(
+                                color:
+                                    Color(teamInfoList[info[0].team1].color[0]),
                                 fontSize: const AdaptiveTextSize()
                                     .getadaptiveTextSize(context, 11),
                                 fontWeight: FontWeight.w500),
@@ -200,8 +202,10 @@ class ResultBox extends StatelessWidget {
                               child: Image.network(
                                   teamInfoList[info[0].team2].logoImg)),
                           Text(
-                            teamInfoList[info[0].team2].name,
+                            teamInfoList[info[0].team2].middleName,
                             style: TextStyle(
+                                color:
+                                    Color(teamInfoList[info[0].team2].color[0]),
                                 fontSize: const AdaptiveTextSize()
                                     .getadaptiveTextSize(context, 11),
                                 fontWeight: FontWeight.w500),

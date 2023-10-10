@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/data/view/user_view_model.dart';
+import 'package:offside/page_view_model.dart';
 import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'myteam.dart';
@@ -70,6 +72,17 @@ class _ProfileState extends ConsumerState {
     final user = ref.watch(userViewModelProvider);
     final teaminfo = ref.watch(teamInfoViewModelProvider);
     var size = MediaQuery.of(context).size;
+
+    //여행 일정 저장 성공시 나의 여행일정으로 이동
+    final page = ref.watch(counterPageProvider);
+    if (page[0] == 4 && page[1] != null) {
+      Timer(const Duration(seconds: 1), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyTravel()),
+        );
+      });
+    }
     return (Container(
       margin: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02,
           size.width * 0.05, size.height * 0.02),
