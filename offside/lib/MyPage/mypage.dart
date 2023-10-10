@@ -75,7 +75,7 @@ class _ProfileState extends ConsumerState {
 
     //여행 일정 저장 성공시 나의 여행일정으로 이동
     final page = ref.watch(counterPageProvider);
-    if (page[0] == 4 && page[1] == 1) {
+    if (page[0] == 4 && page[1] != null) {
       Timer(const Duration(seconds: 1), () {
         Navigator.push(
           context,

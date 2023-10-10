@@ -103,21 +103,31 @@ class _Match extends ConsumerState {
 
     //이 Match 어때 클릭시 해당 경기로 이동
     final page = ref.watch(counterPageProvider);
-    if (page[0] == 3 && page[1] == 1) {
-      final randomMatch = matchData.getRandomMatch();
+    if (page[0] == 3 && page[1] != null) {
+      int league = int.parse(page[1].split("_")[0]);
+      int id = int.parse(page[1].split("_")[1]);
+      late MatchModel pickedMatch;
+      List<List<MatchModel>> randomMatch = matchData.getWeekMatches(league);
+      for (List<MatchModel> element in randomMatch) {
+        for (MatchModel temp in element) {
+          if (temp.id == id) {
+            pickedMatch = temp;
+          }
+        }
+      }
       Timer(const Duration(seconds: 1), () {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => MatchDetail(
-                    date: getDate(randomMatch.data),
-                    time: randomMatch.time!,
-                    team1: randomMatch.team1!,
-                    team2: randomMatch.team2!,
-                    score1: randomMatch.score1,
-                    score2: randomMatch.score2,
-                    matchId: randomMatch.id,
-                    league: randomMatch.league)));
+                    date: getDate(pickedMatch.data),
+                    time: pickedMatch.time!,
+                    team1: pickedMatch.team1!,
+                    team2: pickedMatch.team2!,
+                    score1: pickedMatch.score1,
+                    score2: pickedMatch.score2,
+                    matchId: pickedMatch.id,
+                    league: pickedMatch.league)));
       });
     }
     return Padding(

@@ -325,9 +325,11 @@ class RandomMatch extends ConsumerWidget {
                         Icons.chevron_right,
                       ),
                       onPressed: () {
-                        ref
-                            .read(counterPageProvider.notifier)
-                            .update((state) => [3, 1]);
+                        ref.read(counterPageProvider.notifier).update((state) =>
+                            [
+                              3,
+                              "${info.league!.toString()}_${info.id!.toString()}"
+                            ]);
                       }))
             ]))
       ])

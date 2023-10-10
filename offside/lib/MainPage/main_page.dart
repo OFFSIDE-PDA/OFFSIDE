@@ -98,7 +98,7 @@ class _Root extends ConsumerState with SingleTickerProviderStateMixin {
                 onTap: (index) {
                   ref
                       .read(counterPageProvider.notifier)
-                      .update((state) => [index, 0]);
+                      .update((state) => [index, null]);
                 },
                 tabs: [
                   Tab(
