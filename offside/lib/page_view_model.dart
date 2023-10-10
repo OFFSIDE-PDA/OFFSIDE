@@ -1,3 +1,3 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final counterPageProvider = StateProvider<int>((ref) => 2);
+final counterPageProvider = StateProvider<List<dynamic>>((ref) => [2, null]);

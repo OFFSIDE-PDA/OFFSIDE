@@ -176,7 +176,7 @@ class _TourSchedule extends ConsumerState {
                                 '20${getDate(selectedDate)}',
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 14),
+                                        .getadaptiveTextSize(context, 12),
                                     fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(height: 10),
@@ -206,10 +206,14 @@ class _TourSchedule extends ConsumerState {
                                                             .team1]
                                                     .middleName,
                                                 style: TextStyle(
+                                                    color: Color(teamInfoList[
+                                                            matches[selectedIdx]
+                                                                .team1]
+                                                        .color[0]),
                                                     fontSize:
                                                         const AdaptiveTextSize()
                                                             .getadaptiveTextSize(
-                                                                context, 13),
+                                                                context, 12),
                                                     fontWeight:
                                                         FontWeight.w500),
                                                 textAlign: TextAlign.center,
@@ -222,7 +226,7 @@ class _TourSchedule extends ConsumerState {
                                                   fontSize:
                                                       const AdaptiveTextSize()
                                                           .getadaptiveTextSize(
-                                                              context, 14),
+                                                              context, 12),
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
@@ -234,10 +238,14 @@ class _TourSchedule extends ConsumerState {
                                                             .team2]
                                                     .middleName,
                                                 style: TextStyle(
+                                                    color: Color(teamInfoList[
+                                                            matches[selectedIdx]
+                                                                .team2]
+                                                        .color[0]),
                                                     fontSize:
                                                         const AdaptiveTextSize()
                                                             .getadaptiveTextSize(
-                                                                context, 13),
+                                                                context, 12),
                                                     fontWeight:
                                                         FontWeight.w500),
                                                 textAlign: TextAlign.center,
@@ -276,7 +284,7 @@ class _TourSchedule extends ConsumerState {
                                   const Icon(
                                     Icons.location_on,
                                     size: 23,
-                                    color: Color.fromARGB(255, 27, 78, 145),
+                                    color: Color.fromARGB(255, 55, 123, 212),
                                   ),
                                   const SizedBox(
                                     width: 5,
@@ -286,10 +294,10 @@ class _TourSchedule extends ConsumerState {
                                           .stadium,
                                       style: TextStyle(
                                           fontSize: const AdaptiveTextSize()
-                                              .getadaptiveTextSize(context, 14),
+                                              .getadaptiveTextSize(context, 13),
                                           fontWeight: FontWeight.w600,
-                                          color: const Color.fromRGBO(
-                                              68, 68, 68, 1))),
+                                          color: Color.fromARGB(
+                                              255, 102, 102, 102))),
                                 ],
                               )
                             ])),

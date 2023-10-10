@@ -1,3 +1,5 @@
+import 'package:offside/data/model/team_info.dart';
+
 class TourModel {
   TourModel(this.addr, this.contentId, this.typeId, this.img, this.title,
       this.mapy, this.mapx);
@@ -17,6 +19,16 @@ class TourModel {
     title = map["title"];
     mapy = map["mapy"];
     mapx = map["mapx"];
+  }
+
+  TourModel.fromTeamInfo(TeamInfo map) {
+    addr = map.city;
+    contentId = "0";
+    typeId = "14";
+    img = map.stadiumImg;
+    title = map.stadium;
+    mapy = map.stadiumGeo.latitude.toString();
+    mapx = map.stadiumGeo.longitude.toString();
   }
 
   TourModel.copy(TourModel tourModel) {

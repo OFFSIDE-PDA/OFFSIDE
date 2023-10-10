@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/data/view/user_view_model.dart';
+import 'package:offside/page_view_model.dart';
 import 'profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'myteam.dart';
@@ -15,27 +17,29 @@ class MyPage extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       alignment: Alignment.topLeft,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              // height: topH,
-              alignment: Alignment.center,
-              child: (const Profile()),
-            ),
-            Container(
-              // height: midH,
-              alignment: Alignment.center,
-              child: (const Second()),
-            ),
-            Container(
-              // height: thrH,
-              alignment: Alignment.center,
-              child: (Third()),
-            ),
-            Container(alignment: Alignment.center, child: (const Under()))
-          ]),
+      child: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                // height: topH,
+                alignment: Alignment.center,
+                child: (const Profile()),
+              ),
+              Container(
+                // height: midH,
+                alignment: Alignment.center,
+                child: (const Second()),
+              ),
+              Container(
+                // height: thrH,
+                alignment: Alignment.center,
+                child: (Third()),
+              ),
+              Container(alignment: Alignment.center, child: (const Under()))
+            ]),
+      ),
     ));
   }
 }
@@ -68,6 +72,17 @@ class _ProfileState extends ConsumerState {
     final user = ref.watch(userViewModelProvider);
     final teaminfo = ref.watch(teamInfoViewModelProvider);
     var size = MediaQuery.of(context).size;
+
+    //여행 일정 저장 성공시 나의 여행일정으로 이동
+    final page = ref.watch(counterPageProvider);
+    if (page[0] == 4 && page[1] != null) {
+      Timer(const Duration(seconds: 1), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyTravel()),
+        );
+      });
+    }
     return (Container(
       margin: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02,
           size.width * 0.05, size.height * 0.02),
@@ -122,8 +137,10 @@ class _ProfileState extends ConsumerState {
                           Text(
                             teaminfo.teamInfoList[user.user!.team!].fullName,
                             style: TextStyle(
+                                color: Color(teaminfo
+                                    .teamInfoList[user.user!.team!].color[0]),
                                 fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 13),
+                                    .getadaptiveTextSize(context, 12),
                                 fontWeight: FontWeight.w600),
                           ),
                         ],
@@ -134,14 +151,14 @@ class _ProfileState extends ConsumerState {
               ],
             ),
             Container(
-              margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Icon(
                     Icons.edit,
-                    size: 20.0,
+                    size: 17.0,
                   ),
                   Container(
                     width: 5,
@@ -153,11 +170,12 @@ class _ProfileState extends ConsumerState {
                       // 회원정보 수정 페이지로 이동
                     },
                     child: Text(
-                      "회원 정보 수정",
+                      "EDIT",
                       style: TextStyle(
                           decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w500,
                           fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 11),
+                              .getadaptiveTextSize(context, 10),
                           color: Colors.grey),
                     ),
                   )
@@ -320,29 +338,6 @@ class Under extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "KOREAN ",
-              style: TextStyle(
-                  fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-                  color: Colors.grey),
-            ),
-            Container(width: 1, height: 15, color: Colors.grey),
-            Text(
-              " ENGLISH",
-              style: TextStyle(
-                  fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-                  color: Colors.grey),
-            )
-          ],
-        ),
         const SizedBox(
           height: 10,
         ),

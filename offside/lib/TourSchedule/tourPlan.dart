@@ -1,21 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:offside/MainPage/home_page.dart';
-import 'package:offside/MyPage/myTravel.dart';
-import 'package:offside/MyPage/mypage.dart';
 import 'package:offside/TourSchedule/first.dart';
 import 'package:offside/TourSchedule/second.dart';
 import 'package:offside/TourSchedule/third.dart';
 import 'package:offside/data/api/map_api.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
+import 'package:offside/data/model/tour_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
-import 'package:offside/TourSchedule/tourSchedule.dart';
+import 'package:offside/page_view_model.dart';
 
-List selectedList = [];
+List<TourModel> selectedList = [];
 
 class TourPlan extends ConsumerStatefulWidget {
   const TourPlan(
@@ -41,6 +39,14 @@ class _TourPlan extends ConsumerState<TourPlan> {
 
   getDate(date) =>
       '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final teamInfoList = ref.read(teamInfoViewModelProvider).teamInfoList;
+    selectedList.add(TourModel.fromTeamInfo(teamInfoList[widget.home]));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +133,10 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                               selectedList.clear();
                                               Navigator.of(context).pop();
                                             });
+                                            ref
+                                                .read(counterPageProvider
+                                                    .notifier)
+                                                .update((state) => [4, 1]);
                                           })
                                     ]);
                               }).then((value) => Navigator.of(context).pop());
@@ -244,6 +254,15 @@ class _TourPlan extends ConsumerState<TourPlan> {
             home: widget.home,
             away: widget.away,
             info: teamInfoList),
+        Text(
+          "(길게 눌러서 삭제)",
+          textAlign: TextAlign.end,
+          style: TextStyle(
+              color: Colors.grey,
+              fontSize:
+                  const AdaptiveTextSize().getadaptiveTextSize(context, 9),
+              fontWeight: FontWeight.w500),
+        ),
         TourList(size: size)
       ]);
     }
@@ -330,7 +349,7 @@ BoxDecoration selectedBox() {
 
 BoxDecoration unSelectedBox() {
   return BoxDecoration(
-      border: Border.all(color: const Color.fromRGBO(14, 32, 87, 1), width: 2),
+      border: Border.all(color: Colors.grey, width: 2),
       borderRadius: BorderRadius.circular(10));
 }
 
@@ -346,22 +365,22 @@ TextStyle unSelectedNum(BuildContext context) {
   return TextStyle(
     fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
     fontWeight: FontWeight.w600,
-    color: const Color.fromRGBO(14, 32, 87, 1),
+    color: Colors.grey,
   );
 }
 
 TextStyle selectedText(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 10),
     fontWeight: FontWeight.w600,
   );
 }
 
 TextStyle unSelectedText(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-    fontWeight: FontWeight.w500,
-  );
+      fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 10),
+      fontWeight: FontWeight.w500,
+      color: Colors.grey);
 }
 
 class AdaptiveTextSize {

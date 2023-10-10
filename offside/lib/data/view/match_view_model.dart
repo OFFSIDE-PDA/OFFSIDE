@@ -101,8 +101,7 @@ class MatchViewModel extends ChangeNotifier {
     _allMatchViewModel = {
       'all': [kLeague1, kLeague2],
       'week': [week1, week2],
-      'home': homeTeams(matches),
-      'random': matches[today % matches.length]
+      'home': homeTeams(matches)
     };
     notifyListeners();
   }
@@ -207,8 +206,16 @@ class MatchViewModel extends ChangeNotifier {
     return tmp[0];
   }
 
-  getRandomMatch() {
-    return _allMatchViewModel?['random'];
+  ///이번주 경기중에 랜덤 매치 출력
+  MatchModel getRandomMatch() {
+    List<MatchModel> temp = [];
+    for (var i = 0; i < 2; i++) {
+      for (List<MatchModel> element in _allMatchViewModel?['week']![i]) {
+        temp.addAll([...element]);
+      }
+    }
+    temp.shuffle();
+    return temp.first;
   }
 
   homeTeams(List matches) {

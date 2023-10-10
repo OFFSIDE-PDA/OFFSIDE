@@ -92,19 +92,20 @@ class Top extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(date,
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 13))),
+                          .getadaptiveTextSize(context, 12))),
+              SizedBox(width: size.width * 0.04),
               Text(convertTime(time),
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 13))),
+                          .getadaptiveTextSize(context, 12))),
             ],
           ),
           Padding(
@@ -126,6 +127,7 @@ class Top extends ConsumerWidget {
                     Text(
                       teamInfoList[team1].middleName,
                       style: TextStyle(
+                          color: Color(teamInfoList[team1].color[0]),
                           fontWeight: FontWeight.w600,
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 12)),
@@ -144,7 +146,7 @@ class Top extends ConsumerWidget {
                         ' vs ',
                         style: TextStyle(
                             fontSize: const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 14),
+                                .getadaptiveTextSize(context, 13),
                             fontWeight: FontWeight.w600),
                       ),
                 Column(
@@ -159,6 +161,7 @@ class Top extends ConsumerWidget {
                     Text(
                       teamInfoList[team2].middleName,
                       style: TextStyle(
+                          color: Color(teamInfoList[team2].color[0]),
                           fontWeight: FontWeight.w600,
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 11)),
@@ -197,7 +200,7 @@ class Top extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Icon(Icons.location_on,
-                          size: 20, color: Color.fromRGBO(18, 32, 84, 1)),
+                          size: 20, color: Color.fromRGBO(50, 77, 177, 1)),
                       SizedBox(
                         width: size.width * 0.01,
                       ),
@@ -260,7 +263,7 @@ class Bottom extends ConsumerWidget {
                                 color: Colors.white,
                                 fontSize: const AdaptiveTextSize()
                                     .getadaptiveTextSize(context, 14),
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.w600),
                           ),
                           const Divider(
                             color: Colors.white, // 색상 지정
@@ -314,7 +317,7 @@ class Bottom extends ConsumerWidget {
                                 color: Colors.white,
                                 fontSize: const AdaptiveTextSize()
                                     .getadaptiveTextSize(context, 14),
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.w600),
                           ),
                           const Divider(
                             color: Colors.white, // 색상 지정
@@ -372,7 +375,7 @@ class Bottom extends ConsumerWidget {
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
+                                borderRadius: BorderRadius.circular(15.0),
                                 side: const BorderSide(
                                   color: Colors.white,
                                 ),
@@ -384,7 +387,7 @@ class Bottom extends ConsumerWidget {
                             style: TextStyle(
                               color: Color.fromRGBO(18, 32, 84, 1),
                               // 텍스트 색상 변경 (흰색 배경 위에 흰색 텍스트는 보이지 않기 때문에 색상 변경)
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),

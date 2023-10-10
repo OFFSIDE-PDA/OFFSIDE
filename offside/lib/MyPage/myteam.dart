@@ -61,8 +61,9 @@ class _MyTeamState extends ConsumerState {
                 Text(
                   teamInfoList[user.user!.team!].fullName,
                   style: TextStyle(
+                      color: Color(teamInfoList[user.user!.team!].color[0]),
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 16),
+                          .getadaptiveTextSize(context, 15),
                       fontWeight: FontWeight.w600),
                   textAlign: TextAlign.center,
                 ),
@@ -132,7 +133,7 @@ class ResultBox extends StatelessWidget {
     return Column(children: [
       Container(
           width: size.width,
-          padding: const EdgeInsets.fromLTRB(10, 5, 10, 30),
+          padding: const EdgeInsets.fromLTRB(20, 5, 10, 20),
           margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           decoration: BoxDecoration(
               color: Color(resultColor(info[0].data, info[1])),
@@ -149,8 +150,8 @@ class ResultBox extends StatelessWidget {
                 '${getDate(info[0].data)}',
                 style: TextStyle(
                     fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 12),
-                    fontWeight: FontWeight.w600),
+                        .getadaptiveTextSize(context, 11),
+                    fontWeight: FontWeight.w500),
               ),
               SizedBox(height: size.height * 0.01),
               Padding(
@@ -173,10 +174,12 @@ class ResultBox extends StatelessWidget {
                               child: Image.network(
                                   teamInfoList[info[0].team1].logoImg)),
                           Text(
-                            teamInfoList[info[0].team1].name,
+                            teamInfoList[info[0].team1].middleName,
                             style: TextStyle(
+                                color:
+                                    Color(teamInfoList[info[0].team1].color[0]),
                                 fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 12),
+                                    .getadaptiveTextSize(context, 11),
                                 fontWeight: FontWeight.w500),
                             textAlign: TextAlign.center,
                           ),
@@ -186,7 +189,7 @@ class ResultBox extends StatelessWidget {
                         ' vs ',
                         style: TextStyle(
                             fontSize: const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 16),
+                                .getadaptiveTextSize(context, 14),
                             fontWeight: FontWeight.w600),
                       ),
                       Column(
@@ -199,10 +202,12 @@ class ResultBox extends StatelessWidget {
                               child: Image.network(
                                   teamInfoList[info[0].team2].logoImg)),
                           Text(
-                            teamInfoList[info[0].team2].name,
+                            teamInfoList[info[0].team2].middleName,
                             style: TextStyle(
+                                color:
+                                    Color(teamInfoList[info[0].team2].color[0]),
                                 fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 12),
+                                    .getadaptiveTextSize(context, 11),
                                 fontWeight: FontWeight.w500),
                             textAlign: TextAlign.center,
                           ),
