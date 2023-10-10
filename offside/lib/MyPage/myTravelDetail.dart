@@ -56,14 +56,14 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                           style: TextStyle(
                               color: const Color.fromARGB(255, 53, 53, 53),
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 12))),
+                                  .getadaptiveTextSize(context, 11))),
                       const SizedBox(height: 5),
                       Text(teamInfoList[match['home']].stadium,
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 11),
-                              color: const Color.fromARGB(255, 65, 65, 65)))
+                                  .getadaptiveTextSize(context, 10),
+                              color: Color.fromARGB(255, 119, 119, 119)))
                     ],
                   ),
                   Row(
@@ -83,6 +83,8 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                           const SizedBox(height: 5),
                           Text(teamInfoList[match['home']].middleName,
                               style: TextStyle(
+                                  color: Color(
+                                      teamInfoList[match['home']].color[0]),
                                   fontWeight: FontWeight.w600,
                                   fontSize: const AdaptiveTextSize()
                                       .getadaptiveTextSize(context, 11)))
@@ -93,8 +95,8 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                           child: Text(' vs ',
                               style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 13),
-                                  fontWeight: FontWeight.w600))),
+                                      .getadaptiveTextSize(context, 12),
+                                  fontWeight: FontWeight.w500))),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,6 +110,8 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                           const SizedBox(height: 5),
                           Text(teamInfoList[match['away']].middleName,
                               style: TextStyle(
+                                  color: Color(
+                                      teamInfoList[match['away']].color[0]),
                                   fontWeight: FontWeight.w600,
                                   fontSize: const AdaptiveTextSize()
                                       .getadaptiveTextSize(context, 11)))
@@ -119,25 +123,39 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
         Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                  child: Icon(
-                    Icons.near_me,
-                    size: 20,
-                    color: Color.fromRGBO(66, 66, 66, 1),
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
+                      child: Icon(
+                        Icons.near_me,
+                        size: 20,
+                        color: Color.fromRGBO(66, 66, 66, 1),
+                      ),
+                    ),
+                    SizedBox(
+                      width: size.width * 0.01,
+                    ),
+                    Text('My Tourlist',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 12),
+                            color: const Color.fromRGBO(66, 66, 66, 1))),
+                  ],
+                ),
+                Text(
+                  "(길게 눌러서 삭제)",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: const AdaptiveTextSize()
+                        .getadaptiveTextSize(context, 9),
                   ),
-                ),
-                SizedBox(
-                  width: size.width * 0.01,
-                ),
-                Text('My Tourlist',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12),
-                        color: const Color.fromRGBO(66, 66, 66, 1))),
+                )
               ],
             )),
         Container(
@@ -151,7 +169,7 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                   for (int index = 0; index < tour.length; index += 1)
                     InkWell(
                       key: Key('$index'),
-                      onDoubleTap: () {
+                      onLongPress: () {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -210,7 +228,7 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                               ),
                               title: Padding(
                                 padding:
-                                    const EdgeInsets.only(right: 15, bottom: 4),
+                                    const EdgeInsets.only(right: 10, bottom: 6),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -220,26 +238,24 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                                         style: TextStyle(
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
-                                                    context, 12),
-                                            fontWeight: FontWeight.w600)),
+                                                    context, 11),
+                                            fontWeight: FontWeight.w500)),
                                     Text('${getType[tour[index]['typeId']]}',
                                         style: TextStyle(
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
-                                                    context, 11),
+                                                    context, 10),
                                             fontWeight: FontWeight.w500,
-                                            color: const Color.fromARGB(
-                                                255, 107, 107, 107))),
+                                            color: Colors.grey)),
                                   ],
                                 ),
                               ),
                               subtitle: Text(tour[index]['addr'],
                                   style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 11),
+                                          .getadaptiveTextSize(context, 10),
                                       fontWeight: FontWeight.w500,
-                                      color: const Color.fromARGB(
-                                          255, 85, 85, 85))))),
+                                      color: Colors.grey)))),
                     )
                 ],
                 onReorder: (int oldIndex, int newIndex) {

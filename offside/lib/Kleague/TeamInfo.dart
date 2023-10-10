@@ -324,7 +324,6 @@ class _PlaceListState extends State<PlaceList> {
                   ]);
                 });
           } else if (snapshot.hasError) {
-            print(snapshot.error);
             return const Center(child: Text('error'));
           }
           return const Center(child: CupertinoActivityIndicator());
@@ -424,7 +423,7 @@ Widget nameAndPage(dynamic team, BuildContext context) {
               team.fullName,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: const Color.fromRGBO(18, 32, 84, 1),
+                color: Color(team.color[0]),
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 13),
               ),
