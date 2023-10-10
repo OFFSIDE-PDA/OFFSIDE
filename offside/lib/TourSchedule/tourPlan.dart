@@ -1,16 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/MainPage/home_page.dart';
+import 'package:offside/MyPage/myTravel.dart';
+import 'package:offside/MyPage/mypage.dart';
 import 'package:offside/TourSchedule/first.dart';
 import 'package:offside/TourSchedule/second.dart';
 import 'package:offside/TourSchedule/third.dart';
+import 'package:offside/data/api/map_api.dart';
 import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
-import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:offside/data/view/user_view_model.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:kakaomap_webview/kakaomap_webview.dart';
+import 'package:offside/TourSchedule/tourSchedule.dart';
 
 List selectedList = [];
 
@@ -29,18 +32,12 @@ class TourPlan extends ConsumerStatefulWidget {
   _TourPlan createState() => _TourPlan();
 }
 
-class AdaptiveTextSize {
-  const AdaptiveTextSize();
-  getadaptiveTextSize(BuildContext context, dynamic value) {
-    // 720 is medium screen height
-    return (value / 720) * MediaQuery.of(context).size.height;
-  }
-}
-
 class _TourPlan extends ConsumerState<TourPlan> {
   int step = 1;
-  Set<Marker> markers = {}; // 마커 변수
-  late KakaoMapController mapController;
+  late Future<List> points;
+  var starty = 36.6284028, startx = 127.4592136;
+  var idx = 0;
+  bool flag = false;
 
   getDate(date) =>
       '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
@@ -52,36 +49,16 @@ class _TourPlan extends ConsumerState<TourPlan> {
     final user = ref.watch(userViewModelProvider);
     var uid = user.user!.uid;
     final double statusBarSize = MediaQuery.of(context).padding.top;
+    points = getRoute(
+        startx,
+        starty,
+        teamInfoList[widget.home].stadiumGeo.longitude,
+        teamInfoList[widget.home].stadiumGeo.latitude);
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
           // AppBar(),
-          SafeArea(
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(20, statusBarSize, 20, 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                      child: Icon(
-                        Icons.card_travel,
-                        size: 22,
-                        color: Color.fromRGBO(91, 143, 255, 1),
-                      ),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.01,
-                    ),
-                    Text('My Travel',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 14),
-                            color: Color.fromRGBO(33, 58, 135, 1))),
-                  ],
-                )),
-          ),
+
           SizedBox(height: size.height * 0.015),
           PlanStep(size: size, step: step),
           SizedBox(height: size.height * 0.025),
@@ -117,40 +94,45 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   onPressed: () async {
                     setState(() {
                       if (step == 3) {
-                        selectedList.isNotEmpty
-                            ? showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                      title: Text('20${getDate(widget.date)}'),
-                                      content: const SingleChildScrollView(
-                                          child: ListBody(children: <Widget>[
-                                        Text('여행일정을 저장하시겠습니까?')
-                                      ])),
-                                      actions: [
-                                        TextButton(
-                                            child: const Text('취소'),
-                                            onPressed: () {
+                        if (selectedList.isNotEmpty) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    surfaceTintColor: Colors.white,
+                                    title: Text('20${getDate(widget.date)}'),
+                                    content: const SingleChildScrollView(
+                                        child: ListBody(children: <Widget>[
+                                      Text('여행일정을 저장하시겠습니까?')
+                                    ])),
+                                    actions: [
+                                      TextButton(
+                                          child: const Text('취소'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          }),
+                                      TextButton(
+                                          child: const Text('확인'),
+                                          onPressed: () async {
+                                            await createTourPlan(
+                                                    uid,
+                                                    selectedList,
+                                                    widget.date,
+                                                    widget.home,
+                                                    widget.away,
+                                                    widget.time)
+                                                .then((value) {
+                                              selectedList.clear();
                                               Navigator.of(context).pop();
-                                            }),
-                                        TextButton(
-                                            child: const Text('확인'),
-                                            onPressed: () {
-                                              createTourPlan(
-                                                  uid,
-                                                  selectedList,
-                                                  widget.date,
-                                                  widget.home,
-                                                  widget.away,
-                                                  widget.time);
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(saveSnackBar);
-                                              Navigator.of(context).pop();
-                                            })
-                                      ]);
-                                })
-                            : ScaffoldMessenger.of(context)
-                                .showSnackBar(emptySnackBar);
+                                            });
+                                          })
+                                    ]);
+                              }).then((value) => Navigator.of(context).pop());
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(emptySnackBar);
+                        }
                       } else {
                         step += 1;
                       }
@@ -176,7 +158,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              GetLocation(context: context, title: 'NOW', text: '충북대학교'),
+              GetLocation(context: context, title: 'NOW', text: '현위치'),
               const Icon(
                 Icons.arrow_right_alt,
                 color: Color.fromRGBO(110, 110, 110, 1),
@@ -187,37 +169,62 @@ class _TourPlan extends ConsumerState<TourPlan> {
                   title: 'STADIUM',
                   text: teamInfoList[widget.home].stadium)
             ]),
-        Container(
-          width: size.width,
-          height: size.width,
-          padding: const EdgeInsets.all(20),
-          child: KakaoMap(
-            onMapCreated: ((controller) async {
-              mapController = controller;
+        FutureBuilder<List>(
+          future: points,
+          builder: ((context, snapshot) {
+            if (snapshot.hasData) {
+              List info = snapshot.data!;
+              return Container(
+                  width: size.width,
+                  height: size.width,
+                  padding: const EdgeInsets.all(20),
+                  child: KakaoMapView(
+                    width: size.width,
+                    height: size.width,
+                    kakaoMapKey: 'a8bd91fccbb230b5011148456b3cd404',
+                    zoomLevel: 10,
+                    lat: info[0]['y'],
+                    lng: info[0]['x'],
+                    mapController: (controller) {},
+                    customScript: '''
+    var markers = [];
 
-              if (await Permission.location.isGranted) {
-                Position position = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.high);
-                markers.add(Marker(
-                    markerId: '현위치',
-                    latLng: LatLng(position.latitude, position.longitude),
-                    width: 17,
-                    height: 21));
-              }
-              if (await Permission.location.isDenied) {}
-              markers.add(Marker(
-                  markerId: teamInfoList[widget.home].stadium,
-                  latLng: LatLng(teamInfoList[widget.home].stadiumGeo.latitude,
-                      teamInfoList[widget.home].stadiumGeo.longitude),
-                  width: 17,
-                  height: 21));
-              setState(() {});
-            }),
-            currentLevel: 8,
-            markers: markers.toList(),
-            center: LatLng(36.6284028, 127.4592136),
-          ),
-        ),
+    function addMarker(position) {
+      var marker = new kakao.maps.Marker({position: position});
+      marker.setMap(map);
+      markers.push(marker);
+    }
+
+    addMarker(new kakao.maps.LatLng(${info.first['y']}, ${info.first['x']}));
+    addMarker(new kakao.maps.LatLng(${info.last['y']}, ${info.last['x']}));
+
+
+    var linePath = [];
+    $info.map((item) => {
+      linePath.push(new kakao.maps.LatLng(item.y, item.x));
+    });
+
+    const polyline = new kakao.maps.Polyline({
+        map: map,
+        path: linePath,
+        strokeWeight: 3, 
+        strokeColor: '#0e2057',
+        strokeOpacity: 0.7, 
+        strokeStyle: 'solid' 
+      });
+      polyline.setMap(map); 
+              ''',
+                  ));
+            } else if (snapshot.hasError) {
+              return const Text('error');
+            }
+            return Container(
+                width: size.width,
+                height: size.width,
+                padding: const EdgeInsets.all(20),
+                child: const Center(child: CupertinoActivityIndicator()));
+          }),
+        )
       ]);
     } else if (step == 2) {
       return ChooseCategory(
@@ -225,7 +232,9 @@ class _TourPlan extends ConsumerState<TourPlan> {
           size: size,
           home: teamInfoList[widget.home].fullName,
           lat: teamInfoList[widget.home].stadiumGeo.latitude,
-          lng: teamInfoList[widget.home].stadiumGeo.longitude);
+          lng: teamInfoList[widget.home].stadiumGeo.longitude,
+          starty: starty,
+          startx: startx);
     } else {
       return Column(children: [
         MatchDate(
@@ -352,4 +361,12 @@ TextStyle unSelectedText(BuildContext context) {
     fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
     fontWeight: FontWeight.w500,
   );
+}
+
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
+  }
 }

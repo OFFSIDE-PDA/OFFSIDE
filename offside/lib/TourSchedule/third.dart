@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
-import 'package:offside/data/api/tour_api.dart';
+import 'package:offside/data/api/map_api.dart';
 import 'package:offside/data/model/team_info.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:offside/data/model/tour_model.dart';
 
 class MatchDate extends StatelessWidget {
   MatchDate(
@@ -26,53 +25,10 @@ class MatchDate extends StatelessWidget {
   getDate(date) =>
       '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
 
-  static const String apiUrl =
-      "https://apis-navi.kakaomobility.com/v1/waypoints/directions";
-  static const String restApiKey =
-      "9b39d69c59df2f93e51f3dd3754b7b9c"; // Replace with your Kakao API Key
-
-  Future<List> sendPostRequest() async {
-    var wayPoints = [];
-    for (var item in selectedList) {
-      wayPoints.add({"name": item.title, "x": item.mapx, "y": item.mapy});
-    }
-    List result = [];
-    for (var item in [1, 3, 7]) {
-      final Map<String, dynamic> requestData = {
-        "origin": {"x": "127.11024293202674", "y": "37.394348634049784"},
-        "destination": {
-          "x": info[home].stadiumGeo.longitude,
-          "y": info[home].stadiumGeo.latitude
-        },
-        "waypoints": wayPoints,
-        "priority": "RECOMMEND",
-        "car_type": item
-      };
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "KakaoAK $restApiKey",
-        },
-        body: json.encode(requestData),
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        int hour = data["routes"][0]["summary"]["duration"] / 60;
-        int min = data["routes"][0]["summary"]["duration"] % 60;
-        if (hour == 0) {
-          result.add("$min분");
-        } else {
-          result.add("$hour시간 $min분");
-        }
-      }
-    }
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
-    duration = sendPostRequest();
+    duration = sendPostRequest(selectedList, info[home].stadiumGeo.longitude,
+        info[home].stadiumGeo.latitude);
     return Column(
       children: [
         Container(
@@ -200,7 +156,7 @@ class MatchDate extends StatelessWidget {
             } else if (snapshot.hasError) {
               return const Text('error');
             }
-            return const Text('No data');
+            return const Center(child: CupertinoActivityIndicator());
           },
         ),
       ],
@@ -233,6 +189,8 @@ class _TourList extends State<TourList> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
+                              backgroundColor: Colors.white,
+                              surfaceTintColor: Colors.white,
                               title: Text(selectedList[index].title,
                                   style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
@@ -266,6 +224,10 @@ class _TourList extends State<TourList> {
                                   width: 1,
                                   color: Color.fromARGB(255, 207, 207, 207)))),
                       child: ListTile(
+                          trailing: ReorderableDragStartListener(
+                            index: index,
+                            child: const Icon(Icons.drag_handle),
+                          ),
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(selectedList[index].img,
@@ -273,7 +235,7 @@ class _TourList extends State<TourList> {
                                 errorBuilder: (context, url, error) => SizedBox(
                                     width: widget.size.width * 0.18,
                                     child: Image.asset(
-                                        'assets/images/mainpage/logo.png'))),
+                                        'images/mainpage/logo.png'))),
                           ),
                           title: Padding(
                             padding:

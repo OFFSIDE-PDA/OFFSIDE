@@ -1,6 +1,6 @@
 class MatchModel {
   MatchModel(this.data, this.score2, this.team1, this.team2, this.location,
-      this.time, this.score1);
+      this.time, this.score1, this.id, this.league);
 
   MatchModel.fromMap(Map<String, dynamic> map) {
     data = map["data"];
@@ -10,6 +10,8 @@ class MatchModel {
     team2 = map["team2"];
     location = map["location"];
     time = map["time"];
+    id = map['id'];
+    league = map['league'];
   }
 
   ///`matchModel` 깊은 복사
@@ -21,6 +23,8 @@ class MatchModel {
     team2 = matchModel.team2;
     location = matchModel.location;
     time = matchModel.time;
+    id = matchModel.id;
+    league = matchModel.league;
   }
 
   //todo : data, time을 Timestamp datetime;으로 변경
@@ -31,6 +35,8 @@ class MatchModel {
   int? team2;
   int? location;
   int? score1;
+  int? id;
+  int? league;
 }
 
 class RecordModel {

@@ -129,6 +129,7 @@ class _HomePage extends ConsumerState {
             teaminfoList: teamInfoList),
         StadiumTour(
             hSizedBox: hSizedBox,
+            date: matchData.getLatestDay(),
             info: matchData.getHomeTeams(),
             teaminfoList: teamInfoList)
       ]),
@@ -141,15 +142,17 @@ class StadiumTour extends StatelessWidget {
       {super.key,
       required this.hSizedBox,
       required this.info,
-      required this.teaminfoList});
+      required this.teaminfoList,
+      required this.date});
 
   final SizedBox hSizedBox;
   final List info;
   final List<TeamInfo> teaminfoList;
+  final String date;
 
   String convertedName(name) {
-    if (name.length >= 7) {
-      return name.replaceFirst(' ', '\n');
+    if (name == "전남 드래곤즈") {
+      return "전남";
     }
 
     return name;
@@ -158,13 +161,18 @@ class StadiumTour extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    String convertTime(date) {
+      return "${date[2]}${date[3]}월 ${date[4]}${date[5]}일";
+    }
+
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.fromLTRB(0, 15, 0, 5),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 22),
             child: Text(
-              "경기장 주변 관광 정보 확인하기",
+              "${convertTime(date)} 홈경기 관광 정보",
               style: TextStyle(
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 12),
@@ -174,13 +182,12 @@ class StadiumTour extends StatelessWidget {
           ),
           hSizedBox,
           Container(
-            height: size.height * 0.52,
+            height: info.length >= 9 ? size.height * 0.32 : size.height * 0.22,
             //여기 Media로 화면 크기 받아서 height 나눠주기 -------------------------------------- 민수
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GridView.builder(
                 physics: new NeverScrollableScrollPhysics(),
-                itemCount:
-                    info.length > 20 ? 20 : info.length, //item 개수 -> 20개까지만
+                itemCount: info.length, //item 개수 -> 20개까지만
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4, //1 개의 행에 보여줄 item 개수
                   childAspectRatio: 1 / 1, //item 의 가로 1, 세로 2 의 비율
@@ -299,7 +306,7 @@ class RandomMatch extends StatelessWidget {
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 11),
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(width: 2),
@@ -345,17 +352,35 @@ class MatchCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider.builder(
-        itemCount: info.length,
-        itemBuilder: ((BuildContext context, int index, int realIndex) {
-          return MatchBox(
-              size: size, match: info[index], teaminfoList: teaminfoList);
-        }),
-        options: CarouselOptions(
-            height: size.height * 0.295,
-            onPageChanged: (index, reason) {
-              page(index);
-            }));
+    return info.isNotEmpty
+        ? CarouselSlider.builder(
+            itemCount: info.length,
+            itemBuilder: ((BuildContext context, int index, int realIndex) {
+              return MatchBox(
+                  size: size, match: info[index], teaminfoList: teaminfoList);
+            }),
+            options: CarouselOptions(
+                height: size.height * 0.295,
+                onPageChanged: (index, reason) {
+                  page(index);
+                }))
+        : Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(5, 5), // changes position of shadow
+                ),
+              ],
+            ),
+            margin: const EdgeInsets.fromLTRB(40, 30, 40, 30),
+            width: size.width,
+            height: size.height * 0.22,
+            child: const Center(child: Text('경기가 없습니다')));
   }
 }
 
@@ -381,7 +406,7 @@ class MatchBox extends StatelessWidget {
       returnString = (tmp + 12).toString();
     }
 
-    return "${returnString}:${date[2]}${date[3]}";
+    return "$returnString:${date[2]}${date[3]}";
   }
 
   @override
@@ -405,7 +430,7 @@ class MatchBox extends StatelessWidget {
         child: ListView.builder(
             shrinkWrap: true, // ListView가 자식 위젯의 크기에 맞게 축소될 수 있도록 설정
             physics:
-                ClampingScrollPhysics(), // 스크롤 물리학을 ClampingScrollPhysics로 설정하여 스크롤 효과를 줍니다.
+                const ClampingScrollPhysics(), // 스크롤 물리학을 ClampingScrollPhysics로 설정하여 스크롤 효과를 줍니다.
             itemCount: 1,
             itemBuilder: (context, index) {
               return (Column(
@@ -511,6 +536,14 @@ class MatchBox extends StatelessWidget {
                                                             match[index].team1!,
                                                         team2:
                                                             match[index].team2!,
+                                                        score1:
+                                                            match[index].score1,
+                                                        score2:
+                                                            match[index].score2,
+                                                        matchId:
+                                                            match[index].id,
+                                                        league:
+                                                            match[index].league,
                                                       )));
                                         },
                                         child: Container(
