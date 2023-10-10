@@ -15,27 +15,29 @@ class MyPage extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       alignment: Alignment.topLeft,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              // height: topH,
-              alignment: Alignment.center,
-              child: (const Profile()),
-            ),
-            Container(
-              // height: midH,
-              alignment: Alignment.center,
-              child: (const Second()),
-            ),
-            Container(
-              // height: thrH,
-              alignment: Alignment.center,
-              child: (Third()),
-            ),
-            Container(alignment: Alignment.center, child: (const Under()))
-          ]),
+      child: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                // height: topH,
+                alignment: Alignment.center,
+                child: (const Profile()),
+              ),
+              Container(
+                // height: midH,
+                alignment: Alignment.center,
+                child: (const Second()),
+              ),
+              Container(
+                // height: thrH,
+                alignment: Alignment.center,
+                child: (Third()),
+              ),
+              Container(alignment: Alignment.center, child: (const Under()))
+            ]),
+      ),
     ));
   }
 }
