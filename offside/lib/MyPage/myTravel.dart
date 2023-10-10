@@ -133,7 +133,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
                                     onTap: () async {
                                       ref
                                           .read(counterPageProvider.notifier)
-                                          .update((state) => 1);
+                                          .update((state) => [1, 0]);
                                       Navigator.pop(context);
                                     },
                                     // 여행 일정으로 이동

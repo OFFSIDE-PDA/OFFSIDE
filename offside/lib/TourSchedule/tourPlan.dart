@@ -14,6 +14,7 @@ import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 import 'package:offside/TourSchedule/tourSchedule.dart';
+import 'package:offside/page_view_model.dart';
 
 List selectedList = [];
 
@@ -126,6 +127,10 @@ class _TourPlan extends ConsumerState<TourPlan> {
                                               selectedList.clear();
                                               Navigator.of(context).pop();
                                             });
+                                            ref
+                                                .read(counterPageProvider
+                                                    .notifier)
+                                                .update((state) => [4, 1]);
                                           })
                                     ]);
                               }).then((value) => Navigator.of(context).pop());

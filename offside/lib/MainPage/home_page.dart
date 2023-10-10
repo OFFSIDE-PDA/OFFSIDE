@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/Kleague/TeamInfo.dart';
+import 'package:offside/data/model/match_model.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/model/team_info.dart';
+import 'package:offside/page_view_model.dart';
 import '../Match/matchDetail.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -240,7 +242,7 @@ class StadiumTour extends StatelessWidget {
   }
 }
 
-class RandomMatch extends StatelessWidget {
+class RandomMatch extends ConsumerWidget {
   const RandomMatch(
       {super.key,
       required this.size,
@@ -248,11 +250,11 @@ class RandomMatch extends StatelessWidget {
       required this.teaminfoList});
 
   final Size size;
-  final List<dynamic> info;
+  final MatchModel info;
   final List<TeamInfo> teaminfoList;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var textStyle = TextStyle(
         fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 13),
         color: const Color.fromRGBO(18, 32, 84, 1),
@@ -282,18 +284,18 @@ class RandomMatch extends StatelessWidget {
                 SizedBox(
                     width: 30,
                     height: 30,
-                    child: Image.network(teaminfoList[info[0]].logoImg)),
+                    child: Image.network(teaminfoList[info.team1!].logoImg)),
                 sizedBox,
-                Text(teaminfoList[info[0]].fullName, style: textStyle),
+                Text(teaminfoList[info.team1!].fullName, style: textStyle),
                 sizedBox,
                 Text("VS", style: textStyle),
                 sizedBox,
-                Text(teaminfoList[info[1]].fullName, style: textStyle),
+                Text(teaminfoList[info.team2!].fullName, style: textStyle),
                 sizedBox,
                 SizedBox(
                     width: 30,
                     height: 30,
-                    child: Image.network(teaminfoList[info[1]].logoImg))
+                    child: Image.network(teaminfoList[info.team2!].logoImg))
               ])),
       Row(children: [
         Container(
@@ -301,7 +303,7 @@ class RandomMatch extends StatelessWidget {
             width: size.width,
             child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               Text(
-                "경기장 주변 관광 일정 보러가기",
+                "이 MATCH 자세히 보기",
                 style: TextStyle(
                   fontSize:
                       const AdaptiveTextSize().getadaptiveTextSize(context, 11),
@@ -323,7 +325,9 @@ class RandomMatch extends StatelessWidget {
                         Icons.chevron_right,
                       ),
                       onPressed: () {
-                        // do something
+                        ref
+                            .read(counterPageProvider.notifier)
+                            .update((state) => [3, 1]);
                       }))
             ]))
       ])

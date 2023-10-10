@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +10,7 @@ import 'package:offside/data/view/match_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:offside/page_view_model.dart';
 
 class Match extends ConsumerStatefulWidget {
   const Match({super.key});
@@ -97,6 +99,26 @@ class _Match extends ConsumerState {
       if (!flag) {
         break;
       }
+    }
+
+    //이 Match 어때 클릭시 해당 경기로 이동
+    final page = ref.watch(counterPageProvider);
+    if (page[0] == 3 && page[1] == 1) {
+      final randomMatch = matchData.getRandomMatch();
+      Timer(const Duration(seconds: 1), () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MatchDetail(
+                    date: getDate(randomMatch.data),
+                    time: randomMatch.time!,
+                    team1: randomMatch.team1!,
+                    team2: randomMatch.team2!,
+                    score1: randomMatch.score1,
+                    score2: randomMatch.score2,
+                    matchId: randomMatch.id,
+                    league: randomMatch.league)));
+      });
     }
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
