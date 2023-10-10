@@ -69,29 +69,6 @@ class _TourSchedule extends ConsumerState {
 
     return (Column(
       children: [
-        Container(
-            alignment: Alignment.topLeft,
-            child: SizedBox(
-                child: SafeArea(
-                    child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                                  child: Icon(Icons.card_travel,
-                                      size: 22,
-                                      color: Color.fromRGBO(91, 143, 255, 1))),
-                              SizedBox(width: size.width * 0.01),
-                              Text('My Travel',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 14),
-                                      color:
-                                          const Color.fromRGBO(33, 58, 135, 1)))
-                            ]))))),
         data['date'].isNotEmpty
             ? Expanded(
                 child: Column(
@@ -188,7 +165,7 @@ class _TourSchedule extends ConsumerState {
                                 '20${getDate(selectedDate)}',
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 14),
+                                        .getadaptiveTextSize(context, 12),
                                     fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(height: 10),
@@ -218,10 +195,14 @@ class _TourSchedule extends ConsumerState {
                                                             .team1]
                                                     .middleName,
                                                 style: TextStyle(
+                                                    color: Color(teamInfoList[
+                                                            matches[selectedIdx]
+                                                                .team1]
+                                                        .color[0]),
                                                     fontSize:
                                                         const AdaptiveTextSize()
                                                             .getadaptiveTextSize(
-                                                                context, 13),
+                                                                context, 12),
                                                     fontWeight:
                                                         FontWeight.w500),
                                                 textAlign: TextAlign.center,
@@ -234,7 +215,7 @@ class _TourSchedule extends ConsumerState {
                                                   fontSize:
                                                       const AdaptiveTextSize()
                                                           .getadaptiveTextSize(
-                                                              context, 14),
+                                                              context, 12),
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
@@ -246,10 +227,14 @@ class _TourSchedule extends ConsumerState {
                                                             .team2]
                                                     .middleName,
                                                 style: TextStyle(
+                                                    color: Color(teamInfoList[
+                                                            matches[selectedIdx]
+                                                                .team2]
+                                                        .color[0]),
                                                     fontSize:
                                                         const AdaptiveTextSize()
                                                             .getadaptiveTextSize(
-                                                                context, 13),
+                                                                context, 12),
                                                     fontWeight:
                                                         FontWeight.w500),
                                                 textAlign: TextAlign.center,
@@ -288,7 +273,7 @@ class _TourSchedule extends ConsumerState {
                                   const Icon(
                                     Icons.location_on,
                                     size: 23,
-                                    color: Color.fromARGB(255, 27, 78, 145),
+                                    color: Color.fromARGB(255, 55, 123, 212),
                                   ),
                                   const SizedBox(
                                     width: 5,
@@ -298,10 +283,10 @@ class _TourSchedule extends ConsumerState {
                                           .stadium,
                                       style: TextStyle(
                                           fontSize: const AdaptiveTextSize()
-                                              .getadaptiveTextSize(context, 14),
+                                              .getadaptiveTextSize(context, 13),
                                           fontWeight: FontWeight.w600,
-                                          color: const Color.fromRGBO(
-                                              68, 68, 68, 1))),
+                                          color: Color.fromARGB(
+                                              255, 102, 102, 102))),
                                 ],
                               )
                             ])),

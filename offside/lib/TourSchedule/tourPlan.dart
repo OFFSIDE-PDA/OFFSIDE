@@ -58,26 +58,7 @@ class _TourPlan extends ConsumerState<TourPlan> {
         body: SingleChildScrollView(
             child: Column(children: [
           // AppBar(),
-          SafeArea(
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(20, statusBarSize, 20, 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                        child: Icon(Icons.card_travel,
-                            size: 22, color: Color.fromRGBO(91, 143, 255, 1))),
-                    SizedBox(width: size.width * 0.01),
-                    Text('My Travel',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 14),
-                            color: const Color.fromRGBO(33, 58, 135, 1))),
-                  ],
-                )),
-          ),
+
           SizedBox(height: size.height * 0.015),
           PlanStep(size: size, step: step),
           SizedBox(height: size.height * 0.025),
@@ -348,7 +329,7 @@ BoxDecoration selectedBox() {
 
 BoxDecoration unSelectedBox() {
   return BoxDecoration(
-      border: Border.all(color: const Color.fromRGBO(14, 32, 87, 1), width: 2),
+      border: Border.all(color: Colors.grey, width: 2),
       borderRadius: BorderRadius.circular(10));
 }
 
@@ -364,22 +345,22 @@ TextStyle unSelectedNum(BuildContext context) {
   return TextStyle(
     fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
     fontWeight: FontWeight.w600,
-    color: const Color.fromRGBO(14, 32, 87, 1),
+    color: Colors.grey,
   );
 }
 
 TextStyle selectedText(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 10),
     fontWeight: FontWeight.w600,
   );
 }
 
 TextStyle unSelectedText(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-    fontWeight: FontWeight.w500,
-  );
+      fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 10),
+      fontWeight: FontWeight.w500,
+      color: Colors.grey);
 }
 
 class AdaptiveTextSize {

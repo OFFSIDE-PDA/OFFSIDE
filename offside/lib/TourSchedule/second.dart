@@ -86,31 +86,31 @@ class _ChooseCategory extends State<ChooseCategory> {
           decoration: BoxDecoration(
               border: Border.all(
                   color: const Color.fromARGB(255, 55, 91, 199), width: 1),
-              borderRadius: BorderRadius.circular(15)),
-          child: Container(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: TextFormField(
-                controller: textEditingController,
-                decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    hintText: '검색어를 입력하세요',
-                    hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12)),
-                    filled: true,
-                    prefixIcon:
-                        const Icon(Icons.search, color: Colors.grey, size: 21),
-                    suffixIcon: InkWell(
-                      onTap: textFieldClear,
-                      child:
-                          const Icon(Icons.clear, color: Colors.grey, size: 21),
-                    )),
-                style: TextStyle(
+              borderRadius: BorderRadius.circular(10)),
+          child: TextFormField(
+            controller: textEditingController,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                fillColor: Colors.white,
+                hintText: '검색어를 입력하세요',
+                hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
                     fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 12)),
-                onFieldSubmitted: search,
-              ))),
+                        .getadaptiveTextSize(context, 11)),
+                filled: true,
+                prefixIcon:
+                    const Icon(Icons.search, color: Colors.grey, size: 23),
+                suffixIcon: InkWell(
+                  onTap: textFieldClear,
+                  child: const Icon(Icons.clear, color: Colors.grey, size: 23),
+                )),
+            style: TextStyle(
+                fontSize:
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 11),
+                fontWeight: FontWeight.w500),
+            onFieldSubmitted: search,
+          )),
       SizedBox(height: size.height * 0.02),
       Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -254,11 +254,11 @@ class _LocationList extends State<LocationList> {
                                     text: widget.tourInfo[widget.index].title,
                                     style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 12),
-                                      fontWeight: FontWeight.w600,
+                                          .getadaptiveTextSize(context, 10),
+                                      fontWeight: FontWeight.w500,
                                       color: Colors.black,
                                     ))))),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 8),
                     SizedBox(
                         width: widget.choose.size.width * 0.55,
                         child: Flexible(
@@ -269,10 +269,10 @@ class _LocationList extends State<LocationList> {
                                     text: widget.tourInfo[widget.index].addr,
                                     style: TextStyle(
                                         fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 11),
+                                            .getadaptiveTextSize(context, 9),
                                         fontWeight: FontWeight.w500,
-                                        color: const Color.fromARGB(
-                                            255, 80, 80, 80))))))
+                                        color: Color.fromARGB(
+                                            255, 163, 163, 163))))))
                   ])
             ]),
             children: [

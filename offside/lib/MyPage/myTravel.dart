@@ -31,11 +31,22 @@ class _MyTravel extends ConsumerState<MyTravel> {
         AppBar(),
         Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: Text("내 여행일정 확인",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 12)))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("내 여행일정 확인",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 12))),
+                Text("(길게 눌러서 삭제)",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 10))),
+              ],
+            )),
         FutureBuilder(
             future: user.getMyTour(uid: user.user!.uid),
             builder: ((context, snapshot) {
@@ -62,7 +73,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
                                                     fontSize:
                                                         const AdaptiveTextSize()
                                                             .getadaptiveTextSize(
-                                                                context, 13))),
+                                                                context, 12))),
                                             content:
                                                 const Text('여행일정을 삭제하시겠습니까?'),
                                             actions: [
@@ -301,9 +312,9 @@ class MatchBox extends StatelessWidget {
                           style: TextStyle(
                               decoration: TextDecoration.underline,
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 11),
-                              fontWeight: FontWeight.w600,
-                              color: const Color.fromRGBO(18, 32, 84, 1)))))
+                                  .getadaptiveTextSize(context, 10),
+                              fontWeight: FontWeight.w500,
+                              color: Color.fromARGB(255, 139, 139, 139)))))
             ]));
   }
 }
@@ -335,13 +346,13 @@ class TravelBox extends StatelessWidget {
                         Text(tour['title'],
                             style: TextStyle(
                                 fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 12),
+                                    .getadaptiveTextSize(context, 11),
                                 fontWeight: FontWeight.w600)),
                         SizedBox(width: size.width * 0.02),
                         Text(getType[tour['typeId']]!,
                             style: TextStyle(
                                 fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 11),
+                                    .getadaptiveTextSize(context, 10),
                                 fontWeight: FontWeight.w500,
                                 color: Colors.grey))
                       ],
@@ -350,7 +361,8 @@ class TravelBox extends StatelessWidget {
                     Text(tour['addr'],
                         style: TextStyle(
                             fontSize: const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 11),
+                                .getadaptiveTextSize(context, 10),
+                            color: Colors.grey,
                             fontWeight: FontWeight.w500))
                   ])
             ])));
