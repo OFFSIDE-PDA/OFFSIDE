@@ -1,9 +1,45 @@
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
-Future<List> getRoute(startx, starty, destx, desty) async {
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
+  }
+}
+
+Future<void> _showMyDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+          title: const Text('GPS 권한 허용하기', style: TextStyle(fontSize: 12)),
+          content: const Text('GPS 권한을 허용하시겠습니까?'),
+          actions: [
+            TextButton(
+                child: const Text('취소'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  //Navigator.of(context).pop();
+                }),
+            TextButton(
+                child: const Text('확인'),
+                onPressed: () {
+                  openAppSettings()
+                      .then((value) => Navigator.of(context).pop());
+                })
+          ]);
+    },
+  );
+}
+
+Future<List> getRoute(
+    startx, starty, destx, desty, BuildContext context) async {
   const String apiUrl =
       "https://apis-navi.kakaomobility.com/v1/waypoints/directions";
   const String restApiKey = "9b39d69c59df2f93e51f3dd3754b7b9c";
@@ -15,7 +51,7 @@ Future<List> getRoute(startx, starty, destx, desty) async {
   }
   if (await Permission.location.isDenied) {
     print('location denied');
-    openAppSettings();
+    _showMyDialog(context);
   }
 
   List points = [];

@@ -59,7 +59,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
                             itemCount: info.keys.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
-                                onDoubleTap: () {
+                                onLongPress: () {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {

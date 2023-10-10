@@ -21,19 +21,27 @@ class AdaptiveTextSize {
 }
 
 class _TourSchedule extends ConsumerState {
-  String selectedDate = '230825';
+  String selectedDate = '231021';
   String selectedMatch = 'One';
   var matchList = [];
   var selectedIdx = 0;
+  bool dateFlag = true;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var matchData = ref.watch(matchViewModelProvider);
     final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
-    selectedDate = matchData.getLatestDay(); //오늘 날짜로부터 가장 가까운 경기 일정
+    if (dateFlag) {
+      selectedDate = matchData.getLatestDay(); //오늘 날짜로부터 가장 가까운 경기 일정
+      setState(() {
+        dateFlag = false;
+      });
+    }
     var data = matchData.getMatchDateFromToday(); //오늘 날짜 이후에 있는 경기만 가져옴
     // 오늘 날짜 이후에 k1 또는 k2 경기가 없으면 경기 없음 리턴
+
+    //선택한 날짜의 k1, k2 경기를 matches에 저장
     var matches = [];
     if (data['date'].isNotEmpty) {
       if (data['k1'][selectedDate] != null &&
@@ -47,12 +55,15 @@ class _TourSchedule extends ConsumerState {
         matches = data['k2'][selectedDate];
       }
 
+      //선택한 날짜에 열리는 홈팀, 어웨이팀 이름 저장
       var tmp = [];
       for (var element in matches) {
         tmp.add(
             '${teamInfoList[element.team1].name}vs${teamInfoList[element.team2].name}');
       }
       matchList = tmp;
+
+      //선택한 날짜에 특정 경기 선택
       selectedMatch = selectedIdx <= matchList.length - 1
           ? matchList[selectedIdx]
           : matchList[0];
