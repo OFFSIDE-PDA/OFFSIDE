@@ -342,7 +342,7 @@ class _LocationList extends State<LocationList> {
                       onTap: () async {
                         // setState(() {
                         //   selectedList.add(widget.tourInfo[widget.index]);
-                        // });
+                        // // });
                         if (await NaviApi.instance.isKakaoNaviInstalled()) {
                           // 카카오내비 앱으로 길 안내하기, WGS84 좌표계 사용
                           await NaviApi.instance.navigate(

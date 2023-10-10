@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kakao_flutter_sdk_navi/kakao_flutter_sdk_navi.dart';
 import 'package:offside/TourSchedule/first.dart';
 import 'package:offside/TourSchedule/second.dart';
 import 'package:offside/TourSchedule/third.dart';
@@ -235,6 +236,50 @@ class _TourPlan extends ConsumerState<TourPlan> {
                 padding: const EdgeInsets.all(20),
                 child: const Center(child: CupertinoActivityIndicator()));
           }),
+        ),
+        InkWell(
+          onTap: () async {
+            if (await NaviApi.instance.isKakaoNaviInstalled()) {
+              // 카카오내비 앱으로 길 안내하기, WGS84 좌표계 사용
+              await NaviApi.instance.navigate(
+                destination: Location(
+                    name: teamInfoList[widget.home].stadium,
+                    x: teamInfoList[widget.home]
+                        .stadiumGeo
+                        .longitude
+                        .toString(),
+                    y: teamInfoList[widget.home]
+                        .stadiumGeo
+                        .latitude
+                        .toString()),
+                option: NaviOption(coordType: CoordType.wgs84),
+                // 경유지 추가
+                // viaList: [
+                //   Location(
+                //       name: '판교역 1번출구',
+                //       x: '127.111492',
+                //       y: '37.395225'),
+                // ],
+              );
+            } else {
+              // 카카오내비 설치 페이지로 이동
+              launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+            }
+          },
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Icon(Icons.near_me_outlined,
+                    size: 23, color: Color.fromRGBO(57, 142, 223, 1)),
+                const SizedBox(height: 3),
+                Text('Kakao Navi',
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11),
+                        fontWeight: FontWeight.w500,
+                        color: const Color.fromRGBO(57, 142, 223, 1)))
+              ]),
         )
       ]);
     } else if (step == 2) {
