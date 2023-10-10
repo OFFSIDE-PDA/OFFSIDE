@@ -31,14 +31,6 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
     return ListView(
       children: [
         AppBar(),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: Text('내 여행일정',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 13),
-                ))),
         Container(
             margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
