@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk_navi/kakao_flutter_sdk_navi.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
 import 'package:offside/data/api/map_api.dart';
 import 'package:offside/data/api/tour_api.dart';
@@ -338,20 +339,34 @@ class _LocationList extends State<LocationList> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedList.add(widget.tourInfo[widget.index]);
-                        });
+                      onTap: () async {
+                        // setState(() {
+                        //   selectedList.add(widget.tourInfo[widget.index]);
+                        // });
+                        if (await NaviApi.instance.isKakaoNaviInstalled()) {
+                          // 카카오내비 앱으로 길 안내하기, WGS84 좌표계 사용
+                          await NaviApi.instance.navigate(
+                            destination: Location(
+                                name: widget.tourInfo[widget.index].title,
+                                x: widget.tourInfo[widget.index].mapx,
+                                y: widget.tourInfo[widget.index].mapy),
+                            option: NaviOption(coordType: CoordType.wgs84),
+                            // 경유지 추가
+                            // viaList: [
+                            //   Location(
+                            //       name: '판교역 1번출구',
+                            //       x: '127.111492',
+                            //       y: '37.395225'),
+                            // ],
+                          );
+                        } else {
+                          // 카카오내비 설치 페이지로 이동
+                          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        margin: const EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: const Color.fromARGB(255, 27, 78, 145),
-                            ),
-                            borderRadius: BorderRadius.circular(10)),
+                        margin: const EdgeInsets.all(10),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -377,13 +392,7 @@ class _LocationList extends State<LocationList> {
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: const Color.fromARGB(255, 27, 78, 145),
-                            ),
-                            borderRadius: BorderRadius.circular(10)),
+                        margin: const EdgeInsets.all(10),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
