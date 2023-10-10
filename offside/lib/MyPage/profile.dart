@@ -172,7 +172,7 @@ class _EditState extends ConsumerState<Edit> {
                               ));
                     },
                     child: const Text(' 비밀번호 재설정하기')),
-
+              ),
               Center(
                 child: InkWell(
                   onTap: () {

@@ -16,42 +16,31 @@ class MyPage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         alignment: Alignment.topLeft,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 50,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-                  child: Text(
-                    "마이페이지",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 14),
-                      fontWeight: FontWeight.w800,
-                    ),
+        child: Expanded(
+          child: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    // height: topH,
+                    alignment: Alignment.center,
+                    child: (const Profile()),
                   ),
-                ),
-              ),
-              Container(
-                // height: topH,
-                alignment: Alignment.center,
-                child: (const Profile()),
-              ),
-              Container(
-                // height: midH,
-                alignment: Alignment.center,
-                child: (const Second()),
-              ),
-              Container(
-                // height: thrH,
-                alignment: Alignment.center,
-                child: (Third()),
-              ),
-              Container(alignment: Alignment.center, child: (const Under()))
-            ]),
+                  Container(
+                    // height: midH,
+                    alignment: Alignment.center,
+                    child: (const Second()),
+                  ),
+                  Container(
+                    // height: thrH,
+                    alignment: Alignment.center,
+                    child: (Third()),
+                  ),
+                  Container(alignment: Alignment.center, child: (const Under()))
+                ]),
+          ),
+        ),
       )),
     );
   }
