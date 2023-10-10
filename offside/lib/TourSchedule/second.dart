@@ -86,31 +86,31 @@ class _ChooseCategory extends State<ChooseCategory> {
           decoration: BoxDecoration(
               border: Border.all(
                   color: const Color.fromARGB(255, 55, 91, 199), width: 1),
-              borderRadius: BorderRadius.circular(15)),
-          child: Container(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: TextFormField(
-                controller: textEditingController,
-                decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    hintText: '검색어를 입력하세요',
-                    hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12)),
-                    filled: true,
-                    prefixIcon:
-                        const Icon(Icons.search, color: Colors.grey, size: 21),
-                    suffixIcon: InkWell(
-                      onTap: textFieldClear,
-                      child:
-                          const Icon(Icons.clear, color: Colors.grey, size: 21),
-                    )),
-                style: TextStyle(
+              borderRadius: BorderRadius.circular(10)),
+          child: TextFormField(
+            controller: textEditingController,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                fillColor: Colors.white,
+                hintText: '검색어를 입력하세요',
+                hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
                     fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 12)),
-                onFieldSubmitted: search,
-              ))),
+                        .getadaptiveTextSize(context, 11)),
+                filled: true,
+                prefixIcon:
+                    const Icon(Icons.search, color: Colors.grey, size: 23),
+                suffixIcon: InkWell(
+                  onTap: textFieldClear,
+                  child: const Icon(Icons.clear, color: Colors.grey, size: 23),
+                )),
+            style: TextStyle(
+                fontSize:
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 11),
+                fontWeight: FontWeight.w500),
+            onFieldSubmitted: search,
+          )),
       SizedBox(height: size.height * 0.02),
       Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -340,6 +340,19 @@ class _LocationList extends State<LocationList> {
                       onPressed: () {
                         setState(() {
                           selectedList.add(widget.tourInfo[widget.index]);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              //SnackBar 구현하는법 context는 위에 BuildContext에 있는 객체를 그대로 가져오면 됨.
+                              SnackBar(
+                                  content: Text(
+                                      '${widget.tourInfo[widget.index].title} 추가되었습니다.'), //snack bar의 내용. icon, button같은것도 가능하다.
+                                  duration: Duration(seconds: 5), //올라와있는 시간
+                                  action: SnackBarAction(
+                                    //추가로 작업을 넣기. 버튼넣기라 생각하면 편하다.
+                                    label: '취소', //버튼이름
+                                    onPressed: () {
+                                      selectedList.removeAt(widget.index);
+                                    },
+                                  ))); //버튼 눌렀을때.
                         });
                       },
                       child: Column(

@@ -334,7 +334,7 @@ BoxDecoration selectedBox() {
 
 BoxDecoration unSelectedBox() {
   return BoxDecoration(
-      border: Border.all(color: const Color.fromRGBO(14, 32, 87, 1), width: 2),
+      border: Border.all(color: Colors.grey, width: 2),
       borderRadius: BorderRadius.circular(10));
 }
 
@@ -350,22 +350,22 @@ TextStyle unSelectedNum(BuildContext context) {
   return TextStyle(
     fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 15),
     fontWeight: FontWeight.w600,
-    color: const Color.fromRGBO(14, 32, 87, 1),
+    color: Colors.grey,
   );
 }
 
 TextStyle selectedText(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 10),
     fontWeight: FontWeight.w600,
   );
 }
 
 TextStyle unSelectedText(BuildContext context) {
   return TextStyle(
-    fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 12),
-    fontWeight: FontWeight.w500,
-  );
+      fontSize: const AdaptiveTextSize().getadaptiveTextSize(context, 10),
+      fontWeight: FontWeight.w500,
+      color: Colors.grey);
 }
 
 class AdaptiveTextSize {
