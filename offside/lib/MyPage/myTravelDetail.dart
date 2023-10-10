@@ -33,22 +33,12 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
         AppBar(),
         Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                    child: Icon(Icons.card_travel,
-                        size: 22, color: Color.fromRGBO(91, 143, 255, 1))),
-                SizedBox(width: size.width * 0.01),
-                Text('My Travel',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 14),
-                        color: const Color.fromRGBO(33, 58, 135, 1)))
-              ],
-            )),
+            child: Text('내 여행일정',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize:
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 13),
+                ))),
         Container(
             margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),

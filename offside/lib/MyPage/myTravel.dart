@@ -31,11 +31,21 @@ class _MyTravel extends ConsumerState<MyTravel> {
         AppBar(),
         Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: Text("내 여행일정 확인",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 12)))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("내 여행일정 확인",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 12))),
+                Text("(길게 눌러서 삭제)",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 10))),
+              ],
+            )),
         FutureBuilder(
             future: user.getMyTour(uid: user.user!.uid),
             builder: ((context, snapshot) {
@@ -62,7 +72,7 @@ class _MyTravel extends ConsumerState<MyTravel> {
                                                     fontSize:
                                                         const AdaptiveTextSize()
                                                             .getadaptiveTextSize(
-                                                                context, 13))),
+                                                                context, 12))),
                                             content:
                                                 const Text('여행일정을 삭제하시겠습니까?'),
                                             actions: [

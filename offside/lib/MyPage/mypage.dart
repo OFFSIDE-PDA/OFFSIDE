@@ -19,21 +19,6 @@ class MyPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 50,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-                child: Text(
-                  "마이페이지",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: const AdaptiveTextSize()
-                        .getadaptiveTextSize(context, 14),
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-            ),
             Container(
               // height: topH,
               alignment: Alignment.center,
