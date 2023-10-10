@@ -355,6 +355,10 @@ class MatchBox extends StatelessWidget {
                                       Text(
                                         teamInfoList[info[index].team1].name,
                                         style: TextStyle(
+                                            color: Color(
+                                                teamInfoList[info[index].team1]
+                                                    .color[0]),
+                                            fontWeight: FontWeight.w500,
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
                                                     context, 12)),
@@ -367,16 +371,20 @@ class MatchBox extends StatelessWidget {
                                                   fontSize:
                                                       const AdaptiveTextSize()
                                                           .getadaptiveTextSize(
-                                                              context, 13)))
+                                                              context, 12)))
                                           : Text(' vs ',
                                               style: TextStyle(
                                                   fontSize:
                                                       const AdaptiveTextSize()
                                                           .getadaptiveTextSize(
-                                                              context, 13))),
+                                                              context, 12))),
                                       Text(
                                         teamInfoList[info[index].team2].name,
                                         style: TextStyle(
+                                            color: Color(
+                                                teamInfoList[info[index].team2]
+                                                    .color[0]),
+                                            fontWeight: FontWeight.w500,
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
                                                     context, 12)),
@@ -440,6 +448,16 @@ class FilteredBox extends StatelessWidget {
   final Size size;
   final MatchModel info;
 
+  String convertTime(date) {
+    var tmp = int.parse(date[0] + date[1]);
+    var returnString = '';
+    if (tmp < 12) {
+      returnString = (tmp + 12).toString();
+    }
+
+    return "$returnString:${date[2]}${date[3]}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -463,7 +481,7 @@ class FilteredBox extends StatelessWidget {
             getDate(info.data),
             style: TextStyle(
                 fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 13)),
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 12)),
           ),
           const SizedBox(height: 5),
           Row(
@@ -489,10 +507,10 @@ class FilteredBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    '${info.time}',
+                    convertTime(info.time),
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12)),
+                            .getadaptiveTextSize(context, 11)),
                   ),
                   SizedBox(
                       width: size.width * 0.08,
@@ -504,8 +522,10 @@ class FilteredBox extends StatelessWidget {
                         Text(
                           teamInfoList[info.team1!].name,
                           style: TextStyle(
+                              color: Color(teamInfoList[info.team1!].color[0]),
+                              fontWeight: FontWeight.w500,
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 13)),
+                                  .getadaptiveTextSize(context, 12)),
                           textAlign: TextAlign.center,
                         ),
                         getScore(info.data)
@@ -513,15 +533,18 @@ class FilteredBox extends StatelessWidget {
                                 ' ${info.score1} : ${info.score2} ',
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 13)),
+                                        .getadaptiveTextSize(context, 12)),
                               )
                             : Text(' vs ',
                                 style: TextStyle(
+                                    fontWeight: FontWeight.w500,
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 13))),
+                                        .getadaptiveTextSize(context, 12))),
                         Text(
                           teamInfoList[info.team2!].name,
                           style: TextStyle(
+                              color: Color(teamInfoList[info.team2!].color[0]),
+                              fontWeight: FontWeight.w500,
                               fontSize: const AdaptiveTextSize()
                                   .getadaptiveTextSize(context, 12)),
                           textAlign: TextAlign.center,
