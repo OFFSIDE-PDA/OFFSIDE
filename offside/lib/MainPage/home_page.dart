@@ -175,9 +175,9 @@ class StadiumTour extends StatelessWidget {
               "${convertTime(date)} 홈경기 관광 정보",
               style: TextStyle(
                   fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 11),
                   fontWeight: FontWeight.w600,
-                  color: const Color.fromARGB(255, 67, 67, 67)),
+                  color: Color.fromARGB(255, 100, 100, 100)),
             ),
           ),
           hSizedBox,
@@ -229,7 +229,7 @@ class StadiumTour extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 11),
+                                      .getadaptiveTextSize(context, 10),
                                   fontWeight: FontWeight.w500),
                             )
                           ]));

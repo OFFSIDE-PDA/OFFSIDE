@@ -92,19 +92,20 @@ class Top extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(date,
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 13))),
+                          .getadaptiveTextSize(context, 12))),
+              SizedBox(width: size.width * 0.04),
               Text(convertTime(time),
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 13))),
+                          .getadaptiveTextSize(context, 12))),
             ],
           ),
           Padding(
