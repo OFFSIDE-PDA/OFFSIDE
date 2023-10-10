@@ -217,7 +217,7 @@ class _TourList extends State<TourList> {
                           return AlertDialog(
                               backgroundColor: Colors.white,
                               surfaceTintColor: Colors.white,
-                              title: Text(selectedList[index].title,
+                              title: Text(selectedList[index].title!,
                                   style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
                                           .getadaptiveTextSize(context, 13),
@@ -256,7 +256,7 @@ class _TourList extends State<TourList> {
                           ),
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.network(selectedList[index].img,
+                            child: Image.network(selectedList[index].img!,
                                 width: widget.size.width * 0.18,
                                 errorBuilder: (context, url, error) => SizedBox(
                                     width: widget.size.width * 0.18,
@@ -283,7 +283,7 @@ class _TourList extends State<TourList> {
                               ],
                             ),
                           ),
-                          subtitle: Text(selectedList[index].addr,
+                          subtitle: Text(selectedList[index].addr!,
                               style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
                                       .getadaptiveTextSize(context, 10),
