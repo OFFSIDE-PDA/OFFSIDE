@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
-import 'package:offside/data/api/tour_api.dart';
+import 'package:offside/data/api/map_api.dart';
 import 'package:offside/data/model/team_info.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:offside/data/model/tour_model.dart';
 
 class MatchDate extends StatelessWidget {
   MatchDate(
@@ -26,53 +25,10 @@ class MatchDate extends StatelessWidget {
   getDate(date) =>
       '${date[0]}${date[1]}.${date[2]}${date[3]}.${date[4]}${date[5]}';
 
-  static const String apiUrl =
-      "https://apis-navi.kakaomobility.com/v1/waypoints/directions";
-  static const String restApiKey =
-      "9b39d69c59df2f93e51f3dd3754b7b9c"; // Replace with your Kakao API Key
-
-  Future<List> sendPostRequest() async {
-    var wayPoints = [];
-    for (var item in selectedList) {
-      wayPoints.add({"name": item.title, "x": item.mapx, "y": item.mapy});
-    }
-    List result = [];
-    for (var item in [1, 3, 7]) {
-      final Map<String, dynamic> requestData = {
-        "origin": {"x": "127.11024293202674", "y": "37.394348634049784"},
-        "destination": {
-          "x": info[home].stadiumGeo.longitude,
-          "y": info[home].stadiumGeo.latitude
-        },
-        "waypoints": wayPoints,
-        "priority": "RECOMMEND",
-        "car_type": item
-      };
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "KakaoAK $restApiKey",
-        },
-        body: json.encode(requestData),
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        int hour = data["routes"][0]["summary"]["duration"] / 60;
-        int min = data["routes"][0]["summary"]["duration"] % 60;
-        if (hour == 0) {
-          result.add("$min분");
-        } else {
-          result.add("$hour시간 $min분");
-        }
-      }
-    }
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
-    duration = sendPostRequest();
+    duration = sendPostRequest(selectedList, info[home].stadiumGeo.longitude,
+        info[home].stadiumGeo.latitude);
     return Column(
       children: [
         Container(
@@ -84,14 +40,14 @@ class MatchDate extends StatelessWidget {
                     color: const Color.fromARGB(255, 48, 84, 190), width: 1),
                 borderRadius: BorderRadius.circular(10)),
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(children: [
                     Text(
                       '20${getDate(date)}',
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 12),
+                              .getadaptiveTextSize(context, 11),
                           fontWeight: FontWeight.w500,
                           color: const Color.fromARGB(255, 83, 83, 83)),
                     ),
@@ -102,7 +58,7 @@ class MatchDate extends StatelessWidget {
                       info[home].stadium,
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 11),
+                              .getadaptiveTextSize(context, 10),
                           fontWeight: FontWeight.w500,
                           color: const Color.fromARGB(255, 121, 121, 121)),
                     )
@@ -123,8 +79,9 @@ class MatchDate extends StatelessWidget {
                             ),
                             Text(info[home].middleName,
                                 style: TextStyle(
+                                    color: Color(info[home].color[0]),
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 12),
+                                        .getadaptiveTextSize(context, 11),
                                     fontWeight: FontWeight.w500),
                                 textAlign: TextAlign.center),
                           ],
@@ -133,7 +90,7 @@ class MatchDate extends StatelessWidget {
                         Text(' vs ',
                             style: TextStyle(
                                 fontSize: const AdaptiveTextSize()
-                                    .getadaptiveTextSize(context, 14),
+                                    .getadaptiveTextSize(context, 12),
                                 fontWeight: FontWeight.w600)),
                         const SizedBox(width: 15),
                         Column(
@@ -149,8 +106,9 @@ class MatchDate extends StatelessWidget {
                               ),
                               Text(info[away].middleName,
                                   style: TextStyle(
+                                      color: Color(info[away].color[0]),
                                       fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 12),
+                                          .getadaptiveTextSize(context, 11),
                                       fontWeight: FontWeight.w500),
                                   textAlign: TextAlign.center)
                             ])
@@ -164,43 +122,67 @@ class MatchDate extends StatelessWidget {
               return Container(
                   margin: EdgeInsets.symmetric(
                       horizontal: size.width * 0.07,
-                      vertical: size.width * 0.07),
-                  child: Row(children: [
-                    const Text("예상 소요시간"),
-                    const SizedBox(width: 10),
-                    Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey, width: 1.5),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(children: [
+                      vertical: size.height * 0.03),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.schedule,
+                                size: 18, color: Colors.grey),
+                            const SizedBox(width: 5),
+                            Text(
+                              "예상 소요시간",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey,
+                                fontSize: const AdaptiveTextSize()
+                                    .getadaptiveTextSize(context, 10),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 10),
+                        Row(children: [
                           Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(14, 32, 87, 1),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: const Row(
+                              child: Row(
                                 children: [
-                                  Icon(Icons.directions_car,
-                                      color: Colors.white),
+                                  Icon(
+                                    Icons.directions_car,
+                                    color: Color.fromRGBO(14, 32, 87, 1),
+                                  ),
+                                  SizedBox(width: 7),
                                   Text("자동차",
-                                      style: TextStyle(color: Colors.white))
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(14, 32, 87, 1),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: const AdaptiveTextSize()
+                                              .getadaptiveTextSize(
+                                                  context, 11)))
                                 ],
                               )),
                           Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(info[0]))
-                        ]))
-                  ]));
+                              child: Text(
+                                info[0],
+                                style: TextStyle(
+                                    color: Color.fromRGBO(14, 32, 87, 1),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 11)),
+                              ))
+                        ])
+                      ]));
             } else if (snapshot.hasError) {
               return const Text('error');
             }
-            return const Text('No data');
+            return const Center(child: CupertinoActivityIndicator());
           },
         ),
       ],
@@ -221,7 +203,7 @@ class _TourList extends State<TourList> {
   Widget build(BuildContext context) {
     return Container(
         height: selectedList.length * 80,
-        margin: const EdgeInsets.only(top: 15),
+        margin: const EdgeInsets.only(top: 2),
         child: ReorderableListView(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             children: <Widget>[
@@ -233,7 +215,9 @@ class _TourList extends State<TourList> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                              title: Text(selectedList[index].title,
+                              backgroundColor: Colors.white,
+                              surfaceTintColor: Colors.white,
+                              title: Text(selectedList[index].title!,
                                   style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
                                           .getadaptiveTextSize(context, 13),
@@ -266,18 +250,21 @@ class _TourList extends State<TourList> {
                                   width: 1,
                                   color: Color.fromARGB(255, 207, 207, 207)))),
                       child: ListTile(
+                          trailing: ReorderableDragStartListener(
+                            index: index,
+                            child: const Icon(Icons.drag_handle),
+                          ),
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.network(selectedList[index].img,
+                            child: Image.network(selectedList[index].img!,
                                 width: widget.size.width * 0.18,
                                 errorBuilder: (context, url, error) => SizedBox(
                                     width: widget.size.width * 0.18,
                                     child: Image.asset(
-                                        'assets/images/mainpage/logo.png'))),
+                                        'images/mainpage/logo.png'))),
                           ),
                           title: Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: 4, right: 10),
+                            padding: const EdgeInsets.only(bottom: 7, right: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -285,7 +272,7 @@ class _TourList extends State<TourList> {
                                 Text('${selectedList[index].title}',
                                     style: TextStyle(
                                         fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 12),
+                                            .getadaptiveTextSize(context, 11),
                                         fontWeight: FontWeight.w600)),
                                 Text('${getType[selectedList[index].typeId]}',
                                     style: TextStyle(
@@ -296,10 +283,10 @@ class _TourList extends State<TourList> {
                               ],
                             ),
                           ),
-                          subtitle: Text(selectedList[index].addr,
+                          subtitle: Text(selectedList[index].addr!,
                               style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 11),
+                                      .getadaptiveTextSize(context, 10),
                                   fontWeight: FontWeight.w500,
                                   color: Colors.grey)))),
                 )
@@ -313,5 +300,13 @@ class _TourList extends State<TourList> {
                 selectedList.insert(newIndex, item);
               });
             }));
+  }
+}
+
+class AdaptiveTextSize {
+  const AdaptiveTextSize();
+  getadaptiveTextSize(BuildContext context, dynamic value) {
+    // 720 is medium screen height
+    return (value / 720) * MediaQuery.of(context).size.height;
   }
 }

@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offside/MainPage/home_page.dart';
 import 'package:offside/Match/match.dart';
 import 'package:offside/TourSchedule/tourSchedule.dart';
 import '../Kleague/kLeague.dart';
-import 'package:offside/data/repository/auth_repository.dart';
-import '../community/community.dart';
 import '../MyPage/mypage.dart';
+import 'package:offside/page_view_model.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends ConsumerStatefulWidget {
   const MainPage({super.key});
 
   @override
-  State<MainPage> createState() => _Root();
+  _Root createState() => _Root();
 }
 
-class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
+class _Root extends ConsumerState with SingleTickerProviderStateMixin {
   final _navigatorKeyList =
       List.generate(5, (index) => GlobalKey<NavigatorState>());
-  int _currentIndex = 2;
-
-  void onPressed() {
-    authRepositoryProvider.signOut();
-    Navigator.pop(context);
-  }
+  late TabController _tabController;
 
   final List _pages = [
     const KLeague(),
@@ -34,129 +29,139 @@ class _Root extends State<MainPage> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(vsync: this, length: 5);
   }
 
   @override
   Widget build(BuildContext context) {
+    _tabController.index = ref.watch(counterPageProvider)[0];
     return WillPopScope(
         onWillPop: () async {
-          return !(await _navigatorKeyList[_currentIndex]
+          return !(await _navigatorKeyList[_tabController.index]
               .currentState!
               .maybePop());
         },
         child: DefaultTabController(
           initialIndex: 2,
           length: 5,
-          child: SafeArea(
-            child: Scaffold(
-              appBar: _currentIndex == 2
-                  ? AppBar(
+          child: Scaffold(
+            appBar: _tabController.index == 2
+                ? PreferredSize(
+                    preferredSize: const Size.fromHeight(50),
+                    child: AppBar(
                       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                       leadingWidth: 0,
                       titleSpacing: 0,
-                      title: Image.asset(
-                        "assets/images/mainpage/logo.png",
-                        width: 120,
-                        height: double.maxFinite,
-                        fit: BoxFit.fitWidth,
-                      ),
+                      title: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Image.asset(
+                            "assets/images/mainpage/logo.png",
+                            height: 35,
+                          )),
                       shape: const Border(
                         bottom: BorderSide(
                           color: Colors.grey,
                           width: 1,
                         ),
                       ),
-                    )
-                  : null,
-              body: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                children: _pages.map(
-                  (page) {
-                    int index = _pages.indexOf(page);
-                    return CustomNavigator(
-                      page: page,
-                      navigatorKey: _navigatorKeyList[index],
-                    );
-                  },
-                ).toList(),
-              ),
-              bottomNavigationBar: SizedBox(
-                height: 50,
-                child: TabBar(
-                  indicatorColor: const Color.fromRGBO(14, 32, 87, 1),
-                  labelColor: const Color.fromRGBO(14, 32, 87, 1),
-                  unselectedLabelColor: Colors.grey,
-                  labelStyle: const TextStyle(fontSize: 10, letterSpacing: 1.5),
-                  labelPadding: EdgeInsets.zero,
-                  automaticIndicatorColorAdjustment: true,
-                  onTap: (index) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  tabs: [
-                    Tab(
-                      text: 'K리그',
-                      icon: Image.asset(
-                        'assets/images/navigationbar/kLeague.png',
-                        width: 20,
-                        height: 20,
-                        color: _currentIndex == 0
-                            ? const Color.fromRGBO(14, 32, 87, 1)
-                            : Colors.grey,
-                      ),
-                      iconMargin: const EdgeInsets.only(bottom: 5.0),
                     ),
-                    Tab(
-                      text: '여행 일정',
-                      icon: Image.asset(
-                        'assets/images/navigationbar/tour_schedule.png',
-                        width: 20,
-                        height: 20,
-                        color: _currentIndex == 1
-                            ? const Color.fromRGBO(14, 32, 87, 1)
-                            : Colors.grey,
-                      ),
-                      iconMargin: const EdgeInsets.only(bottom: 5.0),
-                    ),
-                    Tab(
-                      text: '홈',
-                      icon: Image.asset(
-                        'assets/images/navigationbar/home.png',
-                        width: 20,
-                        height: 20,
-                        color: _currentIndex == 2
-                            ? const Color.fromRGBO(14, 32, 87, 1)
-                            : Colors.grey,
-                      ),
-                      iconMargin: const EdgeInsets.only(bottom: 5.0),
-                    ),
-                    Tab(
-                      text: '경기일정',
-                      icon: Image.asset(
-                        'assets/images/navigationbar/match_schedule.png',
-                        width: 20,
-                        height: 20,
-                        color: _currentIndex == 3
-                            ? const Color.fromRGBO(14, 32, 87, 1)
-                            : Colors.grey,
-                      ),
-                      iconMargin: const EdgeInsets.only(bottom: 5.0),
-                    ),
-                    Tab(
-                      text: '마이페이지',
-                      icon: Image.asset(
-                        'assets/images/navigationbar/mypage.png',
-                        width: 20,
-                        height: 20,
-                        color: _currentIndex == 4
-                            ? const Color.fromRGBO(14, 32, 87, 1)
-                            : Colors.grey,
-                      ),
-                      iconMargin: const EdgeInsets.only(bottom: 5.0),
-                    ),
-                  ],
+                  )
+                : null,
+            body: Container(
+              color: Colors.transparent,
+              child: SafeArea(
+                child: TabBarView(
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: _pages.map(
+                    (page) {
+                      int index = _pages.indexOf(page);
+                      return CustomNavigator(
+                        page: page,
+                        navigatorKey: _navigatorKeyList[index],
+                      );
+                    },
+                  ).toList(),
                 ),
+              ),
+            ),
+            bottomNavigationBar: SizedBox(
+              height: 50,
+              child: TabBar(
+                controller: _tabController,
+                indicatorColor: const Color.fromRGBO(14, 32, 87, 1),
+                labelColor: const Color.fromRGBO(14, 32, 87, 1),
+                unselectedLabelColor: Colors.grey,
+                labelStyle: const TextStyle(fontSize: 10, letterSpacing: 1.5),
+                labelPadding: EdgeInsets.zero,
+                automaticIndicatorColorAdjustment: true,
+                onTap: (index) {
+                  ref
+                      .read(counterPageProvider.notifier)
+                      .update((state) => [index, null]);
+                },
+                tabs: [
+                  Tab(
+                    text: 'K리그',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/kLeague.png',
+                      width: 20,
+                      height: 20,
+                      color: _tabController.index == 0
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
+                  ),
+                  Tab(
+                    text: '여행 일정',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/tour_schedule.png',
+                      width: 20,
+                      height: 20,
+                      color: _tabController.index == 1
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
+                  ),
+                  Tab(
+                    text: '홈',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/home.png',
+                      width: 20,
+                      height: 20,
+                      color: _tabController.index == 2
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
+                  ),
+                  Tab(
+                    text: '경기일정',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/match_schedule.png',
+                      width: 20,
+                      height: 20,
+                      color: _tabController.index == 3
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
+                  ),
+                  Tab(
+                    text: '마이페이지',
+                    icon: Image.asset(
+                      'assets/images/navigationbar/mypage.png',
+                      width: 20,
+                      height: 20,
+                      color: _tabController.index == 4
+                          ? const Color.fromRGBO(14, 32, 87, 1)
+                          : Colors.grey,
+                    ),
+                    iconMargin: const EdgeInsets.only(bottom: 5.0),
+                  ),
+                ],
               ),
             ),
           ),

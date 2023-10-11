@@ -26,6 +26,7 @@ class MatchDataRepository {
 
         result[i][j]["data"] = data;
         result[i][j]["time"] = time;
+        result[i][j]["league"] = i + 1;
       }
     }
     return result;
@@ -34,7 +35,7 @@ class MatchDataRepository {
   ///`year` 년도의 모든 k리그 1,2 경기 획득
   Future<List<RecordModel>> getRecord(int league, int team1, int team2) async {
     Map<String, dynamic>? result =
-        await _matchDataSource.getRecord(1, team1, team2);
+        await _matchDataSource.getRecord(league, team1, team2);
 
     //TODO : 함수 호출할때 알맞은 리그값 넘겨받도록 호출부에서 변경
     List<RecordModel> recordData = [];

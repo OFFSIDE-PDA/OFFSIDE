@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:offside/data/view/match_view_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MatchDetail extends StatelessWidget {
   const MatchDetail(
@@ -11,16 +12,20 @@ class MatchDetail extends StatelessWidget {
       required this.time,
       required this.team1,
       required this.team2,
+      this.matchId,
       this.score1,
-      this.score2})
+      this.score2,
+      this.league})
       : super(key: key);
 
   final String date;
   final String time;
   final int team1;
   final int team2;
+  final int? matchId;
   final int? score1;
   final int? score2;
+  final int? league;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,7 +40,7 @@ class MatchDetail extends StatelessWidget {
             team2: team2,
             score1: score1,
             score2: score2),
-        Bottom(team1: team1, team2: team2)
+        Bottom(team1: team1, team2: team2, matchId: matchId!, league: league!)
       ],
     );
   }
@@ -87,19 +92,20 @@ class Top extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(date,
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 13))),
+                          .getadaptiveTextSize(context, 12))),
+              SizedBox(width: size.width * 0.04),
               Text(convertTime(time),
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: const AdaptiveTextSize()
-                          .getadaptiveTextSize(context, 13))),
+                          .getadaptiveTextSize(context, 12))),
             ],
           ),
           Padding(
@@ -121,6 +127,7 @@ class Top extends ConsumerWidget {
                     Text(
                       teamInfoList[team1].middleName,
                       style: TextStyle(
+                          color: Color(teamInfoList[team1].color[0]),
                           fontWeight: FontWeight.w600,
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 12)),
@@ -139,7 +146,7 @@ class Top extends ConsumerWidget {
                         ' vs ',
                         style: TextStyle(
                             fontSize: const AdaptiveTextSize()
-                                .getadaptiveTextSize(context, 14),
+                                .getadaptiveTextSize(context, 13),
                             fontWeight: FontWeight.w600),
                       ),
                 Column(
@@ -154,6 +161,7 @@ class Top extends ConsumerWidget {
                     Text(
                       teamInfoList[team2].middleName,
                       style: TextStyle(
+                          color: Color(teamInfoList[team2].color[0]),
                           fontWeight: FontWeight.w600,
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 11)),
@@ -192,7 +200,7 @@ class Top extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Icon(Icons.location_on,
-                          size: 20, color: Color.fromRGBO(18, 32, 84, 1)),
+                          size: 20, color: Color.fromRGBO(50, 77, 177, 1)),
                       SizedBox(
                         width: size.width * 0.01,
                       ),
@@ -214,20 +222,23 @@ class Top extends ConsumerWidget {
 }
 
 class Bottom extends ConsumerWidget {
-  const Bottom({
-    super.key,
-    required this.team1,
-    required this.team2,
-  });
+  const Bottom(
+      {super.key,
+      required this.team1,
+      required this.team2,
+      required this.matchId,
+      required this.league});
 
   final int team1;
   final int team2;
+  final int matchId;
+  final int league;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final teamInfoList = ref.read(teamInfoViewModelProvider).teamInfoList;
     final recordData =
-        ref.read(matchViewModelProvider).getRecord(1, team1, team2);
+        ref.read(matchViewModelProvider).getRecord(league, team1, team2);
     return (FutureBuilder(
         future: recordData,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -252,7 +263,7 @@ class Bottom extends ConsumerWidget {
                                 color: Colors.white,
                                 fontSize: const AdaptiveTextSize()
                                     .getadaptiveTextSize(context, 14),
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.w600),
                           ),
                           const Divider(
                             color: Colors.white, // 색상 지정
@@ -306,7 +317,7 @@ class Bottom extends ConsumerWidget {
                                 color: Colors.white,
                                 fontSize: const AdaptiveTextSize()
                                     .getadaptiveTextSize(context, 14),
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.w600),
                           ),
                           const Divider(
                             color: Colors.white, // 색상 지정
@@ -352,14 +363,19 @@ class Bottom extends ConsumerWidget {
                       ),
                       Center(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            launchUrl(
+                              Uri.parse(
+                                  "https://www.kleague.com/match.do?year=2023&leagueId=$league&gameId=$matchId&meetSeq=$league&startTabNum=1"),
+                            );
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Colors.white), // 배경색 설정
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
+                                borderRadius: BorderRadius.circular(15.0),
                                 side: const BorderSide(
                                   color: Colors.white,
                                 ),
@@ -371,7 +387,7 @@ class Bottom extends ConsumerWidget {
                             style: TextStyle(
                               color: Color.fromRGBO(18, 32, 84, 1),
                               // 텍스트 색상 변경 (흰색 배경 위에 흰색 텍스트는 보이지 않기 때문에 색상 변경)
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),

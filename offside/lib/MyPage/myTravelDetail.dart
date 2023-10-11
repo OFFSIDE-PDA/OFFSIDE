@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/MyPage/myTravel.dart';
 import 'package:offside/TourSchedule/tourPlan.dart';
 import 'package:offside/data/api/tour_api.dart';
+import 'package:offside/data/model/tour_model.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 
@@ -23,35 +25,12 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
     final teamInfoList = ref.watch(teamInfoViewModelProvider).teamInfoList;
     final user = ref.read(userViewModelProvider);
     var matchDate = widget.info.keys.first;
+
     var match = widget.info[matchDate]['match'];
     var tour = widget.info[matchDate]['tour'];
     return ListView(
       children: [
         AppBar(),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                  child: Icon(
-                    Icons.card_travel,
-                    size: 22,
-                    color: Color.fromRGBO(91, 143, 255, 1),
-                  ),
-                ),
-                SizedBox(
-                  width: size.width * 0.01,
-                ),
-                Text('My Travel',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 14),
-                        color: Color.fromRGBO(33, 58, 135, 1))),
-              ],
-            )),
         Container(
             margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
@@ -67,16 +46,16 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                     children: [
                       Text('20${getDate(matchDate)}',
                           style: TextStyle(
-                              color: Color.fromARGB(255, 53, 53, 53),
+                              color: const Color.fromARGB(255, 53, 53, 53),
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 12))),
-                      SizedBox(height: 5),
+                                  .getadaptiveTextSize(context, 11))),
+                      const SizedBox(height: 5),
                       Text(teamInfoList[match['home']].stadium,
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 11),
-                              color: Color.fromARGB(255, 65, 65, 65)))
+                                  .getadaptiveTextSize(context, 10),
+                              color: Color.fromARGB(255, 119, 119, 119)))
                     ],
                   ),
                   Row(
@@ -93,9 +72,11 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                             child: Image.network(
                                 teamInfoList[match['home']].logoImg),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(teamInfoList[match['home']].middleName,
                               style: TextStyle(
+                                  color: Color(
+                                      teamInfoList[match['home']].color[0]),
                                   fontWeight: FontWeight.w600,
                                   fontSize: const AdaptiveTextSize()
                                       .getadaptiveTextSize(context, 11)))
@@ -106,8 +87,8 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                           child: Text(' vs ',
                               style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
-                                      .getadaptiveTextSize(context, 13),
-                                  fontWeight: FontWeight.w600))),
+                                      .getadaptiveTextSize(context, 12),
+                                  fontWeight: FontWeight.w500))),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,9 +99,11 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                             child: Image.network(
                                 teamInfoList[match['away']].logoImg),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(teamInfoList[match['away']].middleName,
                               style: TextStyle(
+                                  color: Color(
+                                      teamInfoList[match['away']].color[0]),
                                   fontWeight: FontWeight.w600,
                                   fontSize: const AdaptiveTextSize()
                                       .getadaptiveTextSize(context, 11)))
@@ -132,31 +115,46 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
         Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 3.0),
-                  child: Icon(
-                    Icons.near_me,
-                    size: 20,
-                    color: Color.fromRGBO(66, 66, 66, 1),
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 3.0),
+                      child: Icon(
+                        Icons.near_me,
+                        size: 20,
+                        color: Color.fromRGBO(66, 66, 66, 1),
+                      ),
+                    ),
+                    SizedBox(
+                      width: size.width * 0.01,
+                    ),
+                    Text('My Tourlist',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: const AdaptiveTextSize()
+                                .getadaptiveTextSize(context, 12),
+                            color: const Color.fromRGBO(66, 66, 66, 1))),
+                  ],
+                ),
+                Text(
+                  "(길게 눌러서 삭제)",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: const AdaptiveTextSize()
+                        .getadaptiveTextSize(context, 9),
                   ),
-                ),
-                SizedBox(
-                  width: size.width * 0.01,
-                ),
-                Text('My Tourlist',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12),
-                        color: Color.fromRGBO(66, 66, 66, 1))),
+                )
               ],
             )),
         Container(
-            height: tour.length * 80,
+            height: tour.length.toDouble() * 80,
             margin: const EdgeInsets.only(top: 5),
             child: ReorderableListView(
+                physics: const NeverScrollableScrollPhysics(),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 children: <Widget>[
@@ -168,6 +166,8 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  surfaceTintColor: Colors.white,
                                   title: Text(tour[index]['title'],
                                       style: TextStyle(
                                           fontSize: const AdaptiveTextSize()
@@ -204,6 +204,10 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                                       color:
                                           Color.fromARGB(255, 207, 207, 207)))),
                           child: ListTile(
+                              trailing: ReorderableDragStartListener(
+                                index: index,
+                                child: const Icon(Icons.drag_handle),
+                              ),
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.network(tour[index]['img'],
@@ -220,36 +224,34 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                               ),
                               title: Padding(
                                 padding:
-                                    const EdgeInsets.only(right: 15, bottom: 4),
+                                    const EdgeInsets.only(right: 10, bottom: 6),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text('${tour[index]['title']}',
-                                        style: TextStyle(
-                                            fontSize: const AdaptiveTextSize()
-                                                .getadaptiveTextSize(
-                                                    context, 12),
-                                            fontWeight: FontWeight.w600)),
-                                    Text('${getType[tour[index]['typeId']]}',
+                                    Text(tour[index]['title'],
                                         style: TextStyle(
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
                                                     context, 11),
+                                            fontWeight: FontWeight.w500)),
+                                    Text('${getType[tour[index]['typeId']]}',
+                                        style: TextStyle(
+                                            fontSize: const AdaptiveTextSize()
+                                                .getadaptiveTextSize(
+                                                    context, 10),
                                             fontWeight: FontWeight.w500,
-                                            color: const Color.fromARGB(
-                                                255, 107, 107, 107))),
+                                            color: Colors.grey)),
                                   ],
                                 ),
                               ),
                               subtitle: Text(tour[index]['addr'],
                                   style: TextStyle(
                                       fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 11),
+                                          .getadaptiveTextSize(context, 10),
                                       fontWeight: FontWeight.w500,
-                                      color: const Color.fromARGB(
-                                          255, 85, 85, 85))))),
+                                      color: Colors.grey)))),
                     )
                 ],
                 onReorder: (int oldIndex, int newIndex) {
@@ -268,6 +270,8 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
                           title: Text('20${getDate(matchDate)}',
                               style: TextStyle(
                                   fontSize: const AdaptiveTextSize()
@@ -286,29 +290,42 @@ class _MyTravelDetail extends ConsumerState<MyTravelDetail> {
                                 }),
                             TextButton(
                                 child: const Text('확인'),
-                                onPressed: () {
-                                  tour.isNotEmpty
-                                      ? updateTourPlan(
-                                              user.user!.uid,
-                                              tour,
-                                              matchDate,
-                                              match['home'],
-                                              match['away'],
-                                              match['time'],
-                                              widget.docUid)
-                                          .then((value) =>
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(saveSnackBar))
-                                      : deleteTourPlan(
-                                              user.user!.uid, widget.docUid)
-                                          .then((value) => ScaffoldMessenger.of(
-                                                  context)
-                                              .showSnackBar(deleteSnackBar));
-
-                                  Navigator.of(context).pop();
+                                onPressed: () async {
+                                  if (tour.isNotEmpty) {
+                                    await updateTourPlan(
+                                            user.user!.uid,
+                                            tour,
+                                            matchDate,
+                                            match['home'],
+                                            match['away'],
+                                            match['time'],
+                                            widget.docUid)
+                                        .then((value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(saveSnackBar);
+                                      Navigator.of(context).pop();
+                                    });
+                                  } else {
+                                    await deleteTourPlan(
+                                            user.user!.uid, widget.docUid)
+                                        .then((value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(deleteSnackBar);
+                                      Navigator.of(context).pop();
+                                    });
+                                  }
                                 })
                           ]);
-                    });
+                    }).then((value) {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyTravel()))
+                      .then((value) {
+                    setState(() {});
+                  });
+                });
               },
               style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(), //<-- SEE HERE

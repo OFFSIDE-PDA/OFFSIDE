@@ -101,8 +101,7 @@ class MatchViewModel extends ChangeNotifier {
     _allMatchViewModel = {
       'all': [kLeague1, kLeague2],
       'week': [week1, week2],
-      'home': homeTeams(matches),
-      'random': matches[today % matches.length]
+      'home': homeTeams(matches)
     };
     notifyListeners();
   }
@@ -122,6 +121,40 @@ class MatchViewModel extends ChangeNotifier {
       date.add(item[0].data);
     }
     for (var item in data2) {
+      var tmp = [];
+      for (var element in item) {
+        tmp.add(element);
+      }
+      k2[item[0].data] = tmp;
+      date.add(item[0].data);
+    }
+    date = date.toSet().toList();
+    date.sort();
+    return {'date': date, 'k1': k1, 'k2': k2};
+  }
+
+  getMatchDateFromToday() {
+    int today = getToday();
+    var data1 = _allMatchViewModel?['all']?[0];
+    var data2 = _allMatchViewModel?['all']?[1];
+    Map<String, dynamic> k1 = {};
+    Map<String, dynamic> k2 = {};
+    var date = [];
+    for (var item in data1) {
+      if (today > int.parse(item[0].data)) {
+        continue;
+      }
+      var tmp = [];
+      for (var element in item) {
+        tmp.add(element);
+      }
+      k1[item[0].data] = tmp;
+      date.add(item[0].data);
+    }
+    for (var item in data2) {
+      if (today > int.parse(item[0].data)) {
+        continue;
+      }
       var tmp = [];
       for (var element in item) {
         tmp.add(element);
@@ -158,15 +191,40 @@ class MatchViewModel extends ChangeNotifier {
     }
   }
 
-  getRandomMatch() {
-    return _allMatchViewModel?['random'];
+  getLatestDay() {
+    var data = getMatchDate();
+    var date = data['date'];
+
+    var today = getToday();
+    var tmp = [];
+    for (var element in date) {
+      if (int.parse(element) >= today) {
+        tmp.add(element);
+      }
+    }
+
+    return tmp[0];
+  }
+
+  ///이번주 경기중에 랜덤 매치 출력
+  MatchModel getRandomMatch() {
+    List<MatchModel> temp = [];
+    for (var i = 0; i < 2; i++) {
+      for (List<MatchModel> element in _allMatchViewModel?['week']![i]) {
+        temp.addAll([...element]);
+      }
+    }
+    temp.shuffle();
+    return temp.first;
   }
 
   homeTeams(List matches) {
     List<dynamic> tmp = [];
+
     for (var element in matches) {
-      tmp.add(element[0]);
+      if (element[2] == 1) tmp.add(element[0]);
     }
+
     return tmp.toSet().toList();
   }
 

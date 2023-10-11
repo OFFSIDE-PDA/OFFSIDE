@@ -54,4 +54,8 @@ class AuthRepository {
       {required String email, required String nickname}) async {
     await _authDataSource.updateUserInfo(email: email, nickname: nickname);
   }
+
+  Future<void> accountCancellation() async {
+    await _authDataSource.accountCancellation();
+  }
 }

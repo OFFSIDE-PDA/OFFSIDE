@@ -5,6 +5,7 @@ import 'package:offside/data/api/tour_api.dart';
 import 'package:offside/data/model/team_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:offside/data/model/tour_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TeamInfoPage extends ConsumerStatefulWidget {
@@ -81,14 +82,14 @@ class _Recommended extends State<Recommended> {
           Text("추천 관광지",
               style: TextStyle(
                   fontSize:
-                      const AdaptiveTextSize().getadaptiveTextSize(context, 13),
-                  fontWeight: FontWeight.bold)),
+                      const AdaptiveTextSize().getadaptiveTextSize(context, 12),
+                  fontWeight: FontWeight.w600)),
           const Divider(
             thickness: 1,
             color: Colors.grey,
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(0, 3, 0, 5),
+            margin: const EdgeInsets.fromLTRB(0, 3, 0, 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,11 +111,13 @@ class _Recommended extends State<Recommended> {
                             const Color.fromRGBO(214, 223, 255, 1))
                         : MaterialStateProperty.all<Color>(Colors.white),
                   ),
-                  child: const Text(
+                  child: Text(
                     "관광지",
                     style: TextStyle(
                         color: Color.fromRGBO(18, 32, 84, 1),
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.w600,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11)),
                   ),
                 ),
                 SizedBox(
@@ -137,11 +140,13 @@ class _Recommended extends State<Recommended> {
                             const Color.fromRGBO(214, 223, 255, 1))
                         : MaterialStateProperty.all<Color>(Colors.white),
                   ),
-                  child: const Text(
+                  child: Text(
                     "문화시설",
                     style: TextStyle(
                         color: Color.fromRGBO(18, 32, 84, 1),
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.w600,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11)),
                   ),
                 ),
                 SizedBox(
@@ -164,11 +169,13 @@ class _Recommended extends State<Recommended> {
                             const Color.fromRGBO(214, 223, 255, 1))
                         : MaterialStateProperty.all<Color>(Colors.white),
                   ),
-                  child: const Text(
+                  child: Text(
                     "숙박",
                     style: TextStyle(
                         color: Color.fromRGBO(18, 32, 84, 1),
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.w600,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11)),
                   ),
                 ),
                 SizedBox(
@@ -191,11 +198,13 @@ class _Recommended extends State<Recommended> {
                             const Color.fromRGBO(214, 223, 255, 1))
                         : MaterialStateProperty.all<Color>(Colors.white),
                   ),
-                  child: const Text(
+                  child: Text(
                     "음식점",
                     style: TextStyle(
                         color: Color.fromRGBO(18, 32, 84, 1),
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.w600,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11)),
                   ),
                 )
               ],
@@ -240,6 +249,7 @@ class _PlaceListState extends State<PlaceList> {
           if (snapshot.hasData) {
             List<TourModel> info = snapshot.data!;
             return ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: (info.length / 2).floor(),
@@ -282,12 +292,12 @@ class _PlaceListState extends State<PlaceList> {
                                                             const AdaptiveTextSize()
                                                                 .getadaptiveTextSize(
                                                                     context,
-                                                                    11),
+                                                                    10),
                                                         fontWeight:
-                                                            FontWeight.w600,
+                                                            FontWeight.w500,
                                                         color:
                                                             Colors.black))))),
-                                    const SizedBox(height: 5),
+                                    const SizedBox(height: 8),
                                     SizedBox(
                                         width: size.width * 0.65,
                                         child: Flexible(
@@ -300,20 +310,20 @@ class _PlaceListState extends State<PlaceList> {
                                                         fontSize:
                                                             const AdaptiveTextSize()
                                                                 .getadaptiveTextSize(
-                                                                    context,
-                                                                    11),
+                                                                    context, 9),
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        color: const Color
-                                                                .fromARGB(255,
-                                                            67, 67, 67))))))
+                                                        color: Color.fromARGB(
+                                                            255,
+                                                            150,
+                                                            150,
+                                                            150))))))
                                   ])
                             ])),
                     const Divider(thickness: 1, color: Colors.grey)
                   ]);
                 });
           } else if (snapshot.hasError) {
-            print(snapshot.error);
             return const Center(child: Text('error'));
           }
           return const Center(child: CupertinoActivityIndicator());
@@ -338,12 +348,12 @@ Widget teamInfo(dynamic team, BuildContext context) {
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
                             .getadaptiveTextSize(context, 12),
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: FontWeight.w600)),
                 Text("${team.founded.toDate().year}년",
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
                             .getadaptiveTextSize(context, 12),
-                        fontWeight: FontWeight.normal))
+                        fontWeight: FontWeight.w500))
               ],
             ),
             SizedBox(height: size.height * 0.01),
@@ -355,12 +365,12 @@ Widget teamInfo(dynamic team, BuildContext context) {
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 12),
-                          fontWeight: FontWeight.bold)),
+                          fontWeight: FontWeight.w600)),
                   Text(team.city,
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 12),
-                          fontWeight: FontWeight.normal))
+                          fontWeight: FontWeight.w500))
                 ]),
             SizedBox(height: size.height * 0.01),
             Row(
@@ -371,12 +381,12 @@ Widget teamInfo(dynamic team, BuildContext context) {
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 12),
-                          fontWeight: FontWeight.bold)),
+                          fontWeight: FontWeight.w600)),
                   Text(team.stadium,
                       style: TextStyle(
                           fontSize: const AdaptiveTextSize()
                               .getadaptiveTextSize(context, 12),
-                          fontWeight: FontWeight.normal))
+                          fontWeight: FontWeight.w500))
                 ])
           ])));
 }
@@ -412,8 +422,8 @@ Widget nameAndPage(dynamic team, BuildContext context) {
             Text(
               team.fullName,
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: const Color.fromRGBO(18, 32, 84, 1),
+                fontWeight: FontWeight.w600,
+                color: Color(team.color[0]),
                 fontSize:
                     const AdaptiveTextSize().getadaptiveTextSize(context, 13),
               ),
@@ -434,12 +444,12 @@ Widget nameAndPage(dynamic team, BuildContext context) {
                   color: Color.fromRGBO(18, 32, 84, 1),
                 )),
           )),
-          child: const Text(
-            "홈페이지 바로가기 >",
-            style: TextStyle(
-                color: Color.fromRGBO(18, 32, 84, 1),
-                fontWeight: FontWeight.bold),
-          ),
+          child: Text("홈페이지 바로가기 >",
+              style: TextStyle(
+                  color: Color.fromRGBO(18, 32, 84, 1),
+                  fontWeight: FontWeight.w600,
+                  fontSize: const AdaptiveTextSize()
+                      .getadaptiveTextSize(context, 11))),
         )
       ]);
 }

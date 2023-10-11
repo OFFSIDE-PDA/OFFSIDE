@@ -118,4 +118,10 @@ class UserViewModel extends ChangeNotifier {
   Future<Map> getMyTour({required String? uid}) async {
     return await userInfoRepositoryProvider.getMyTour(uid: uid!);
   }
+
+  Future<void> accountCancellation() async {
+    await authRepositoryProvider
+        .accountCancellation()
+        .then((value) => SystemNavigator.pop());
+  }
 }

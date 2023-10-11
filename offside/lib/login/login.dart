@@ -146,6 +146,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       true, //바깥 영역 터치시 닫을지 여부 결정
                                   builder: ((context) {
                                     return AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      surfaceTintColor: Colors.white,
                                       title: const Text("로그인 실패"),
                                       content: const Text("계정이 존재하지 않습니다."),
                                       actions: <Widget>[
@@ -218,6 +220,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
                                 builder: ((context) {
                                   return AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    surfaceTintColor: Colors.white,
                                     title: const Text("로그인 실패"),
                                     content: const Text("계정이 존재하지 않습니다."),
                                     actions: <Widget>[
@@ -261,7 +265,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => resetPasswordPage()),
+                                  builder: (context) =>
+                                      const ResetPasswordPage()),
                             );
                           },
                         ),

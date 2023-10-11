@@ -3,6 +3,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:offside/data/view/user_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offside/login/reset_password.dart';
 
 class Edit extends ConsumerStatefulWidget {
   @override
@@ -35,19 +36,19 @@ class _EditState extends ConsumerState<Edit> {
   @override
   void initState() {
     super.initState();
-    final read_user = ref.read(userViewModelProvider);
+    final readUser = ref.read(userViewModelProvider);
     List teamInfo = ref.read(teamInfoViewModelProvider).teamInfoList;
-    _name = TextEditingController(text: read_user.user!.nickname);
+    _name = TextEditingController(text: readUser.user!.nickname);
 
     _password = TextEditingController(text: "");
     _new_password = TextEditingController(text: "");
     _confirm_new_password = TextEditingController(text: "");
     _email = TextEditingController(
-        text: read_user.user?.nickname != null ? read_user.user?.email : "");
+        text: readUser.user?.nickname != null ? readUser.user?.email : "");
     _cnt = SingleValueDropDownController(
         data: DropDownValueModel(
-            name: teamInfo[read_user.user!.team!].fullName,
-            value: read_user.user!.team!));
+            name: teamInfo[readUser.user!.team!].fullName,
+            value: readUser.user!.team!));
   }
 
   @override
@@ -79,7 +80,7 @@ class _EditState extends ConsumerState<Edit> {
             shrinkWrap: true,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Text('회원정보 수정',
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
@@ -156,58 +157,62 @@ class _EditState extends ConsumerState<Edit> {
               const SizedBox(
                 height: 10,
               ),
-              const Center(
-                child: Text(
-                  "비밀번호 변경을 원하시면 새로운 비밀번호를 입력하세요.",
-                  style: TextStyle(
-                      color: Color.fromRGBO(18, 32, 84, 1),
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
+                child: OutlinedButton(
+                    onPressed: () {
+                      user
+                          .sendPasswordResetEmail(
+                              email: user.user!.email.toString())
+                          .then((value) =>
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('비밀번호 재설정 메일을 전송합니다')),
+                              ));
+                    },
+                    child: const Text(' 비밀번호 재설정하기')),
+              ),
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
+                      builder: ((context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
+                          title: const Text("회원 탈퇴"),
+                          content: const Text("정말 회원 탈퇴 하시겠습니까?"),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              onPressed: () {
+                                user.accountCancellation();
+                              },
+                              child: const Text("O"),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); //창 닫기
+                              },
+                              child: const Text("X"),
+                            )
+                          ],
+                        );
+                      }),
+                    );
+                  },
+                  child: Text(
+                    "회원 탈퇴",
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 11),
+                        color: Colors.grey),
+                  ),
                 ),
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-              //   child: TextFormField(
-              //     obscureText: true,
-              //     controller: _new_password,
-              //     validator: (value) => (value!.isEmpty || value == _password)
-              //         ? "패스워드를 확인해 주세요"
-              //         : null,
-              //     style: style,
-              //     decoration: InputDecoration(
-              //       prefixIcon: Icon(Icons.lock),
-              //       labelText: "신규 비밀번호",
-              //       filled: true,
-              //       fillColor: Color(0xffF6F6F6),
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(8),
-              //         borderSide: BorderSide.none,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
-              //   child: TextFormField(
-              //     obscureText: true,
-              //     controller: _confirm_new_password,
-              //     validator: (value) =>
-              //         (value != _new_password) ? "패스워드가 올바르지 않습니다." : null,
-              //     style: style,
-              //     decoration: InputDecoration(
-              //       prefixIcon: Icon(Icons.lock),
-              //       labelText: "신규 비밀번호 확인",
-              //       filled: true,
-              //       fillColor: Color(0xffF6F6F6),
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(8),
-              //         borderSide: BorderSide.none,
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Container(
                 padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                 child: ElevatedButton(
@@ -222,6 +227,8 @@ class _EditState extends ConsumerState<Edit> {
                       barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
                       builder: ((context) {
                         return AlertDialog(
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
                           title: const Text("회원정보 수정"),
                           content: const Text("회원 정보가 수정되었습니다."),
                           actions: <Widget>[

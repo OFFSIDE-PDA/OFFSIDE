@@ -147,6 +147,21 @@ class AuthDataSource extends remoteDataSource {
 
     await FirebaseAuth.instance.currentUser?.updateDisplayName(nickname);
   }
+
+  ///회원 탈퇴
+  Future<void> accountCancellation() async {
+    try {
+      await Kakao.UserApi.instance.unlink();
+      print('연결 끊기 성공, SDK에서 토큰 삭제');
+    } catch (error) {
+      print('연결 끊기 실패 $error');
+    }
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .delete();
+    await FirebaseAuth.instance.currentUser?.delete();
+  }
 }
 
 ///인증정보를 제외한 유저 정보에 관련된 외부데이터소스

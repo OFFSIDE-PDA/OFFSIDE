@@ -217,15 +217,17 @@ class Team extends StatelessWidget {
                       builder: (context) => TeamInfoPage(team: team)));
             },
             child: Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(5),
               margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-              width: size.width * 0.13,
-              height: size.width * 0.13,
+              width: size.width * 0.14,
+              height: size.width * 0.14,
               decoration: BoxDecoration(
-                  color: id >= 13
-                      ? const Color.fromRGBO(18, 32, 84, 1)
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(100)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                  border: id >= 13
+                      ? Border.all(
+                          width: 2, color: const Color.fromRGBO(18, 32, 84, 1))
+                      : null),
               child: Image.network(team.logoImg),
             ),
           ),

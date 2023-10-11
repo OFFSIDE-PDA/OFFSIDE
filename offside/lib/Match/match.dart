@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +10,7 @@ import 'package:offside/data/view/match_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:offside/data/view/team_info_view_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:offside/page_view_model.dart';
 
 class Match extends ConsumerStatefulWidget {
   const Match({super.key});
@@ -56,10 +58,8 @@ class _Match extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    const borderSide = BorderSide(
-      color: Color.fromARGB(255, 67, 67, 67),
-      width: 1.0,
-    );
+    const borderSide =
+        BorderSide(color: Color.fromARGB(255, 67, 67, 67), width: 1.0);
     const iconStyle =
         Icon(Icons.expand_more, color: Color.fromARGB(255, 67, 67, 67));
     var textStyle = TextStyle(
@@ -81,6 +81,10 @@ class _Match extends ConsumerState {
     var matchIdx =
         matchData.getMatchIndex('all', selectedLeague == 'K리그1' ? 1 : 2);
 
+    for (var item in matchIdx) {
+      print(item[0].data);
+    }
+
     for (int i = 0; i < leagueLen; i++) {
       bool flag = true;
       for (var item in matchIdx[i]) {
@@ -96,137 +100,155 @@ class _Match extends ConsumerState {
         break;
       }
     }
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "경기 일정",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 14),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    ElevatedButton(
-                      style: elevatedStyle, //Elevated Button Background
-                      onPressed: () {}, //make onPressed callback empty
-                      child: DropdownButton(
+
+    //이 Match 어때 클릭시 해당 경기로 이동
+    final page = ref.watch(counterPageProvider);
+    if (page[0] == 3 && page[1] != null) {
+      int league = int.parse(page[1].split("_")[0]);
+      int id = int.parse(page[1].split("_")[1]);
+      late MatchModel pickedMatch;
+      List<List<MatchModel>> randomMatch = matchData.getWeekMatches(league);
+      for (List<MatchModel> element in randomMatch) {
+        for (MatchModel temp in element) {
+          if (temp.id == id) {
+            pickedMatch = temp;
+          }
+        }
+      }
+      Timer(const Duration(seconds: 1), () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MatchDetail(
+                    date: getDate(pickedMatch.data),
+                    time: pickedMatch.time!,
+                    team1: pickedMatch.team1!,
+                    team2: pickedMatch.team2!,
+                    score1: pickedMatch.score1,
+                    score2: pickedMatch.score2,
+                    matchId: pickedMatch.id,
+                    league: pickedMatch.league)));
+      });
+    }
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: size.height * 0.02,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  ElevatedButton(
+                    style: elevatedStyle, //Elevated Button Background
+                    onPressed: () {}, //make onPressed callback empty
+                    child: DropdownButton(
+                      isDense: true,
+                      style: textStyle, //Dropdown font color
+                      dropdownColor:
+                          Colors.white, //dropdown menu background color
+                      icon: iconStyle, //dropdown indicator icon
+                      value: selectedLeague,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedLeague = value.toString();
+                          selectedLeague == 'K리그1'
+                              ? selectedTeam = k1[0].id
+                              : selectedTeam = k2[0].id;
+                          filtering = false;
+                        });
+                      },
+                      items: league.map((item) {
+                        return DropdownMenuItem(value: item, child: Text(item));
+                      }).toList(),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ElevatedButton(
+                    style: elevatedStyle, //Elevated Button Background
+                    onPressed: () {}, //make onPressed callback empty
+                    child: DropdownButton(
                         isDense: true,
                         style: textStyle, //Dropdown font color
                         dropdownColor:
                             Colors.white, //dropdown menu background color
-                        icon: iconStyle, //dropdown indicator icon
-                        value: selectedLeague,
+                        icon: iconStyle,
+                        value: selectedTeam,
                         onChanged: (value) {
                           setState(() {
-                            selectedLeague = value.toString();
-                            selectedLeague == 'K리그1'
-                                ? selectedTeam = k1[0].id
-                                : selectedTeam = k2[0].id;
-                            filtering = false;
+                            selectedTeam = value!;
+                            filtering = true;
                           });
                         },
-                        items: league.map((item) {
-                          return DropdownMenuItem(
-                              value: item, child: Text(item));
-                        }).toList(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    ElevatedButton(
-                      style: elevatedStyle, //Elevated Button Background
-                      onPressed: () {}, //make onPressed callback empty
-                      child: DropdownButton(
-                          isDense: true,
-                          style: textStyle, //Dropdown font color
-                          dropdownColor:
-                              Colors.white, //dropdown menu background color
-                          icon: iconStyle,
-                          value: selectedTeam,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedTeam = value!;
-                              filtering = true;
-                            });
-                          },
-                          items: selectedLeague == 'K리그1'
-                              ? k1.map((e) {
-                                  return DropdownMenuItem(
-                                      value: e.id, child: Text(e.fullName));
-                                }).toList()
-                              : k2.map((e) {
-                                  return DropdownMenuItem(
-                                      value: e.id, child: Text(e.fullName));
-                                }).toList()),
-                    )
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (body) => const MyTeam()),
-                    );
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                        color: const Color.fromRGBO(14, 32, 87, 1),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Text(
-                      "MY팀",
-                      style: TextStyle(
-                          fontSize: const AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 10),
-                          color: Colors.white),
-                    ),
+                        items: selectedLeague == 'K리그1'
+                            ? k1.map((e) {
+                                return DropdownMenuItem(
+                                    value: e.id, child: Text(e.fullName));
+                              }).toList()
+                            : k2.map((e) {
+                                return DropdownMenuItem(
+                                    value: e.id, child: Text(e.fullName));
+                              }).toList()),
+                  )
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (body) => const MyTeam()),
+                  );
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: const Color.fromRGBO(14, 32, 87, 1),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Text(
+                    "MY팀",
+                    style: TextStyle(
+                        fontSize: const AdaptiveTextSize()
+                            .getadaptiveTextSize(context, 10),
+                        color: Colors.white),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-            Expanded(
-              flex: 1,
-              child: filtering
-                  ? ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: filteredTeam.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return FilteredBox(
-                            teamInfoList: teamInfoList,
-                            size: size,
-                            info: filteredTeam[index]);
-                      })
-                  : ListView.builder(
-                      controller: _scrollController,
-                      scrollDirection: Axis.vertical,
-                      itemCount: leagueLen,
-                      itemBuilder: (BuildContext context, int index) {
-                        return MatchBox(
-                            teamInfoList: teamInfoList,
-                            size: size,
-                            info: matchIdx[index]);
-                      }),
-            )
-          ],
-        ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: size.height * 0.01,
+          ),
+          Expanded(
+            flex: 1,
+            child: filtering
+                ? ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: filteredTeam.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return FilteredBox(
+                          teamInfoList: teamInfoList,
+                          size: size,
+                          info: filteredTeam[index]);
+                    })
+                : ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.vertical,
+                    itemCount: leagueLen,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MatchBox(
+                          teamInfoList: teamInfoList,
+                          size: size,
+                          info: matchIdx[index]);
+                    }),
+          )
+        ],
       ),
     );
   }
@@ -333,6 +355,10 @@ class MatchBox extends StatelessWidget {
                                       Text(
                                         teamInfoList[info[index].team1].name,
                                         style: TextStyle(
+                                            color: Color(
+                                                teamInfoList[info[index].team1]
+                                                    .color[0]),
+                                            fontWeight: FontWeight.w500,
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
                                                     context, 12)),
@@ -345,16 +371,20 @@ class MatchBox extends StatelessWidget {
                                                   fontSize:
                                                       const AdaptiveTextSize()
                                                           .getadaptiveTextSize(
-                                                              context, 13)))
+                                                              context, 12)))
                                           : Text(' vs ',
                                               style: TextStyle(
                                                   fontSize:
                                                       const AdaptiveTextSize()
                                                           .getadaptiveTextSize(
-                                                              context, 13))),
+                                                              context, 12))),
                                       Text(
                                         teamInfoList[info[index].team2].name,
                                         style: TextStyle(
+                                            color: Color(
+                                                teamInfoList[info[index].team2]
+                                                    .color[0]),
+                                            fontWeight: FontWeight.w500,
                                             fontSize: const AdaptiveTextSize()
                                                 .getadaptiveTextSize(
                                                     context, 12)),
@@ -378,7 +408,9 @@ class MatchBox extends StatelessWidget {
                                                 team1: info[index].team1,
                                                 team2: info[index].team2,
                                                 score1: info[index].score1,
-                                                score2: info[index].score2)));
+                                                score2: info[index].score2,
+                                                matchId: info[index].id,
+                                                league: info[index].league)));
                                     // 회원정보 수정 페이지로 이동
                                   },
                                   child: Container(
@@ -416,6 +448,16 @@ class FilteredBox extends StatelessWidget {
   final Size size;
   final MatchModel info;
 
+  String convertTime(date) {
+    var tmp = int.parse(date[0] + date[1]);
+    var returnString = '';
+    if (tmp < 12) {
+      returnString = (tmp + 12).toString();
+    }
+
+    return "$returnString:${date[2]}${date[3]}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -439,7 +481,7 @@ class FilteredBox extends StatelessWidget {
             getDate(info.data),
             style: TextStyle(
                 fontSize:
-                    const AdaptiveTextSize().getadaptiveTextSize(context, 13)),
+                    const AdaptiveTextSize().getadaptiveTextSize(context, 12)),
           ),
           const SizedBox(height: 5),
           Row(
@@ -465,10 +507,10 @@ class FilteredBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    '${info.time}',
+                    convertTime(info.time),
                     style: TextStyle(
                         fontSize: const AdaptiveTextSize()
-                            .getadaptiveTextSize(context, 12)),
+                            .getadaptiveTextSize(context, 11)),
                   ),
                   SizedBox(
                       width: size.width * 0.08,
@@ -480,8 +522,10 @@ class FilteredBox extends StatelessWidget {
                         Text(
                           teamInfoList[info.team1!].name,
                           style: TextStyle(
+                              color: Color(teamInfoList[info.team1!].color[0]),
+                              fontWeight: FontWeight.w500,
                               fontSize: const AdaptiveTextSize()
-                                  .getadaptiveTextSize(context, 13)),
+                                  .getadaptiveTextSize(context, 12)),
                           textAlign: TextAlign.center,
                         ),
                         getScore(info.data)
@@ -489,15 +533,18 @@ class FilteredBox extends StatelessWidget {
                                 ' ${info.score1} : ${info.score2} ',
                                 style: TextStyle(
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 13)),
+                                        .getadaptiveTextSize(context, 12)),
                               )
                             : Text(' vs ',
                                 style: TextStyle(
+                                    fontWeight: FontWeight.w500,
                                     fontSize: const AdaptiveTextSize()
-                                        .getadaptiveTextSize(context, 13))),
+                                        .getadaptiveTextSize(context, 12))),
                         Text(
                           teamInfoList[info.team2!].name,
                           style: TextStyle(
+                              color: Color(teamInfoList[info.team2!].color[0]),
+                              fontWeight: FontWeight.w500,
                               fontSize: const AdaptiveTextSize()
                                   .getadaptiveTextSize(context, 12)),
                           textAlign: TextAlign.center,
