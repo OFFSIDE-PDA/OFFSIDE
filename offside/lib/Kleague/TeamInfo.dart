@@ -281,43 +281,34 @@ class _PlaceListState extends State<PlaceList> {
                                   children: [
                                     SizedBox(
                                         width: size.width * 0.65,
-                                        child: Flexible(
-                                            child: RichText(
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                                text: TextSpan(
-                                                    text: info[index].title,
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            const AdaptiveTextSize()
-                                                                .getadaptiveTextSize(
-                                                                    context,
-                                                                    10),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            Colors.black))))),
+                                        child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            text: TextSpan(
+                                                text: info[index].title,
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        const AdaptiveTextSize()
+                                                            .getadaptiveTextSize(
+                                                                context, 10),
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black)))),
                                     const SizedBox(height: 8),
                                     SizedBox(
                                         width: size.width * 0.65,
-                                        child: Flexible(
-                                            child: RichText(
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                                text: TextSpan(
-                                                    text: info[index].addr,
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            const AdaptiveTextSize()
-                                                                .getadaptiveTextSize(
-                                                                    context, 9),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            150,
-                                                            150,
-                                                            150))))))
+                                        child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            text: TextSpan(
+                                                text: info[index].addr,
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        const AdaptiveTextSize()
+                                                            .getadaptiveTextSize(
+                                                                context, 9),
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color.fromARGB(
+                                                        255, 150, 150, 150)))))
                                   ])
                             ])),
                     const Divider(thickness: 1, color: Colors.grey)

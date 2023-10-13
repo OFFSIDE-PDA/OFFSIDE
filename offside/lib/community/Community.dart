@@ -57,24 +57,24 @@ class Community extends ConsumerState<CommunityPage>
       });
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      //메시지를 새로 쓴 사람이 나라면 무조건 스크롤 맨 밑으로
-      if (lastWriter == nickname) {
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-      } else {
-        if (_scrollController.position.pixels <=
-                _scrollController.position.maxScrollExtent.toInt() &&
-            _scrollController.position.pixels >=
-                _scrollController.position.maxScrollExtent.toInt() -
-                    size.height * 0.8) {
-          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-        } else {
-          setState(() {
-            showToBottom = true;
-          });
-        }
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   //메시지를 새로 쓴 사람이 나라면 무조건 스크롤 맨 밑으로
+    //   if (lastWriter == nickname) {
+    //     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    //   } else {
+    //     if (_scrollController.position.pixels <=
+    //             _scrollController.position.maxScrollExtent.toInt() &&
+    //         _scrollController.position.pixels >=
+    //             _scrollController.position.maxScrollExtent.toInt() -
+    //                 size.height * 0.8) {
+    //       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    //     } else {
+    //       setState(() {
+    //         showToBottom = true;
+    //       });
+    //     }
+    //   }
+    // });
 
     _scrollController.addListener(() {
       if (_scrollController.position.maxScrollExtent ==
@@ -94,73 +94,69 @@ class Community extends ConsumerState<CommunityPage>
             child: Scaffold(
               body: Stack(
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 120),
-                      decoration: BoxDecoration(
-                          color: Color(teaminfo[team].color[0]), // 배경 색상
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(50),
-                              topRight: Radius.circular(50)),
-                          image: DecorationImage(
-                              image: NetworkImage(teaminfo[team].logoImg),
-                              colorFilter: ColorFilter.mode(
-                                  Color(teaminfo[team].color[0])
-                                      .withOpacity(0.3),
-                                  BlendMode.dstATop))),
-                      child: Scrollbar(
+                  Container(
+                    margin: const EdgeInsets.only(top: 120),
+                    decoration: BoxDecoration(
+                        color: Color(teaminfo[team].color[0]), // 배경 색상
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50)),
+                        image: DecorationImage(
+                            image: NetworkImage(teaminfo[team].logoImg),
+                            colorFilter: ColorFilter.mode(
+                                Color(teaminfo[team].color[0]).withOpacity(0.3),
+                                BlendMode.dstATop))),
+                    child: Scrollbar(
+                      controller: _scrollController, // 스크롤 컨트롤러
+                      thickness: 4.0, // 스크롤 너비
+                      radius: const Radius.circular(8.0), // 스크롤 라운딩
+                      child: ListView.builder(
                         controller: _scrollController, // 스크롤 컨트롤러
-                        thickness: 4.0, // 스크롤 너비
-                        radius: const Radius.circular(8.0), // 스크롤 라운딩
-                        child: ListView.builder(
-                          controller: _scrollController, // 스크롤 컨트롤러
-                          itemCount: communityMSG.length,
-                          shrinkWrap: false,
-                          padding: const EdgeInsets.only(top: 20, bottom: 65),
-                          itemBuilder: (context, index) {
-                            return Container(
-                              padding: const EdgeInsets.only(
-                                  left: 14, right: 14, top: 10, bottom: 10),
-                              child: Align(
-                                alignment:
-                                    (communityMSG.elementAt(index).uid == uid
-                                        ? Alignment.topRight
-                                        : Alignment.topLeft),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: (communityMSG.elementAt(index).uid ==
-                                            uid
-                                        ? Color(
-                                            teaminfo[team].color[1]) // 내 말풍선 색상
-                                        : const Color(0xffffffff)),
-                                  ),
-                                  padding: const EdgeInsets.all(16),
-                                  child: Text.rich(
-                                      textAlign: TextAlign.right,
-                                      TextSpan(children: <TextSpan>[
-                                        TextSpan(
-                                          text: communityMSG
-                                              .elementAt(index)
-                                              .text,
-                                          style: const TextStyle(fontSize: 15),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              '\n\n${communityMSG.elementAt(index).writer}',
-                                          style: const TextStyle(fontSize: 10),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              '  |  ${DateFormat('yy-MM-dd hh:mm').format(communityMSG.elementAt(index).time!.toDate())}',
-                                          style: const TextStyle(fontSize: 10),
-                                        ),
-                                      ])),
+                        itemCount: communityMSG.length,
+                        shrinkWrap: false,
+                        padding: const EdgeInsets.only(top: 20, bottom: 65),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: const EdgeInsets.only(
+                                left: 14, right: 14, top: 10, bottom: 10),
+                            child: Align(
+                              alignment:
+                                  (communityMSG.elementAt(index).uid == uid
+                                      ? Alignment.topRight
+                                      : Alignment.topLeft),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: (communityMSG.elementAt(index).uid ==
+                                          uid
+                                      ? Color(
+                                          teaminfo[team].color[1]) // 내 말풍선 색상
+                                      : const Color(0xffffffff)),
                                 ),
+                                padding: const EdgeInsets.all(16),
+                                child: Text.rich(
+                                    textAlign: TextAlign.right,
+                                    TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                        text:
+                                            communityMSG.elementAt(index).text,
+                                        style: const TextStyle(fontSize: 15),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '\n\n${communityMSG.elementAt(index).writer}',
+                                        style: const TextStyle(fontSize: 10),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '  |  ${DateFormat('yy-MM-dd hh:mm').format(communityMSG.elementAt(index).time!.toDate())}',
+                                        style: const TextStyle(fontSize: 10),
+                                      ),
+                                    ])),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),

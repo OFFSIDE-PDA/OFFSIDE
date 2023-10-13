@@ -239,7 +239,8 @@ class _LocationList extends State<LocationList> {
                         width: widget.choose.size.width * 0.2,
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: Image.asset('images/mainpage/logo.png')))),
+                            child: Image.asset(
+                                'assets/images/mainpage/logo.png')))),
               ),
               const SizedBox(width: 10),
               Column(
@@ -248,33 +249,31 @@ class _LocationList extends State<LocationList> {
                   children: [
                     SizedBox(
                         width: widget.choose.size.width * 0.55,
-                        child: Flexible(
-                            child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                text: TextSpan(
-                                    text: widget.tourInfo[widget.index].title,
-                                    style: TextStyle(
-                                      fontSize: const AdaptiveTextSize()
-                                          .getadaptiveTextSize(context, 10),
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                    ))))),
+                        child: RichText(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            text: TextSpan(
+                                text: widget.tourInfo[widget.index].title,
+                                style: TextStyle(
+                                  fontSize: const AdaptiveTextSize()
+                                      .getadaptiveTextSize(context, 10),
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                )))),
                     const SizedBox(height: 8),
                     SizedBox(
                         width: widget.choose.size.width * 0.55,
-                        child: Flexible(
-                            child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                text: TextSpan(
-                                    text: widget.tourInfo[widget.index].addr,
-                                    style: TextStyle(
-                                        fontSize: const AdaptiveTextSize()
-                                            .getadaptiveTextSize(context, 9),
-                                        fontWeight: FontWeight.w500,
-                                        color: const Color.fromARGB(
-                                            255, 163, 163, 163))))))
+                        child: RichText(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            text: TextSpan(
+                                text: widget.tourInfo[widget.index].addr,
+                                style: TextStyle(
+                                    fontSize: const AdaptiveTextSize()
+                                        .getadaptiveTextSize(context, 9),
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color.fromARGB(
+                                        255, 163, 163, 163)))))
                   ])
             ]),
             children: [
