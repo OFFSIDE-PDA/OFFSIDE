@@ -74,7 +74,7 @@ class _Recommended extends State<Recommended> {
     // widget.id == 팀 선택 정보(1~23)
     return Container(
       width: size.width,
-      padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
+      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
       child: (Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,7 +258,7 @@ class _PlaceListState extends State<PlaceList> {
                   return Column(children: [
                     Container(
                         width: size.width,
-                        padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
