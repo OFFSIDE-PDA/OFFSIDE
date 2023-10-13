@@ -261,7 +261,7 @@ class _TourList extends State<TourList> {
                                 errorBuilder: (context, url, error) => SizedBox(
                                     width: widget.size.width * 0.18,
                                     child: Image.asset(
-                                        'images/mainpage/logo.png'))),
+                                        'assets/images/mainpage/logo.png'))),
                           ),
                           title: Padding(
                             padding: const EdgeInsets.only(bottom: 7, right: 5),
