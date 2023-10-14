@@ -163,10 +163,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     textFieldFocusNode: textFieldFocusNode,
                     searchFocusNode: searchFocusNode,
                     // searchAutofocus: true,
-                    dropDownItemCount: 25,
+                    dropDownItemCount: 6,
                     searchShowCursor: false,
                     enableSearch: true,
-                    searchKeyboardType: TextInputType.number,
+                    searchKeyboardType: TextInputType.text,
                     textFieldDecoration: InputDecoration(
                         prefixIcon: const Icon(Icons.favorite),
                         labelText: "응원하는 팀",
