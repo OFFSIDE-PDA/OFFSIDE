@@ -10,3 +10,14 @@
 - 서종원 : 충북대학교 소프트웨어학과 18학번
 - 정채린 : 충북대학교 소프트웨어학과 20학번
 - 강희주 : 충북대학교 소프트웨어학과 22학번
+
+#
+
+### Application Link
+[OFFSIDE](https://play.google.com/store/apps/details?id=com.OFFSIDE.offside)
+
+#
+
+### AWARDS
+
+[<img src="./img/상장.png" alt="COCO" width = "100%" />]
