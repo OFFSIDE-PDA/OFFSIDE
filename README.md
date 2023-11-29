@@ -20,4 +20,4 @@
 
 ### AWARDS
 
-[<img src="./img/상장.jpg" alt="OFFSIDE" width = "100%" />]
+<img src="./img/상장.jpg" alt="OFFSIDE" width = "70%" />
