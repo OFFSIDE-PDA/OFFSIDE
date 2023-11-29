@@ -20,4 +20,4 @@
 
 ### AWARDS
 
-[<img src="./img/상장.png" alt="COCO" width = "100%" />]
+[<img src="./img/상장.jph" alt="OFFSIDE" width = "100%" />]
