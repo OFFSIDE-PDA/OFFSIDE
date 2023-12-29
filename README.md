@@ -46,9 +46,9 @@ K리그 팬들에게 K리그1, 2 경기 관련 정보 제공 및 직관러들에
 <hr/>
 
 ## Project 결과화면
-<img src="./img/img1.jpg" width="35%">
+<img src="./img/img1.jpg" width="35%"> | 
 <img src="./img/img2.jpg" width="35%">
-<img src="./img/img3.jpg" width="35%">
+<img src="./img/img3.jpg" width="35%"> | 
 <img src="./img/img4.jpg" width="35%">
 <img src="./img/img5.jpg" width="35%">
 
